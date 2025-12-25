@@ -1,25 +1,25 @@
 {
     "forecasts": [
         {
-            "set": "4 5 19 34 41 PB13",
-            "confidence": 99
+            "set": "19 30 44 54 66 PB19",
+            "confidence": 93
         },
         {
-            "set": "9 14 51 57 69 PB16",
-            "confidence": 99
-        },
-        {
-            "set": "6 10 26 32 48 PB10",
-            "confidence": 94
-        },
-        {
-            "set": "24 26 38 47 52 PB1",
+            "set": "10 19 31 38 55 PB7",
             "confidence": 92
         },
         {
-            "set": "3 41 42 48 54 PB19",
-            "confidence": 91
+            "set": "8 28 34 47 64 PB25",
+            "confidence": 100
+        },
+        {
+            "set": "8 12 24 63 64 PB12",
+            "confidence": 96
+        },
+        {
+            "set": "30 42 47 66 67 PB22",
+            "confidence": 99
         }
     ],
-    "game": "Powerball"
+    "game": "CA SuperLotto Plus"
 }

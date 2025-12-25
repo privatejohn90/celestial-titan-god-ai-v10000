@@ -1,0 +1,160 @@
+{
+    "forecasts": [
+        {
+            "number": "1391",
+            "confidence": 97,
+            "game": "FL Pick-4",
+            "draw_type": "Midday",
+            "date": "2025-12-23",
+            "priority": "\ud83d\udca0 Titan Prime"
+        },
+        {
+            "number": "4937",
+            "confidence": 86,
+            "game": "FL Pick-4",
+            "draw_type": "Midday",
+            "date": "2025-12-23",
+            "priority": "\u26aa Normal"
+        },
+        {
+            "number": "4227",
+            "confidence": 85,
+            "game": "FL Pick-4",
+            "draw_type": "Midday",
+            "date": "2025-12-23",
+            "priority": "\u26aa Normal"
+        },
+        {
+            "number": "5517",
+            "confidence": 83,
+            "game": "FL Pick-4",
+            "draw_type": "Midday",
+            "date": "2025-12-23",
+            "priority": "\u26aa Normal"
+        },
+        {
+            "number": "2696",
+            "confidence": 83,
+            "game": "FL Pick-4",
+            "draw_type": "Midday",
+            "date": "2025-12-23",
+            "priority": "\u26aa Normal"
+        },
+        {
+            "game": "FL Pick-4",
+            "draw_type": "Midday",
+            "number": "6691",
+            "confidence": 95
+        },
+        {
+            "game": "FL Pick-4",
+            "draw_type": "Midday",
+            "number": "8239",
+            "confidence": 88
+        },
+        {
+            "game": "FL Pick-4",
+            "draw_type": "Midday",
+            "number": "8741",
+            "confidence": 87
+        },
+        {
+            "game": "FL Pick-4",
+            "draw_type": "Midday",
+            "number": "9683",
+            "confidence": 86
+        },
+        {
+            "game": "FL Pick-4",
+            "draw_type": "Midday",
+            "number": "6750",
+            "confidence": 99
+        },
+        {
+            "state": "CA",
+            "game": "Powerball",
+            "number": "11 22 62 10 32 21",
+            "date": "2025-12-24"
+        },
+        {
+            "state": "CA",
+            "game": "Powerball",
+            "number": "30 51 38 46 69 12",
+            "date": "2025-12-24"
+        },
+        {
+            "state": "CA",
+            "game": "Powerball",
+            "number": "04 12 41 16 04 15",
+            "date": "2025-12-24"
+        },
+        {
+            "state": "CA",
+            "game": "SuperLotto",
+            "number": "09 39 35 08 39 02",
+            "date": "2025-12-24"
+        },
+        {
+            "state": "CA",
+            "game": "SuperLotto",
+            "number": "41 24 20 33 01 05",
+            "date": "2025-12-24"
+        },
+        {
+            "state": "CA",
+            "game": "SuperLotto",
+            "number": "07 25 05 03 43 11",
+            "date": "2025-12-24"
+        },
+        {
+            "state": "CA",
+            "game": "GA Pick-3 Midday",
+            "number": "8 3 3",
+            "date": "2025-12-24"
+        },
+        {
+            "state": "CA",
+            "game": "GA Pick-3 Midday",
+            "number": "0 3 5",
+            "date": "2025-12-24"
+        },
+        {
+            "state": "CA",
+            "game": "GA Pick-3 Midday",
+            "number": "8 8 5",
+            "date": "2025-12-24"
+        },
+        {
+            "game": "Powerball",
+            "date": "2025-12-24",
+            "time": "16:39:09",
+            "results": [
+                "28-31-45-52-54 PB11",
+                "7-19-36-39-54 PB8",
+                "13-43-45-46-60 PB20"
+            ]
+        },
+        {
+            "game": "GA Pick 3 Evening",
+            "date": "2025-12-24",
+            "time": "16:39:14",
+            "results": [
+                "952",
+                "430",
+                "767"
+            ]
+        }
+    ],
+    "results": [
+        {
+            "game": "GA Pick-3",
+            "draw_type": "Midday",
+            "date": "2025-11-30",
+            "winning": "511",
+            "hit": false
+        }
+    ],
+    "accuracy": [],
+    "memory": {},
+    "last_sync": "2025-12-24 17:08:39.730366"
+}

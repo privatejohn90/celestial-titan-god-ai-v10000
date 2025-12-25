@@ -1,0 +1,17 @@
+{
+  "records": [
+    {
+      "game": "GA Pick-3",
+      "draw_type": "Midday",
+      "date": "2025-11-30",
+      "winning": "511",
+      "hit": false
+    },
+    {
+      "game": "GA Pick-3 Evening",
+      "draw": "Evening",
+      "date": "2025-12-24",
+      "number": "761"
+    }
+  ]
+}

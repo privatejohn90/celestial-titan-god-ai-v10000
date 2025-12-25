@@ -1,0 +1,44 @@
+{
+  "forecasts": [
+    {
+      "date": "December 23, 2025",
+      "game": "GA Pick-3",
+      "draw": "Midday",
+      "number": "490",
+      "confidence": 97,
+      "priority": true
+    },
+    {
+      "date": "December 23, 2025",
+      "game": "GA Pick-3",
+      "draw": "Midday",
+      "number": "017",
+      "confidence": 90,
+      "priority": false
+    },
+    {
+      "date": "December 23, 2025",
+      "game": "GA Pick-3",
+      "draw": "Midday",
+      "number": "910",
+      "confidence": 99,
+      "priority": true
+    },
+    {
+      "date": "December 23, 2025",
+      "game": "GA Pick-3",
+      "draw": "Midday",
+      "number": "484",
+      "confidence": 89,
+      "priority": false
+    },
+    {
+      "date": "December 23, 2025",
+      "game": "GA Pick-3",
+      "draw": "Midday",
+      "number": "572",
+      "confidence": 95,
+      "priority": true
+    }
+  ]
+}

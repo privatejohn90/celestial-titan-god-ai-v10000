@@ -1,0 +1,45 @@
+{
+  "log": [],
+  "records": [
+    {
+      "number": "1391",
+      "confidence": 97,
+      "game": "FL Pick-4",
+      "draw_type": "Midday",
+      "date": "2025-12-23",
+      "priority": "\ud83d\udca0 Titan Prime"
+    },
+    {
+      "number": "4937",
+      "confidence": 86,
+      "game": "FL Pick-4",
+      "draw_type": "Midday",
+      "date": "2025-12-23",
+      "priority": "\u26aa Normal"
+    },
+    {
+      "number": "4227",
+      "confidence": 85,
+      "game": "FL Pick-4",
+      "draw_type": "Midday",
+      "date": "2025-12-23",
+      "priority": "\u26aa Normal"
+    },
+    {
+      "number": "5517",
+      "confidence": 83,
+      "game": "FL Pick-4",
+      "draw_type": "Midday",
+      "date": "2025-12-23",
+      "priority": "\u26aa Normal"
+    },
+    {
+      "number": "2696",
+      "confidence": 83,
+      "game": "FL Pick-4",
+      "draw_type": "Midday",
+      "date": "2025-12-23",
+      "priority": "\u26aa Normal"
+    }
+  ]
+}

@@ -1,25 +1,25 @@
 {
   "forecasts": [
     {
-      "set": "8213",
-      "confidence": 92
+      "set": "4-24-43-45-66  B3",
+      "confidence": 93
     },
     {
-      "set": "6120",
-      "confidence": 88
+      "set": "3-21-37-49-51  B22",
+      "confidence": 98
     },
     {
-      "set": "4248",
-      "confidence": 91
+      "set": "27-32-50-51-65  B1",
+      "confidence": 98
     },
     {
-      "set": "6155",
-      "confidence": 89
+      "set": "18-27-36-59-68  B26",
+      "confidence": 99
     },
     {
-      "set": "5598",
-      "confidence": 97
+      "set": "1-14-30-47-67  B16",
+      "confidence": 93
     }
   ],
-  "game": "FL Pick-4 Evening"
+  "game": "Powerball"
 }

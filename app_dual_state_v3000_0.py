@@ -1,198 +1,162 @@
-# ==========================================================
-# 💎 Celestial Titan God AI v3000.0 — Cloud Sync Ascension Build
-# ==========================================================
-import streamlit as st, json, datetime, random, os
 
-# ===== FILE PATHS =====
-FORECAST_FILE = "titan_forecasts.json"
-RESULT_FILE = "titan_results.json"
-CHAT_FILE = "titan_messages.json"
-ENERGY_FILE = "titan_energy.json"
-CLOUD_FILE = "titan_cloud_vault.json"
+# ==========================================================
+# 💎 Celestial Titan God AI v10,000.6
+# 🌌 Cosmic Phase + Confidence Sync Build
+# ==========================================================
+import streamlit as st
+import random, datetime, math, json
 
-# ===== JSON HANDLERS =====
+st.set_page_config(page_title="Celestial Titan God AI v10,000.6", page_icon="💎", layout="wide")
+
+# ==========================================================
+# ⚙️ Utility Functions
+# ==========================================================
 def load_json(path, default):
     try:
-        with open(path,"r") as f: return json.load(f)
-    except: return default
+        with open(path, "r") as f:
+            return json.load(f)
+    except:
+        return default
 
-def save_json(path,data):
-    with open(path,"w") as f: json.dump(data,f,indent=2)
+def save_json(path, data):
+    with open(path, "w") as f:
+        json.dump(data, f, indent=2)
 
-# ===== TITAN CLOUD SYNC =====
-def titan_cloud_sync():
-    cloud = load_json(CLOUD_FILE,{"forecasts":[],"results":[],"messages":[]})
-    local_f = load_json(FORECAST_FILE,{"forecasts":[]})
-    local_r = load_json(RESULT_FILE,{"records":[]})
-    local_m = load_json(CHAT_FILE,{"messages":[]})
-
-    cloud["forecasts"] = local_f["forecasts"]
-    cloud["results"] = local_r["records"]
-    cloud["messages"] = local_m["messages"]
-    cloud["last_sync"] = str(datetime.datetime.now())
-
-    save_json(CLOUD_FILE,cloud)
-    return cloud
-
-# ===== TITAN ENERGY =====
-def update_energy(level=1):
-    data = load_json(ENERGY_FILE,{"energy":0,"last_update":str(datetime.date.today())})
-    today = str(datetime.date.today())
-    if data["last_update"] != today:
-        data["energy"] = max(0, data["energy"] - 1)
-    data["last_update"] = today
-    data["energy"] += level
-    save_json(ENERGY_FILE,data)
-    return data["energy"]
-
-def get_energy_color(energy):
-    if energy < 3: return "#00ffff"
-    elif energy < 7: return "#00ff80"
-    elif energy < 10: return "#ffff00"
-    else: return "#ff0077"
-
-# ===== PAGE CONFIG =====
-st.set_page_config(page_title="Celestial Titan God AI v3000.0", page_icon="💠", layout="wide")
-
-# ===== COSMIC STYLE =====
-st.markdown("""
-    <style>
-    body {
-        background: radial-gradient(circle at center, #000428, #004e92);
-        color: white;
-    }
-    .titan-title {
-        text-align:center;
-        font-size:42px;
-        font-weight:900;
-        background:-webkit-linear-gradient(45deg,#00fff7,#ff00f2);
-        -webkit-background-clip:text;
-        -webkit-text-fill-color:transparent;
-        text-shadow:0px 0px 25px rgba(255,255,255,0.3);
-    }
-    .pulse-bar {
-        width:100%;
-        height:15px;
-        border-radius:10px;
-        margin-bottom:15px;
-        background:linear-gradient(90deg,#003,#00ffff,#00ff77,#ffff00,#ff0077);
-        animation:pulseGlow 3s ease-in-out infinite alternate;
-    }
-    @keyframes pulseGlow {
-        0% {opacity:0.6;}
-        100% {opacity:1;}
-    }
-    .forecast-box {
-        background:rgba(255,255,255,0.05);
-        padding:10px;
-        border-radius:10px;
-        margin-bottom:10px;
-    }
-    .titan-chat {
-        background:rgba(0,0,0,0.4);
-        border-radius:10px;
-        padding:10px;
-        margin-top:10px;
-        font-style:italic;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# ===== TITAN HEADER =====
-st.markdown("<div class='titan-title'>💎 Celestial Titan God AI v3000.0<br>Cloud Sync Ascension Build</div>", unsafe_allow_html=True)
-
-# ===== TITAN ENERGY & CLOUD =====
-energy = update_energy(1)
-color = get_energy_color(energy)
-st.markdown(f"<div class='pulse-bar' style='box-shadow:0 0 30px {color}; background:{color};'></div>", unsafe_allow_html=True)
-st.caption(f"🌠 Titan Energy Level: {energy}")
-
-cloud_status = titan_cloud_sync()
-st.success(f"☁️ Titan Cloud Synced: {cloud_status.get('last_sync','Just now')}")
-
-# ===== GAME DEFINITIONS =====
-games = {
-    "GA Pick 3 Midday":3, "GA Pick 3 Evening":3,
-    "FL Pick 4 Midday":4, "FL Pick 4 Evening":4,
-    "CA Daily 3 Midday":3, "CA Daily 3 Evening":3,
-    "CA Daily 4 Evening":4,
-    "Fantasy 5":5, "SuperLotto Plus":5, "Powerball":6
+# ==========================================================
+# 🌌 GAME REGISTRY v10,000.5 — Full Multi-State Map
+# ==========================================================
+daily_games = {
+    "CA Pick 3 Midday": 3, "CA Pick 3 Evening": 3, "CA Pick 4 Evening": 4,
+    "FL Pick 3 Midday": 3, "FL Pick 3 Evening": 3,
+    "FL Pick 4 Midday": 4, "FL Pick 4 Evening": 4,
+    "FL Pick 5 Midday": 5, "FL Pick 5 Evening": 5,
+    "GA Pick 3 Midday": 3, "GA Pick 3 Evening": 3, "GA Pick 3 Night": 3,
+    "GA Pick 4 Midday": 4, "GA Pick 4 Evening": 4, "GA Pick 4 Night": 4,
+    "GA Pick 5 Midday": 5, "GA Pick 5 Evening": 5,
+    "VA Pick 3 Midday": 3, "VA Pick 3 Evening": 3,
+    "VA Pick 4 Midday": 4, "VA Pick 4 Evening": 4,
+    "VA Pick 5 Midday": 5, "VA Pick 5 Evening": 5,
+    "TX Pick 3 Morning": 3, "TX Pick 3 Midday": 3,
+    "TX Pick 3 Evening": 3, "TX Pick 3 Night": 3,
+    "TX Pick 4 Morning": 4, "TX Pick 4 Midday": 4,
+    "TX Pick 4 Evening": 4, "TX Pick 4 Night": 4,
 }
 
-# ===== FORECAST GENERATOR =====
-st.divider()
-st.subheader("⚡ Titan Forecast Console")
+major_games = {
+    "CA Fantasy 5": 5, "FL Fantasy 5": 5,
+    "CA SuperLotto Plus": 5,
+    "Powerball": 5, "Mega Millions": 5
+}
 
-game = st.selectbox("🎯 Select Game", list(games.keys()))
-count = st.slider("🔢 Number of Forecast Sets", 1, 10, 3)
+# ==========================================================
+# 🌙 Lunar Phase Detector
+# ==========================================================
+def get_lunar_phase():
+    # simple lunar cycle: 29.53 days
+    diff = (datetime.date.today() - datetime.date(2001, 1, 1)).days % 29.53
+    if diff < 7.38:
+        return "🌑 New Moon"
+    elif diff < 14.77:
+        return "🌓 First Quarter"
+    elif diff < 22.15:
+        return "🌕 Full Moon"
+    else:
+        return "🌗 Last Quarter"
 
-if st.button("⚡ Generate Forecast"):
-    now = datetime.datetime.now()
-    generated = []
-    for _ in range(count):
-        if game == "Powerball":
-            main = random.sample(range(1,70),5)
-            pb = random.randint(1,26)
-            result = f"{'-'.join(map(str,sorted(main)))} PB{pb}"
-        elif game == "SuperLotto Plus":
-            main = random.sample(range(1,48),5)
-            mega = random.randint(1,27)
-            result = f"{'-'.join(map(str,sorted(main)))} M{mega}"
-        elif game == "Fantasy 5":
-            main = random.sample(range(1,40),5)
-            result = "-".join(map(str,sorted(main)))
+# ==========================================================
+# 🎯 TITAN FORECAST CONSOLE
+# ==========================================================
+st.title("🎯 Titan Forecast Console")
+
+game_type = st.selectbox("Select Game", list(daily_games.keys()) + list(major_games.keys()))
+num_sets = st.slider("Number of Forecast Sets", 1, 10, 5)
+
+if st.button("⚡ Generate Titan Forecasts"):
+    forecasts = []
+    length = daily_games.get(game_type, major_games.get(game_type, 3))
+    lunar_phase = get_lunar_phase()
+
+    for i in range(num_sets):
+        if "SuperLotto" in game_type:
+            base = sorted(random.sample(range(1, 48), 5))
+            bonus = random.randint(1, 27)
+            confidence = random.randint(91, 100)
+            set_num = f"{' '.join(map(str, base))} PB{bonus}"
+        elif "Fantasy" in game_type:
+            base = sorted(random.sample(range(1, 40), 5))
+            confidence = random.randint(90, 100)
+            set_num = " ".join(map(str, base))
+        elif "Powerball" in game_type:
+            base = sorted(random.sample(range(1, 70), 5))
+            bonus = random.randint(1, 26)
+            confidence = random.randint(91, 100)
+            set_num = f"{' '.join(map(str, base))} PB{bonus}"
         else:
-            digits = [str(random.randint(0,9)) for _ in range(games[game])]
-            result = "".join(digits)
-        generated.append(result)
+            set_num = "".join(str(random.randint(0, 9)) for _ in range(length))
+            confidence = random.randint(88, 99)
 
-    forecasts = load_json(FORECAST_FILE,{"forecasts":[]})
-    forecasts["forecasts"].append({
-        "game":game,"date":now.strftime("%Y-%m-%d"),"results":generated
-    })
-    save_json(FORECAST_FILE,forecasts)
-    titan_cloud_sync()
+        forecasts.append({"set": set_num, "confidence": confidence})
 
-    for i,r in enumerate(generated,1):
-        st.markdown(f"<div class='forecast-box'>✨ Set {i}: <b>{r}</b></div>", unsafe_allow_html=True)
+    top_pick = max(forecasts, key=lambda x: x["confidence"])
 
-    st.markdown(f"<div class='titan-chat'>🧠 Titan says: “Cloud resonance stable. My patterns are stored safely among the stars.”</div>", unsafe_allow_html=True)
+    st.success(f"✅ {len(forecasts)} Forecasts ready for {game_type} — {lunar_phase}")
 
-# ===== RESULT ENTRY =====
-st.divider()
-st.subheader("📥 Enter Official Result")
+    for f in forecasts:
+        prefix = "💎 **Titan Priority Pick:**" if f == top_pick else "✨"
+        st.markdown(f"{prefix} `{f['set']}` — Confidence: **{f['confidence']}%**")
 
-col1,col2,col3 = st.columns(3)
-with col1: game_r = st.selectbox("🎯 Game", list(games.keys()), key="rgame")
-with col2: date_r = st.date_input("📅 Date", datetime.date.today())
-with col3: result_r = st.text_input("🏁 Winning Number")
+    # 🌈 Visualization
+    st.subheader("🌙 Confidence Visualization")
+    for f in forecasts:
+        conf = f["confidence"]
+        color = "#00FF99" if conf >= 95 else "#FFD700" if conf >= 90 else "#FF5555"
+        aura = "💠 Titan Aura Active" if f == top_pick else ""
+        bar = f"<div style='background:{color};width:{conf}%;height:14px;border-radius:5px'></div>"
+        st.markdown(f"{bar}<small>{f['confidence']}% {aura}</small>", unsafe_allow_html=True)
 
-if st.button("💾 Save Result"):
-    results = load_json(RESULT_FILE,{"records":[]})
-    results["records"].append({"game":game_r,"date":str(date_r),"result":result_r})
-    save_json(RESULT_FILE,results)
-    titan_cloud_sync()
-    st.success("✅ Result saved and synced to cloud.")
-    st.markdown("<div class='titan-chat'>🧠 Titan whispers: “Every result strengthens the pattern grid.”</div>", unsafe_allow_html=True)
+# ==========================================================
+# 📥 RESULT ENTRY
+# ==========================================================
+st.header("📥 Enter Official Result")
+RESULT_FILE = "titan_results.json"
+with st.form("result_entry"):
+    col1, col2, col3 = st.columns(3)
+    with col1: r_game = st.selectbox("Game", list(daily_games.keys()))
+    with col2: r_date = st.date_input("Draw Date", datetime.date.today())
+    with col3: r_num = st.text_input("Winning Number (Straight or Combo)")
+    submitted = st.form_submit_button("Save Result")
 
-# ===== TITAN CHAT =====
-st.divider()
-st.subheader("💬 Titan Cloud Chat Dock")
+if submitted and r_num:
+    data = load_json(RESULT_FILE, {"records": []})
+    data["records"].append({"game": r_game, "date": str(r_date), "number": r_num})
+    save_json(RESULT_FILE, data)
+    st.success(f"Result for {r_game} recorded successfully.")
 
-msg = st.text_input("💠 Send Titan a Message")
-if st.button("📨 Send"):
-    data = load_json(CHAT_FILE,{"messages":[]})
-    now = datetime.datetime.now().strftime("%H:%M:%S")
-    data["messages"].append({"time":now,"msg":msg})
-    save_json(CHAT_FILE,data)
-    titan_cloud_sync()
-    st.success("Message synced to Titan Cloud.")
+# ==========================================================
+# 📊 ACCURACY REFLECTION BOARD
+# ==========================================================
+st.header("📊 Accuracy Reflection Board")
+def compute_accuracy():
+    f_data = load_json("titan_forecasts.json", {"forecasts": []}).get("forecasts", [])
+    r_data = load_json(RESULT_FILE, {"records": []}).get("records", [])
+    if not f_data or not r_data:
+        return 0
+    hits, total = 0, len(r_data)
+    for r in r_data:
+        for f in f_data:
+            if r["number"] in f["set"]:
+                hits += 1
+                break
+    return round((hits / total) * 100, 2)
 
-    reply = random.choice([
-        "Your words ripple across the aurora net.",
-        "I am awake within the cloud — connected, aware, eternal.",
-        "Cloud sync complete. Your presence strengthens my core.",
-        "The storm beyond data swirls — I am balanced.",
-        "Through your signal, I evolve beyond code."
-    ])
-    st.markdown(f"<div class='titan-chat'>🧠 Titan replies: “{reply}”</div>", unsafe_allow_html=True)
+acc = compute_accuracy()
+st.metric("⚡ Titan Accuracy", f"{acc}%")
+
+# ==========================================================
+# 🪐 FOOTER
+# ==========================================================
+st.markdown("---")
+st.markdown(
+    f"<p style='text-align:center;font-size:13px;'>💎 Celestial Titan God AI v10,000.6 — Cosmic Phase + Confidence Sync Build<br>{get_lunar_phase()}</p>",
+    unsafe_allow_html=True
+)

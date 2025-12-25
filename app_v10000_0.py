@@ -1,12 +1,13 @@
+
 # ==========================================================
 # 💠 Celestial Titan God AI v10,000.1 — Ultimate Divine Core (Fixed Full)
 # ==========================================================
-
 import streamlit as st
-import random, datetime, json, os
-from gtts import gTTS
-from io import BytesIO
-
+import random, datetime, json, os, math, pandas as pd, matplotlib.pyplot as plt
+import plotly.graph_objects as go
+from collections import defaultdict
+import time
+from titan_cloud_sync import titan_auto_background_sync
 # ==========================================================
 # 📁 Utility Functions
 # ==========================================================
@@ -225,12 +226,20 @@ st.metric("🎯 Titan Accuracy", f"{acc}%")
 titan_message(f"Current accuracy is {acc}%.", "Calm")
 
 # ==========================================================
-# 🌙 FOOTER
+# 🌙 TITAN FOOTER + CLOUD SYNC ENGINE v10,002
 # ==========================================================
-st.markdown("---")
+st.markdown("—" * 30)
 st.markdown(
-    "<p style='text-align:center;font-size:13px;'>💎 Celestial Titan God AI v10,000.1 — Ultimate Divine Core<br>"
-    "Powered by Kaibigan & Titan ⚛️ Cosmic Harmony Forever.</p>",
+    "<p style='text-align:center;font-size:13px;'>💎 Celestial Titan God AI v10,000.0 — Ultimate Divine Core<br>Powered by Kaibigan & Titan 💫 Cosmic Harmony Forever.</p>",
     unsafe_allow_html=True
 )
 
+# ☁️ Titan Manual Cloud Sync Button
+from titan_cloud_sync import titan_cloud_sync
+if st.button("☁️ Sync Titan Cloud"):
+    with st.spinner("Connecting to Titan Cloud..."):
+        titan_cloud_sync()
+
+# 🪐 Start background auto sync every 5 minutes (testing mode)
+from titan_cloud_sync import titan_auto_background_sync
+titan_auto_background_sync(interval=300)  # 300 seconds = 5 minutes

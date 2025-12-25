@@ -12,6 +12,141 @@
       "draw": "Evening",
       "date": "2025-12-24",
       "number": "761"
+    },
+    {
+      "category": "Major Games",
+      "game": "FL Fantasy 5",
+      "forecasts": [
+        {
+          "set": "4 9 17 23 34",
+          "confidence": 93
+        },
+        {
+          "set": "4 16 17 32 39",
+          "confidence": 91
+        },
+        {
+          "set": "11 18 31 32 35",
+          "confidence": 94
+        },
+        {
+          "set": "4 6 13 24 34",
+          "confidence": 96
+        },
+        {
+          "set": "6 8 12 31 38",
+          "confidence": 92
+        }
+      ],
+      "timestamp": "2025-12-24 22:07:07"
+    },
+    {
+      "category": "Major Games",
+      "game": "CA Fantasy 5",
+      "forecasts": [
+        {
+          "set": "8 22 29 34 39",
+          "confidence": 94
+        },
+        {
+          "set": "3 19 25 26 35",
+          "confidence": 90
+        },
+        {
+          "set": "14 17 19 25 36",
+          "confidence": 93
+        },
+        {
+          "set": "4 8 13 19 35",
+          "confidence": 98
+        },
+        {
+          "set": "6 23 24 35 37",
+          "confidence": 91
+        }
+      ],
+      "timestamp": "2025-12-24 22:07:11"
+    },
+    {
+      "category": "Major Games",
+      "game": "CA Fantasy 5",
+      "forecasts": [
+        {
+          "set": "7 12 15 19 21",
+          "confidence": 99
+        },
+        {
+          "set": "16 26 28 37 38",
+          "confidence": 94
+        },
+        {
+          "set": "1 6 14 25 35",
+          "confidence": 97
+        },
+        {
+          "set": "7 31 33 34 35",
+          "confidence": 95
+        },
+        {
+          "set": "5 8 13 23 31",
+          "confidence": 97
+        }
+      ],
+      "timestamp": "2025-12-24 22:07:13"
+    },
+    {
+      "category": "Major Games",
+      "game": "Mega Millions",
+      "forecasts": [
+        {
+          "set": "19 22 25 54 59 PB18",
+          "confidence": 97
+        },
+        {
+          "set": "28 33 47 54 64 PB13",
+          "confidence": 100
+        },
+        {
+          "set": "16 46 57 59 61 PB5",
+          "confidence": 91
+        },
+        {
+          "set": "12 49 50 52 60 PB23",
+          "confidence": 90
+        },
+        {
+          "set": "6 13 25 33 42 PB19",
+          "confidence": 100
+        }
+      ],
+      "timestamp": "2025-12-24 22:07:18"
+    },
+    {
+      "category": "Daily Games",
+      "game": "CA Pick 3 Midday",
+      "forecasts": [
+        {
+          "set": "876",
+          "confidence": 88
+        },
+        {
+          "set": "651",
+          "confidence": 95
+        },
+        {
+          "set": "752",
+          "confidence": 90
+        },
+        {
+          "set": "344",
+          "confidence": 93
+        },
+        {
+          "set": "151",
+          "confidence": 99
+        }
+      ],
+      "timestamp": "2025-12-24 22:14:19"
     }
   ]
 }

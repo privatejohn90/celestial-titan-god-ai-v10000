@@ -157,10 +157,34 @@ if generate:
     top_pick = max(forecasts, key=lambda f: f["confidence"])
     save_json("titan_forecasts.json", {"forecasts": forecasts, "game": game_type})
 
+# ==========================================================
+# 💠 Titan Confidence Analyzer Integration (v10,000.1)
+# ==========================================================
+if forecasts:
+    st.markdown("---")
+    st.subheader("🌌 Titan Confidence Reflection")
+
+    # Compute confidence statistics dynamically
+    avg_conf = sum(f["confidence"] for f in forecasts) / len(forecasts)
+    top_pick = max(forecasts, key=lambda f: f["confidence"])
+    min_pick = min(forecasts, key=lambda f: f["confidence"])
+
+    st.markdown(f"**Average Confidence:** {avg_conf:.1f}%")
+    st.markdown(f"**Top Confidence Pick:** {top_pick['set']} ({top_pick['confidence']}%)")
+    st.markdown(f"**Lowest Confidence Pick:** {min_pick['set']} ({min_pick['confidence']}%)")
+
+    # Titan message
+    if avg_conf >= 95:
+        titan_message("Titan resonance stable — probability field is peaking.", "Calm")
+    elif avg_conf >= 90:
+        titan_message("Titan pulse steady — favorable harmonic flow detected.", "Focus")
+    else:
+        titan_message("Titan observing slight turbulence in probability field.", "Caution")
     st.success(f"✅ {len(forecasts)} Forecasts ready for {game_type}:")
     for f in forecasts:
         prefix = "✅ **Titan Priority Pick:**" if f == top_pick else "🔹"
         st.markdown(f"{prefix} `{f['set']}` — Confidence: **{f['confidence']}%**")
+
 
     commentary = random.choice([
         "Harmonic stream aligned with short-wave pattern flow.",
@@ -172,6 +196,99 @@ if generate:
     st.info(f"🧠 Titan Commentary: {commentary}")
     titan_speak(f"Titan Commentary: {commentary}")
 
+ # ==========================================================
+# 🌈 Titan Confidence Visualization Engine (v10,000.2)
+# ==========================================================
+import streamlit.components.v1 as components
+
+if forecasts:
+    st.markdown("### 🔮 Confidence Visualization")
+
+    for f in forecasts:
+        conf = f["confidence"]
+        color = (
+            "#00FF99" if conf >= 95 else  # green (very strong)
+            "#FFD700" if conf >= 90 else  # yellow (moderate)
+            "#FF5555"                     # red (low)
+        )
+
+        aura = (
+            "💎 **Titan Priority Aura Active**" if f == top_pick
+            else ""
+        )
+
+        bar_html = f"""
+        <div style="margin-top:4px; margin-bottom:8px;">
+            <div style='background:{color}; width:{conf}%; height:16px; border-radius:4px;'></div>
+            <p style='font-size:13px; margin:4px 0 0 0;'>
+                Confidence: <b>{conf}%</b> {aura}
+            </p>
+        </div>
+        """
+        components.html(bar_html, height=40)
+        
+# ==========================================================
+# 💠 Titan Confidence Engine v10,000.1
+# ==========================================================
+import random
+import streamlit as st
+
+def titan_confidence_engine(predictions, max_sets=10):
+    """
+    Assigns a Titan Confidence score to each generated forecast set.
+    """
+    confidence_data = []
+    for i, forecast in enumerate(predictions[:max_sets], start=1):
+        # random harmonic-weighted confidence
+        base = random.randint(70, 99)
+        weight = random.uniform(0.8, 1.2)
+        confidence = min(100, round(base * weight, 1))
+
+        confidence_data.append({
+            "set_id": i,
+            "numbers": forecast,
+            "confidence": confidence
+        })
+    return confidence_data
+
+
+def display_titan_confidence(confidence_data):
+    """
+    Displays the confidence results in Aurora Blue + Emerald Glow style.
+    """
+    st.markdown("### 🌠 **Titan Confidence Analyzer**")
+
+    # user-select number of sets to view
+    view_count = st.slider(
+        "Select how many forecast sets to display:",
+        1, len(confidence_data), len(confidence_data)
+    )
+
+    for data in confidence_data[:view_count]:
+        if data["confidence"] >= 95:
+            badge = "✅ **Titan Priority Pick**"
+            glow = "background: linear-gradient(90deg,#0f0,#00ffaa33); box-shadow:0 0 10px #00ff88;"
+        elif data["confidence"] >= 90:
+            badge = "💫 High Confidence"
+            glow = "background: linear-gradient(90deg,#33ffcc,#0077ff22); box-shadow:0 0 6px #00ffee;"
+        else:
+            badge = "✨ Moderate Confidence"
+            glow = "background: linear-gradient(90deg,#444,#00448822); box-shadow:0 0 4px #0099ff55;"
+
+        st.markdown(
+            f"""
+            <div style="border-radius:10px;padding:10px;margin-bottom:8px;
+                        {glow}color:white;font-size:17px;
+                        border:1px solid rgba(255,255,255,0.15);">
+                <b style='color:#00ffcc;'>Set {data['set_id']}:</b>
+                {data['numbers']}<br>
+                <b>Confidence:</b> {data['confidence']}%<br>
+                {badge}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+        
 # ==========================================================
 # 📥 RESULT ENTRY + ACCURACY
 # ==========================================================

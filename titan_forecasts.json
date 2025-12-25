@@ -1,25 +1,25 @@
 {
     "forecasts": [
         {
-            "set": "20 25 26 29 63 PB9",
-            "confidence": 98
+            "set": "2 32 55 56 57 PB1",
+            "confidence": 94
         },
         {
-            "set": "8 22 34 46 69 PB26",
-            "confidence": 100
+            "set": "20 27 32 63 68 PB14",
+            "confidence": 93
         },
         {
-            "set": "13 47 48 52 54 PB16",
-            "confidence": 98
+            "set": "3 9 12 36 37 PB11",
+            "confidence": 99
         },
         {
-            "set": "11 20 47 53 64 PB24",
-            "confidence": 98
+            "set": "6 8 16 42 43 PB5",
+            "confidence": 93
         },
         {
-            "set": "19 34 51 65 67 PB15",
-            "confidence": 91
+            "set": "21 26 29 49 69 PB23",
+            "confidence": 92
         }
     ],
-    "game": "CA Fantasy 5"
+    "game": "FL Fantasy 5"
 }

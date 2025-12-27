@@ -4,5 +4,4 @@ numpy
 altair
 plotly
 datetime
-requests
-json5
+matplotlib

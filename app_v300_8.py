@@ -1138,62 +1138,93 @@ with st.expander("📚 Titan Forecast Archive & Search Console", expanded=False)
             else:
                 st.info("No forecast data available for export.")
 
-# =============================================================
-# 🎯 Titan Result Archive & Hit Tracker Console (v300.9–HitCore Edition)
-# =============================================================
-with st.expander("🎯 Titan Result Archive & Hit Tracker Console", expanded=False):
-    st.markdown("#### 🧩 Official Result + Titan Hit Performance")
+# ================================================================
+# 🎯 Titan Result Input Console — Dynamic Game + Time System (v300.9-R2)
+# ================================================================
 
-    results = load_json(RESULT_FILE, {})
-    accuracy = load_json(os.path.join(DATA_DIR, "titan_accuracy_log.json"), {})
+with st.expander("🎯 Titan Result Input Console", expanded=False):
+    st.markdown("#### 🧾 Input Official Game Result")
 
-    if not results or len(results) == 0:
-        st.info("🌌 No results logged yet — use the Titan Result Input section above.")
+    # 🗺 Game Categories
+    state_games = {
+        "GA Pick 3": ["Midday", "Evening"],
+        "GA Pick 4": ["Midday", "Evening"],
+        "GA Pick 5": ["Midday", "Evening"],
+        "FL Pick 3": ["Midday", "Evening"],
+        "FL Pick 4": ["Midday", "Evening"],
+        "FL Pick 5": ["Midday", "Evening"],
+        "TX Pick 3": ["Morning", "Day", "Evening", "Night"],
+        "TX Pick 4": ["Morning", "Day", "Evening", "Night"],
+        "VA Pick 3": ["Day", "Evening"],
+        "VA Pick 4": ["Day", "Evening"],
+        "VA Pick 5": ["Day", "Evening"],
+        "NC Pick 3": ["Day", "Evening"],
+        "NC Pick 4": ["Day", "Evening"],
+        "NY Pick 3": ["Midday", "Evening"],
+        "NY Pick 4": ["Midday", "Evening"],
+        "CA Daily 3": ["Midday", "Evening"],
+        "CA Daily 4": ["Evening"],
+        "NJ Pick 3": ["Midday", "Evening"],
+        "NJ Pick 4": ["Midday", "Evening"]
+    }
+
+    major_games = {
+        "CA Fantasy 5": [],
+        "CA SuperLotto Plus": [],
+        "Mega Millions": [],
+        "Powerball": []
+    }
+
+    ph_games = {
+        "PH 3D Lotto (Swertres)": ["2PM", "5PM", "9PM"],
+        "PH 4D Lotto": ["Mon", "Wed", "Fri"],
+        "PH STL Game": ["10:30AM", "3PM", "7PM"]
+    }
+
+    # 🌍 Choose region
+    region = st.selectbox("🌎 Select Game Region", ["🇺🇸 US State Games", "💰 US Major Games", "🇵🇭 PH Local Games"])
+
+    # 🎮 Game Dropdown
+    if region == "🇺🇸 US State Games":
+        result_game = st.selectbox("🎯 Select State Game", list(state_games.keys()))
+        times = state_games[result_game]
+    elif region == "💰 US Major Games":
+        result_game = st.selectbox("🎯 Select Major Game", list(major_games.keys()))
+        times = major_games[result_game] if major_games[result_game] else ["Main Draw"]
     else:
-        # ✅ FIX: Support both dict-based and list-based result structures
-        if isinstance(results, list):
-            game_names = [r.get("game", "Unknown") for r in results]
-        else:
-            game_names = list(results.keys())
+        result_game = st.selectbox("🎯 Select PH Game", list(ph_games.keys()))
+        times = ph_games[result_game]
 
-        selected_game = st.selectbox("🧾 Select Game to Review", game_names)
-        selected_date = st.text_input("📅 Filter by Date (optional)", "")
+    # 📅 Result Draw Date (unchanged)
+    result_date = st.date_input("📅 Select Result Draw Date", datetime.date.today())
 
-        # ✅ Collect all entries for the selected game
-        if isinstance(results, list):
-            game_results = [r for r in results if r.get("game") == selected_game]
-        else:
-            game_results = results.get(selected_game, [])
+    # 💡 Official Result Number(s) (unchanged)
+    result_numbers = st.text_input("💡 Official Result Number(s)", "")
 
-        if len(game_results) == 0:
-            st.warning("⚠️ No result data found for this game.")
-        else:
-            # ✅ Filter by date (if provided)
-            filtered = []
-            for entry in game_results:
-                date_match = (
-                    not selected_date
-                    or selected_date.lower() in str(entry.get("draw_date", "")).lower()
-                )
-                if date_match:
-                    filtered.append(entry)
+    # ⏰ Result Time — dynamic dropdown
+    result_time = st.selectbox("⏰ Official Result Time", times)
 
-            if len(filtered) == 0:
-                st.warning("⚠️ No results match your filters.")
-            else:
-                st.success(f"✅ Found {len(filtered)} result record(s).")
+    # ⚡ Save Button
+    if st.button("⚡ Save Official Result"):
+        results_data = load_json(RESULT_FILE, {})
+        if not isinstance(results_data, dict):
+            results_data = {}
 
-                # ✅ Show recent entries (limit 10)
-                for r in filtered[-10:]:
-                    st.markdown(f"**🎯 {r.get('game','')}** — {r.get('draw_date','')}")
-                    st.markdown(f"**Result:** {r.get('result','-')}")
-                    st.markdown(f"**Logged:** {r.get('timestamp','')}")
+        entry = {
+            "date": str(result_date),
+            "result": result_numbers,
+            "time": result_time,
+            "region": region,
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
 
-                    # Check Titan hit accuracy
-                    if r.get("hits", 0) > 0:
-                        st.success(f"💎 HIT detected! ({r.get('hits')}/{r.get('total')} matched)")
-                    else:
-                        st.info("❌ No hit detected for this draw.")
+        results_data.setdefault(result_game, []).append(entry)
+
+        with open(RESULT_FILE, "w") as f:
+            json.dump(results_data, f, indent=2)
+
+        st.success(f"✅ Official result for {result_game} ({result_time}) on {result_date} saved successfully!")
+        st.balloons()
 
 # =============================================================
 # ⚡ Titan Cosmic Energy Gauge + Pulse Indicator (v301.0-PulseCore Edition)

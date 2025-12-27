@@ -1,0 +1,175 @@
+import streamlit as stimport random, json, os, datetime
+
+st.set_page_config(page_title="Celestial Titan God AI — MGX + PH Full", page_icon="💎", layout="centered")
+
+# =========================================================
+# 🔹 JSON Utilities
+# =========================================================
+def load_json(path, default):
+    if not os.path.exists(path):
+        with open(path, "w") as f: json.dump(default, f, indent=2)
+        return default
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except:
+        return default
+
+def save_json(path, data):
+    with open(path, "w") as f:
+        json.dump(data, f, indent=2)
+
+# =========================================================
+# 🔹 File Paths
+# =========================================================
+os.makedirs("data", exist_ok=True)
+FORECAST_FILE = "data/titan_forecasts.json"
+RESULT_FILE = "data/titan_results.json"
+
+# =========================================================
+# 🔹 Daily Games — FULL RESTORED LIST
+# =========================================================
+daily_games = {
+    # ✅ Georgia
+    "GA Pick 3": ["Midday", "Evening"],
+    "
+GA Pick 4": ["Midday", "Evening"],
+    "GA Pick 5": ["Midday", "Evening"],
+    # ✅ Florida
+    "FL Pick 3": ["Midday", "Evening"],
+    "FL Pick 4": ["Midday", "Evening"],
+    "FL Pick 5": ["Midday", "Evening"],
+    # ✅ Texas
+    "TX Pick 3": ["Morning", "Day", "Evening", "Night"],
+    "TX Pick 4": ["Morning", "Day", "Evening", "Night"],
+    # ✅ Virginia
+    "VA Pick 3": ["Day", "Evening"],
+    "VA Pick 4": ["Day", "Evening"],
+    "VA Pick 5": ["Day", "Evening"],
+    # ✅ North Carolina
+    "NC Pick 3": ["Day", "Evening"],
+    "NC Pick 4": ["Day", "Evening"],
+    # ✅ New York
+    "NY Pick 3": ["Midday", "Evening"],
+    "NY Pick 4": ["Midday", "Evening"],
+    # ✅ California
+    "CA Daily 3": ["Midday", "Evening"],
+    "CA Daily 4": ["Evening"],
+    # ✅ New Jersey
+    "NJ Pick 3": ["Midday", "Evening"],
+    "NJ Pick 4": ["Midday", "Evening"]
+}
+
+# =========================================================
+# 🔹 Major Games (Unchanged)
+# =========================================================
+major_games = {
+    "CA Fantasy 5": [],
+    "CA SuperLotto Plus": [],
+    "Powerball": [],
+    "Mega Millions": []
+}
+
+# =========================================================
+# 🔹 PH Games Integration
+# =========================================================
+ph_games = {
+    "PH 3D Lotto (Swertres)": ["2PM", "5PM", "9PM"],
+    "PH 4D Lotto": ["Mon", "Wed", "Fri"],
+    "PH STL Game": ["10:30AM", "3PM", "7PM"]
+}
+
+# =========================================================
+# 🔹 TITAN FORECAST GENERATOR
+# =========================================================
+st.title("🎯 Titan Multi-Set Forecast (MGX + PH Full)")
+st.caption("Full Multi-Set + Confidence + Date + Titan Priority Pick")
+
+cat = st.selectbox("Select Category", ["Daily Games", "Major Games", "PH Games"])
+
+if cat == "Daily Games":
+    game = st.selectbox("Select Game", list(daily_games.keys()))
+    draw = st.selectbox("Select Draw Type", daily_games[game])
+elif cat == "Major Games":
+    game = st.selectbox("Select Game", list(major_games.keys()))
+    draw = "N/A"
+else:
+    game = st.selectbox("Select Game", list(ph_games.keys()))
+    draw = st.selectbox("Select Draw Type", ph_games[game])
+
+forecast_date = st.date_input("🎲 Forecast Date", datetime.date.today())
+num_sets = st.slider("Number of Forecast Sets", 1, 10, 5)
+
+if st.button("⚡ Generate Forecast"):
+    sets = []
+    for _ in range(num_sets):
+        if "Pick 3" in game or "3D" in game:
+            combo = f"{random.randint(0,999):03d}"
+        elif "Pick 4" in game or "4D" in game:
+            combo = f"{random.randint(0,9999):04d}"
+        elif "Pick 5" in game or "Fantasy" in game:
+            combo = " ".join(f"{random.randint(1,39):02d}" for _ in range(5))
+        else:
+            combo = " ".join(f"{random.randint(1,70):02d}" for _ in range(5))
+        conf = random.randint(90,100)
+        sets.append({"nums": combo, "conf": conf, "date": str(forecast_date)})
+
+    st.subheader(f"📘 {game} Titan Picks ({draw}) — {forecast_date}")
+    for i, s in enumerate(sets, 1):
+        st.write(f"Set {i}: {s['nums']} — Confidence {s['conf']}% — Date: {s['date']}")
+    st.success("✅ Auto-saved forecast successfully!")
+
+    data = load_json(FORECAST_FILE, {"forecasts": []})
+    for s in sets:
+        data["forecasts"].append({
+            "game": game,
+            "draw": draw,
+            "nums": s["nums"],
+            "conf": s["conf"],
+            "date": s["date"],
+            "timestamp": str(datetime.datetime.now())
+        })
+    save_json(FORECAST_FILE, data)
+
+# =========================================================
+# 🔹 ENTER OFFICIAL RESULT PANEL
+# =========================================================
+st.header("📩 Enter Official Result")
+res_cat = st.selectbox("Result Category", ["Daily Games", "Major Games", "PH Games"])
+
+if res_cat == "Daily Games":
+    result_game = st.selectbox("Result Game", list(daily_games.keys()))
+    draw_type = st.selectbox("Draw Type", daily_games[result_game])
+elif res_cat == "Major Games":
+    result_game = st.selectbox("Result Game", list(major_games.keys()))
+    draw_type = "N/A"
+else:
+    result_game = st.selectbox("Result Game", list(ph_games.keys()))
+    draw_type = st.selectbox("Draw Type", ph_games[result_game])
+
+result_date = st.date_input("📆 Draw Date", datetime.date.today())
+win = st.text_input("🏆 Winning Number (Straight or Combo)")
+
+if st.button("💾 Save Result"):
+    results = load_json(RESULT_FILE, {"results": []})
+    results["results"].append({
+        "category": res_cat,
+        "game": result_game,
+        "draw": draw_type,
+        "number": win,
+        "date": str(result_date),
+        "timestamp": str(datetime.datetime.now())
+    })
+    save_json(RESULT_FILE, results)
+    st.success(f"✅ Saved Result for {result_game} ({draw_type}) on {result_date}")
+
+# =========================================================
+# 🔹 RECENT FORECASTS
+# =========================================================
+st.header("🧾 Recent Forecasts")
+data = load_json(FORECAST_FILE, {"forecasts": []})
+if data["forecasts"]:
+    for r in reversed(data["forecasts"][-10:]):
+        st.write(f"🧿 {r.get('date','N/A')} • {r.get('game','')} ({r.get('draw','')}) — {r.get('nums','N/A')} — {r.get('conf','N/A')}%")
+else:
+    st.info("No saved forecasts yet.")

@@ -1,3 +1,4 @@
+
 import streamlit as st
 import json, random, os, datetime
 
@@ -70,46 +71,45 @@ except:
     st.info("No forecast saved yet.")
 
 # ---------- RESULT ENTRY PANEL ----------
-st.header("📩 Enter Official Result")
-res_cat = st.selectbox("Result Category", ["Daily Games","Major Games"])
+# 📨 ENTER OFFICIAL RESULT PANEL
+st.subheader("📩 Enter Official Result")
 
-if res_cat=="Daily Games":
+res_cat = st.selectbox("Result Category", ["Daily Games", "Major Games"])
+
+if res_cat == "Daily Games":
     g = st.selectbox("Result Game", list(daily_games.keys()))
     draw_type = st.selectbox("Draw Type", ["Morning","Midday","Evening","Night"])
     win = st.text_input("Winning Number (Straight or Combo)")
-    if st.button("💾 Save Winning Result"):
+    if st.button("💾 Save Daily Result"):
         try:
-            d=json.load(open("data/titan_results.json"))
+            d = json.load(open("data/titan_results.json"))
         except:
-            d={"results":[]}
+            d = {"results": []}
         d["results"].append({
-            "game":g,
-            "draw":draw_type,
-            "number":win,
-            "date":str(datetime.date.today())
+            "game": g,
+            "draw": draw_type,
+            "number": win,
+            "date": str(datetime.date.today())
         })
-        json.dump(d,open("data/titan_results.json","w"),indent=4)
-        st.success(f"✅ Saved result for {g} ({draw_type}) = {win}")
+        json.dump(d, open("data/titan_results.json", "w"), indent=4)
+        st.success(f"✅ Saved Daily Result for {g} ({draw_type}) = {win}")
 
-else:
+elif res_cat == "Major Games":
     g = st.selectbox("🎯 Select Major Game", list(major_games.keys()))
-    nums = st.text_input(
-        "💎 Winning Numbers (space-separated)",
-        placeholder="e.g. 03 09 14 22 39 PB 13"
-    )
+    nums = st.text_input("💎 Winning Numbers (space-separated)", placeholder="e.g. 03 09 14 22 39 PB 13")
     dte = st.date_input("📅 Draw Date", value=datetime.date.today())
-    if st.button("💾 Save Major Game Result"):
+    if st.button("💾 Save Major Result"):
         try:
-            d=json.load(open("data/titan_results.json"))
+            d = json.load(open("data/titan_results.json"))
         except:
-            d={"results":[]}
+            d = {"results": []}
         d["results"].append({
-            "game":g,
-            "number":nums,
-            "date":str(dte)
+            "game": g,
+            "number": nums,
+            "date": str(dte)
         })
-        json.dump(d,open("data/titan_results.json","w"),indent=4)
-        st.success(f"✅ Saved Major Game Result for {g} ({nums})")
+        json.dump(d, open("data/titan_results.json", "w"), indent=4)
+        st.success(f"✅ Saved Major Result for {g} ({nums})")
 
 # ---------- FOOTER ----------
 st.markdown("<hr>", unsafe_allow_html=True)
@@ -117,3 +117,4 @@ st.markdown(
     "<p style='text-align:center;'><small>💎 Celestial Titan God AI v10 000.7-FXR | Powered by Kaibigan ⚡ Cosmic Harmony</small></p>",
     unsafe_allow_html=True
 )
+

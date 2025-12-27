@@ -383,64 +383,42 @@ if forecast_data:
 else:
     st.info("No forecast history yet.")
 
-# ===============================================================
-# 🎯 Titan Official Result Input Console (Cloud-Safe Fix)
-# ===============================================================
+# ================================================================
+# 🎯 Titan Result Input Console — Stable Sync Fix (v300.8-FXR2)
+# ================================================================
 
-import datetime
-
-with st.expander("🎯 Titan Official Result Input Console", expanded=True):
-    st.markdown("### 💫 Input Official Draw Results")
+with st.expander("🎯 Titan Result Input Console", expanded=False):
+    st.markdown("#### 🧾 Input Official Game Result")
 
     result_game = st.text_input("🎯 Game Name (must match exactly forecast game)", "")
     result_date = st.date_input("📅 Select Result Draw Date", datetime.date.today())
-    result_number = st.text_input("💡 Official Result Number(s)", "")
-    result_time = st.text_input("🕒 Official Result Time (optional)", "")
+    result_numbers = st.text_input("💡 Official Result Number(s)", "")
+    result_time = st.text_input("⏰ Official Result Time (optional)", "")
 
-    # ✅ FIXED — Streamlit Cloud Safe Version
     if st.button("⚡ Save Official Result"):
-        if result_game and result_number:
-            # Load or create the JSON data safely
-            try:
-                results_data = load_json(RESULT_FILE, {})
-                if not isinstance(results_data, dict):
-                    results_data = {}
-            except Exception:
-                results_data = {}
+        # ✅ Load JSON as dict to avoid .setdefault error
+        results_data = load_json(RESULT_FILE, {})
 
-            # Format date & time
-            date_str = result_date.strftime("%B %d, %Y")
-            time_str = result_time if result_time else datetime.datetime.now().strftime("%I:%M %p")
+        # Ensure results_data is always a dict
+        if not isinstance(results_data, dict):
+            results_data = {}
 
-            # Create result entry
-            entry = {
-                "game": result_game,
-                "draw_date": date_str,
-                "draw_time": time_str,
-                "result_number": result_number,
-                "timestamp": datetime.datetime.now().strftime("%B %d, %Y %I:%M %p")
-            }
+        entry = {
+            "date": str(result_date),
+            "result": result_numbers,
+            "time": result_time,
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
 
-            # Add entry safely to data
-            results_data.setdefault(result_game, []).append(entry)
+        # ✅ Append properly per game
+        results_data.setdefault(result_game, []).append(entry)
 
-            # Save updated results
-            save_json(RESULT_FILE, results_data)
+        # ✅ Save updated results
+        with open(RESULT_FILE, "w") as f:
+            json.dump(results_data, f, indent=2)
 
-            st.success(f"✅ Official result saved for {result_game} ({date_str})!")
-
-            # Optional: Titan “ping” sound confirmation
-            st.markdown(
-                """
-                <audio autoplay>
-                    <source src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" type="audio/ogg">
-                </audio>
-                """,
-                unsafe_allow_html=True
-            )
-
-        else:
-            st.warning("⚠️ Please enter both the game name and result number before saving.")
+        st.success(f"✅ Official result for **{result_game}** on {result_date} saved successfully!")
+        st.balloons()
 
 # ================================================================
 # 🧠 Titan Auto-Accuracy Analyzer — Instant Match + Accuracy %

@@ -384,7 +384,7 @@ else:
     st.info("No forecast history yet.")
 
 # ================================================================
-# ⚡ Titan Official Result Console — Smart Dynamic Region + Game Selector
+# ⚡ Titan Official Result Console — Smart Dynamic Region + Game Selector (FIXED)
 # ================================================================
 st.markdown("### ⚡ Titan Result Input Console")
 
@@ -429,7 +429,11 @@ ph_games = {
 # -----------------------------
 # 🧭 Step 1: Select Region
 # -----------------------------
-category = st.radio("🌍 Select Game Category", ["US Daily Games", "Major Games", "Philippine Games"])
+category = st.radio(
+    "🌍 Select Game Category",
+    ["US Daily Games", "Major Games", "Philippine Games"],
+    key="region_select"
+)
 
 # -----------------------------
 # 🧩 Step 2: Select Specific Game
@@ -441,7 +445,7 @@ elif category == "Major Games":
 else:
     game_list = list(ph_games.keys())
 
-selected_game = st.selectbox("🎯 Select Game", game_list)
+selected_game = st.selectbox("🎯 Select Game", game_list, key="game_select")
 
 # -----------------------------
 # 🕐 Step 3: Select Draw Time (auto from chosen game)
@@ -453,18 +457,18 @@ elif category == "Major Games":
 else:
     time_options = ph_games[selected_game]
 
-selected_time = st.selectbox("🕐 Select Draw Time", time_options)
+selected_time = st.selectbox("🕐 Select Draw Time", time_options, key="time_select")
 
 # -----------------------------
 # 🧮 Step 4: Enter Result Number
 # -----------------------------
-result_date = st.date_input("📅 Select Draw Date", datetime.date.today())
-result_numbers = st.text_input("💡 Enter Official Result Number(s)", placeholder="e.g. 557")
+result_date = st.date_input("📅 Select Draw Date", datetime.date.today(), key="result_date_input")
+result_numbers = st.text_input("💡 Enter Official Result Number(s)", placeholder="e.g. 557", key="numbers_input")
 
 # -----------------------------
 # 💾 Step 5: Save Function
 # -----------------------------
-if st.button("💾 Save Official Result"):
+if st.button("💾 Save Official Result", key="save_result_button"):
     if selected_game and result_numbers:
         try:
             entry = {

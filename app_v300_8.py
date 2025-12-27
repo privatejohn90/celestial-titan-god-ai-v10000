@@ -384,41 +384,112 @@ else:
     st.info("No forecast history yet.")
 
 # ================================================================
-# 🎯 Titan Result Input Console — Stable Sync Fix (v300.8-FXR2)
+# ⚡ Titan Official Result Console — Smart Dynamic Region + Game Selector
 # ================================================================
+st.markdown("### ⚡ Titan Result Input Console")
 
-with st.expander("🎯 Titan Result Input Console", expanded=False):
-    st.markdown("#### 🧾 Input Official Game Result")
+# -----------------------------
+# 🎯 Define Game Dictionaries
+# -----------------------------
+daily_games = {
+    "GA Pick 3": ["Midday", "Evening"],
+    "GA Pick 4": ["Midday", "Evening"],
+    "GA Pick 5": ["Midday", "Evening"],
+    "FL Pick 3": ["Midday", "Evening"],
+    "FL Pick 4": ["Midday", "Evening"],
+    "FL Pick 5": ["Midday", "Evening"],
+    "TX Pick 3": ["Morning", "Day", "Evening", "Night"],
+    "TX Pick 4": ["Morning", "Day", "Evening", "Night"],
+    "VA Pick 3": ["Day", "Evening"],
+    "VA Pick 4": ["Day", "Evening"],
+    "VA Pick 5": ["Day", "Evening"],
+    "NC Pick 3": ["Day", "Evening"],
+    "NC Pick 4": ["Day", "Evening"],
+    "NY Pick 3": ["Midday", "Evening"],
+    "NY Pick 4": ["Midday", "Evening"],
+    "CA Daily 3": ["Midday", "Evening"],
+    "CA Daily 4": ["Evening"],
+    "NJ Pick 3": ["Midday", "Evening"],
+    "NJ Pick 4": ["Midday", "Evening"]
+}
 
-    result_game = st.text_input("🎯 Game Name (must match exactly forecast game)", "")
-    result_date = st.date_input("📅 Select Result Draw Date", datetime.date.today())
-    result_numbers = st.text_input("💡 Official Result Number(s)", "")
-    result_time = st.text_input("⏰ Official Result Time (optional)", "")
+major_games = {
+    "CA Fantasy 5": [],
+    "CA SuperLotto Plus": [],
+    "Mega Millions": [],
+    "Powerball": []
+}
 
-    if st.button("⚡ Save Official Result"):
-        # ✅ Load JSON as dict to avoid .setdefault error
-        results_data = load_json(RESULT_FILE, {})
+ph_games = {
+    "PH 3D Lotto (Swertres)": ["2PM", "5PM", "9PM"],
+    "PH 4D Lotto": ["Mon", "Wed", "Fri"],
+    "PH STL Game": ["10:30AM", "3PM", "7PM"]
+}
 
-        # Ensure results_data is always a dict
-        if not isinstance(results_data, dict):
-            results_data = {}
+# -----------------------------
+# 🧭 Step 1: Select Region
+# -----------------------------
+category = st.radio("🌍 Select Game Category", ["US Daily Games", "Major Games", "Philippine Games"])
 
-        entry = {
-            "date": str(result_date),
-            "result": result_numbers,
-            "time": result_time,
-            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
+# -----------------------------
+# 🧩 Step 2: Select Specific Game
+# -----------------------------
+if category == "US Daily Games":
+    game_list = list(daily_games.keys())
+elif category == "Major Games":
+    game_list = list(major_games.keys())
+else:
+    game_list = list(ph_games.keys())
 
-        # ✅ Append properly per game
-        results_data.setdefault(result_game, []).append(entry)
+selected_game = st.selectbox("🎯 Select Game", game_list)
 
-        # ✅ Save updated results
-        with open(RESULT_FILE, "w") as f:
-            json.dump(results_data, f, indent=2)
+# -----------------------------
+# 🕐 Step 3: Select Draw Time (auto from chosen game)
+# -----------------------------
+if category == "US Daily Games":
+    time_options = daily_games[selected_game]
+elif category == "Major Games":
+    time_options = ["Main Draw"]
+else:
+    time_options = ph_games[selected_game]
 
-        st.success(f"✅ Official result for **{result_game}** on {result_date} saved successfully!")
-        st.balloons()
+selected_time = st.selectbox("🕐 Select Draw Time", time_options)
+
+# -----------------------------
+# 🧮 Step 4: Enter Result Number
+# -----------------------------
+result_date = st.date_input("📅 Select Draw Date", datetime.date.today())
+result_numbers = st.text_input("💡 Enter Official Result Number(s)", placeholder="e.g. 557")
+
+# -----------------------------
+# 💾 Step 5: Save Function
+# -----------------------------
+if st.button("💾 Save Official Result"):
+    if selected_game and result_numbers:
+        try:
+            entry = {
+                "category": category,
+                "game": selected_game,
+                "date": str(result_date),
+                "numbers": result_numbers,
+                "time": selected_time,
+            }
+
+            results_data = load_json(RESULT_FILE, {})
+            results_data.setdefault(selected_game, []).append(entry)
+
+            with open(RESULT_FILE, "w") as f:
+                json.dump(results_data, f, indent=2)
+
+            st.success(f"✅ Saved official result for **{selected_game} ({selected_time})** on {result_date}!")
+            st.markdown("🌌 *Titan has recorded this result into the cosmic archive...*")
+
+            st.rerun()
+
+        except Exception as e:
+            st.error(f"⚠️ Error saving result: {e}")
+    else:
+        st.warning("Please select a game and enter result numbers before saving.")
 
 # ================================================================
 # 🧠 Titan Auto-Accuracy Analyzer — Instant Match + Accuracy %

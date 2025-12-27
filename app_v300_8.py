@@ -383,66 +383,61 @@ if forecast_data:
 else:
     st.info("No forecast history yet.")
 
-# =============================================================
-# 🏆 Titan Result Input + Official Result Logger (v300.9-SafeFix)
-# =============================================================
-st.markdown("---")
+# ================================================================
+# 🏆 Titan Result Input + Official Result Logger
+# ================================================================
+st.markdown("___")
 st.subheader("🏆 Enter Official Draw Result + Date")
 
-# 🎮 Game Name
 result_game = st.text_input(
-    "🎮 Game Name (must match exactly forecast game)",
-    placeholder="e.g., Mega Millions",
+    "🎯 Game Name (must match exactly forecast game)",
+    placeholder="e.g., GA Pick 3",
     key="result_game_input"
 )
 
-# 🗓️ Draw Date Picker
 result_date = st.date_input(
     "📅 Select Result Draw Date",
     datetime.date.today(),
     key="result_date_input"
 )
 
-# 🏆 Winning Numbers
 result_number = st.text_input(
-    "🎯 Official Result Number(s)",
-    placeholder="e.g., 11 41 45 60 68 25",
+    "💡 Official Result Number(s)",
+    placeholder="e.g., 123 or 11 41 45 60 68 25",
     key="result_number_input"
 )
 
-# 🕒 Optional Time Input
 result_time = st.text_input(
     "⏰ Official Result Time (optional)",
     placeholder="e.g., 08:59 PM",
     key="result_time_input"
 )
 
-# ⚡ Save Official Result
+# ✅ Fixed version: use {} instead of []
 if st.button("⚡ Save Official Result"):
     if result_game and result_number:
+        results_data = load_json(RESULT_FILE, {})  # ✅ FIXED HERE
+
         # Format date & time
         date_str = result_date.strftime("%B %d, %Y")
         time_str = result_time if result_time else datetime.datetime.now().strftime("%I:%M %p")
 
-        # Load or create results file
-        results_data = load_json(RESULT_FILE, {})
-
-        # Build result entry
+        # Create entry
         entry = {
             "game": result_game,
             "draw_date": date_str,
+            "draw_time": time_str,
             "result_number": result_number,
-            "result_time": time_str,
             "timestamp": datetime.datetime.now().strftime("%B %d, %Y %I:%M %p")
         }
 
-        # Add entry under correct game
+        # Save into results_data dictionary
         results_data.setdefault(result_game, []).append(entry)
         save_json(RESULT_FILE, results_data)
 
-        st.success(f"✅ Result Saved for {result_game} — {date_str} at {time_str}")
+        st.success(f"✅ Official result saved for {result_game} ({date_str})!")
     else:
-        st.warning("⚠️ Please provide both game name and result number.")
+        st.warning("⚠️ Please enter both the game name and result number before saving.")
 
 # ================================================================
 # 🧠 Titan Auto-Accuracy Analyzer — Instant Match + Accuracy %

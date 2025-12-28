@@ -3,5 +3,7 @@ pandas
 numpy
 altair
 plotly
-datetime
 matplotlib
+datetime
+gtts
+requests

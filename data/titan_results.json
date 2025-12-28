@@ -1,32 +1,48 @@
-[
-  {
-    "set_number": 1,
-    "numbers": "52 27 57 44 68",
-    "confidence": 96.5,
-    "date": "2025-12-26"
-  },
-  {
-    "set_number": 2,
-    "numbers": "49 35 19 25 54",
-    "confidence": 94.1,
-    "date": "2025-12-26"
-  },
-  {
-    "set_number": 3,
-    "numbers": "39 55 31 26 08",
-    "confidence": 94.3,
-    "date": "2025-12-26"
-  },
-  {
-    "set_number": 4,
-    "numbers": "04 07 08 16 17",
-    "confidence": 92.6,
-    "date": "2025-12-26"
-  },
-  {
-    "set_number": 5,
-    "numbers": "12 64 35 50 42",
-    "confidence": 95.5,
-    "date": "2025-12-26"
-  }
-]
+{
+  "FL Pick 3": [
+    {
+      "region": "US Daily Games",
+      "game": "FL Pick 3",
+      "time": "Midday",
+      "date": "2025-12-26",
+      "numbers": "945",
+      "timestamp": "2025-12-27 17:07:50"
+    },
+    {
+      "region": "US Daily Games",
+      "game": "FL Pick 3",
+      "time": "Midday",
+      "date": "2025-12-26",
+      "numbers": "945",
+      "timestamp": "2025-12-27 17:07:50"
+    }
+  ],
+  "FL Pick 4": [
+    {
+      "region": "US Daily Games",
+      "game": "FL Pick 4",
+      "time": "Midday",
+      "date": "2025-12-26",
+      "numbers": "0001",
+      "timestamp": "2025-12-27 17:08:25"
+    },
+    {
+      "region": "US Daily Games",
+      "game": "FL Pick 4",
+      "time": "Midday",
+      "date": "2025-12-26",
+      "numbers": "0137",
+      "timestamp": "2025-12-27 17:31:23"
+    }
+  ],
+  "GA Pick 3": [
+    {
+      "region": "US Daily Games",
+      "game": "GA Pick 3",
+      "time": "Midday",
+      "date": "2025-12-26",
+      "numbers": "557",
+      "timestamp": "2025-12-27 17:28:21"
+    }
+  ]
+}

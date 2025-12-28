@@ -251,6 +251,85 @@
           "generated_at": "December 26, 2025 09:13 PM"
         }
       ]
+    },
+    {
+      "date": "December 27, 2025",
+      "draw": "Main Draw",
+      "generated_time": "05:28 PM",
+      "priority": {
+        "numbers": [
+          2,
+          5,
+          7,
+          10,
+          14
+        ],
+        "display": "2 5 7 10 14",
+        "confidence": 93.62,
+        "generated_at": "December 27, 2025 05:28 PM"
+      },
+      "forecasts": [
+        {
+          "numbers": [
+            3,
+            9,
+            12,
+            34,
+            37
+          ],
+          "display": "3 9 12 34 37",
+          "confidence": 90.58,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            6,
+            7,
+            24,
+            27,
+            39
+          ],
+          "display": "6 7 24 27 39",
+          "confidence": 91.67,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            4,
+            19,
+            22,
+            27,
+            28
+          ],
+          "display": "4 19 22 27 28",
+          "confidence": 90.91,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            1,
+            5,
+            13,
+            23,
+            37
+          ],
+          "display": "1 5 13 23 37",
+          "confidence": 91.5,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            2,
+            5,
+            7,
+            10,
+            14
+          ],
+          "display": "2 5 7 10 14",
+          "confidence": 93.62,
+          "generated_at": "December 27, 2025 05:28 PM"
+        }
+      ]
     }
   ],
   "CA SuperLotto Plus": [
@@ -543,6 +622,91 @@
           "display": "11 18 24 38 43 \ud83d\udfe1 MEGA 6",
           "confidence": 96.52,
           "generated_at": "December 26, 2025 09:19 PM"
+        }
+      ]
+    },
+    {
+      "date": "December 27, 2025",
+      "draw": "Main Draw",
+      "generated_time": "05:28 PM",
+      "priority": {
+        "numbers": [
+          5,
+          9,
+          24,
+          36,
+          43,
+          4
+        ],
+        "display": "5 9 24 36 43 \ud83d\udfe1 MEGA 4",
+        "confidence": 98.45,
+        "generated_at": "December 27, 2025 05:28 PM"
+      },
+      "forecasts": [
+        {
+          "numbers": [
+            15,
+            24,
+            32,
+            36,
+            38,
+            1
+          ],
+          "display": "15 24 32 36 38 \ud83d\udfe1 MEGA 1",
+          "confidence": 95.93,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            1,
+            23,
+            28,
+            43,
+            47,
+            19
+          ],
+          "display": "1 23 28 43 47 \ud83d\udfe1 MEGA 19",
+          "confidence": 93.44,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            3,
+            8,
+            25,
+            38,
+            47,
+            13
+          ],
+          "display": "3 8 25 38 47 \ud83d\udfe1 MEGA 13",
+          "confidence": 95.54,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            5,
+            9,
+            24,
+            36,
+            43,
+            4
+          ],
+          "display": "5 9 24 36 43 \ud83d\udfe1 MEGA 4",
+          "confidence": 98.45,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            8,
+            19,
+            20,
+            22,
+            24,
+            27
+          ],
+          "display": "8 19 20 22 24 \ud83d\udfe1 MEGA 27",
+          "confidence": 95.17,
+          "generated_at": "December 27, 2025 05:28 PM"
         }
       ]
     }
@@ -918,6 +1082,91 @@
           "generated_at": "December 26, 2025 09:19 PM"
         }
       ]
+    },
+    {
+      "date": "December 27, 2025",
+      "draw": "Main Draw",
+      "generated_time": "05:28 PM",
+      "priority": {
+        "numbers": [
+          3,
+          33,
+          47,
+          59,
+          65,
+          6
+        ],
+        "display": "3 33 47 59 65 \ud83d\udfe3 Mega Ball 6",
+        "confidence": 99.69,
+        "generated_at": "December 27, 2025 05:28 PM"
+      },
+      "forecasts": [
+        {
+          "numbers": [
+            10,
+            21,
+            29,
+            34,
+            44,
+            6
+          ],
+          "display": "10 21 29 34 44 \ud83d\udfe3 Mega Ball 6",
+          "confidence": 91.96,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            17,
+            18,
+            51,
+            66,
+            70,
+            4
+          ],
+          "display": "17 18 51 66 70 \ud83d\udfe3 Mega Ball 4",
+          "confidence": 90.07,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            3,
+            33,
+            47,
+            59,
+            65,
+            6
+          ],
+          "display": "3 33 47 59 65 \ud83d\udfe3 Mega Ball 6",
+          "confidence": 99.69,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            7,
+            9,
+            22,
+            35,
+            48,
+            6
+          ],
+          "display": "7 9 22 35 48 \ud83d\udfe3 Mega Ball 6",
+          "confidence": 91.12,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            30,
+            33,
+            40,
+            47,
+            62,
+            7
+          ],
+          "display": "30 33 40 47 62 \ud83d\udfe3 Mega Ball 7",
+          "confidence": 98.6,
+          "generated_at": "December 27, 2025 05:28 PM"
+        }
+      ]
     }
   ],
   "Powerball": [
@@ -1210,6 +1459,91 @@
           "display": "4 41 45 51 57 \ud83d\udd34 Power Ball 15",
           "confidence": 91.36,
           "generated_at": "December 26, 2025 09:19 PM"
+        }
+      ]
+    },
+    {
+      "date": "December 27, 2025",
+      "draw": "Main Draw",
+      "generated_time": "05:28 PM",
+      "priority": {
+        "numbers": [
+          20,
+          35,
+          42,
+          47,
+          61,
+          18
+        ],
+        "display": "20 35 42 47 61 \ud83d\udd34 Power Ball 18",
+        "confidence": 98.82,
+        "generated_at": "December 27, 2025 05:28 PM"
+      },
+      "forecasts": [
+        {
+          "numbers": [
+            13,
+            35,
+            39,
+            41,
+            63,
+            16
+          ],
+          "display": "13 35 39 41 63 \ud83d\udd34 Power Ball 16",
+          "confidence": 97.99,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            20,
+            35,
+            42,
+            47,
+            61,
+            18
+          ],
+          "display": "20 35 42 47 61 \ud83d\udd34 Power Ball 18",
+          "confidence": 98.82,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            15,
+            17,
+            31,
+            42,
+            44,
+            4
+          ],
+          "display": "15 17 31 42 44 \ud83d\udd34 Power Ball 4",
+          "confidence": 97.48,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            44,
+            45,
+            48,
+            53,
+            58,
+            19
+          ],
+          "display": "44 45 48 53 58 \ud83d\udd34 Power Ball 19",
+          "confidence": 91.51,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            26,
+            31,
+            40,
+            60,
+            61,
+            24
+          ],
+          "display": "26 31 40 60 61 \ud83d\udd34 Power Ball 24",
+          "confidence": 97.69,
+          "generated_at": "December 27, 2025 05:28 PM"
         }
       ]
     }
@@ -2060,6 +2394,85 @@
           "generated_at": "December 26, 2025 09:19 PM"
         }
       ]
+    },
+    {
+      "date": "December 27, 2025",
+      "draw": "Evening",
+      "generated_time": "05:25 PM",
+      "priority": {
+        "numbers": [
+          5,
+          5,
+          8,
+          6,
+          8
+        ],
+        "display": "5 5 8 6 8",
+        "confidence": 99.79,
+        "generated_at": "December 27, 2025 05:25 PM"
+      },
+      "forecasts": [
+        {
+          "numbers": [
+            5,
+            5,
+            8,
+            6,
+            8
+          ],
+          "display": "5 5 8 6 8",
+          "confidence": 99.79,
+          "generated_at": "December 27, 2025 05:25 PM"
+        },
+        {
+          "numbers": [
+            1,
+            1,
+            7,
+            5,
+            1
+          ],
+          "display": "1 1 7 5 1",
+          "confidence": 98.35,
+          "generated_at": "December 27, 2025 05:25 PM"
+        },
+        {
+          "numbers": [
+            0,
+            0,
+            7,
+            7,
+            4
+          ],
+          "display": "0 0 7 7 4",
+          "confidence": 96.18,
+          "generated_at": "December 27, 2025 05:25 PM"
+        },
+        {
+          "numbers": [
+            7,
+            0,
+            1,
+            8,
+            0
+          ],
+          "display": "7 0 1 8 0",
+          "confidence": 91.32,
+          "generated_at": "December 27, 2025 05:25 PM"
+        },
+        {
+          "numbers": [
+            1,
+            6,
+            2,
+            0,
+            2
+          ],
+          "display": "1 6 2 0 2",
+          "confidence": 93.94,
+          "generated_at": "December 27, 2025 05:25 PM"
+        }
+      ]
     }
   ],
   "GA Pick 3": [
@@ -2429,6 +2842,73 @@
           "display": "7 5 8",
           "confidence": 90.55,
           "generated_at": "December 26, 2025 09:19 PM"
+        }
+      ]
+    },
+    {
+      "date": "December 27, 2025",
+      "draw": "Evening",
+      "generated_time": "05:28 PM",
+      "priority": {
+        "numbers": [
+          3,
+          2,
+          3
+        ],
+        "display": "3 2 3",
+        "confidence": 99.92,
+        "generated_at": "December 27, 2025 05:28 PM"
+      },
+      "forecasts": [
+        {
+          "numbers": [
+            5,
+            1,
+            2
+          ],
+          "display": "5 1 2",
+          "confidence": 97.98,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            3,
+            2,
+            3
+          ],
+          "display": "3 2 3",
+          "confidence": 99.92,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            8,
+            3,
+            1
+          ],
+          "display": "8 3 1",
+          "confidence": 99.55,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            6,
+            5,
+            8
+          ],
+          "display": "6 5 8",
+          "confidence": 97.46,
+          "generated_at": "December 27, 2025 05:28 PM"
+        },
+        {
+          "numbers": [
+            7,
+            5,
+            1
+          ],
+          "display": "7 5 1",
+          "confidence": 97.7,
+          "generated_at": "December 27, 2025 05:28 PM"
         }
       ]
     }
@@ -3369,6 +3849,79 @@
           "display": "1 2 8 8",
           "confidence": 95.61,
           "generated_at": "December 26, 2025 09:19 PM"
+        }
+      ]
+    },
+    {
+      "date": "December 27, 2025",
+      "draw": "Evening",
+      "generated_time": "05:25 PM",
+      "priority": {
+        "numbers": [
+          8,
+          9,
+          3,
+          9
+        ],
+        "display": "8 9 3 9",
+        "confidence": 96.61,
+        "generated_at": "December 27, 2025 05:25 PM"
+      },
+      "forecasts": [
+        {
+          "numbers": [
+            2,
+            8,
+            8,
+            6
+          ],
+          "display": "2 8 8 6",
+          "confidence": 90.58,
+          "generated_at": "December 27, 2025 05:25 PM"
+        },
+        {
+          "numbers": [
+            2,
+            0,
+            9,
+            4
+          ],
+          "display": "2 0 9 4",
+          "confidence": 95.54,
+          "generated_at": "December 27, 2025 05:25 PM"
+        },
+        {
+          "numbers": [
+            8,
+            0,
+            0,
+            3
+          ],
+          "display": "8 0 0 3",
+          "confidence": 94.97,
+          "generated_at": "December 27, 2025 05:25 PM"
+        },
+        {
+          "numbers": [
+            8,
+            9,
+            3,
+            9
+          ],
+          "display": "8 9 3 9",
+          "confidence": 96.61,
+          "generated_at": "December 27, 2025 05:25 PM"
+        },
+        {
+          "numbers": [
+            6,
+            1,
+            9,
+            3
+          ],
+          "display": "6 1 9 3",
+          "confidence": 93.51,
+          "generated_at": "December 27, 2025 05:25 PM"
         }
       ]
     }
@@ -4998,6 +5551,73 @@
           "display": "0 0 6",
           "confidence": 99.0,
           "generated_at": "December 26, 2025 09:21 PM"
+        }
+      ]
+    },
+    {
+      "date": "December 27, 2025",
+      "draw": "10:30AM",
+      "generated_time": "05:29 PM",
+      "priority": {
+        "numbers": [
+          8,
+          6,
+          5
+        ],
+        "display": "8 6 5",
+        "confidence": 98.52,
+        "generated_at": "December 27, 2025 05:29 PM"
+      },
+      "forecasts": [
+        {
+          "numbers": [
+            9,
+            4,
+            1
+          ],
+          "display": "9 4 1",
+          "confidence": 93.93,
+          "generated_at": "December 27, 2025 05:29 PM"
+        },
+        {
+          "numbers": [
+            8,
+            6,
+            5
+          ],
+          "display": "8 6 5",
+          "confidence": 98.52,
+          "generated_at": "December 27, 2025 05:29 PM"
+        },
+        {
+          "numbers": [
+            0,
+            3,
+            5
+          ],
+          "display": "0 3 5",
+          "confidence": 93.3,
+          "generated_at": "December 27, 2025 05:29 PM"
+        },
+        {
+          "numbers": [
+            1,
+            3,
+            3
+          ],
+          "display": "1 3 3",
+          "confidence": 96.23,
+          "generated_at": "December 27, 2025 05:29 PM"
+        },
+        {
+          "numbers": [
+            0,
+            7,
+            7
+          ],
+          "display": "0 7 7",
+          "confidence": 97.75,
+          "generated_at": "December 27, 2025 05:29 PM"
         }
       ]
     }

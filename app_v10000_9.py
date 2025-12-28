@@ -358,29 +358,45 @@ if st.button("💾 Save Official Result", key="titan_save_btn"):
 # ================================================================
 # 📜 Titan Result Viewer — Filter by Date or Game
 # ================================================================
-if st.checkbox("📂 Show Saved Official Results"):
-    data = load_json(RESULT_FILE, {})
-    if not data:
-        st.info("No results saved yet.")
-    else:
-        # Optional filter by game or date
-        selected_game = st.selectbox("🎯 Filter by Game", ["All"] + list(data.keys()))
-        today_only = st.checkbox("📅 Show Only Today's Results")
+st.markdown("## 📜 Titan Result Viewer — Filter by Date or Game")
 
-        for game, entries in data.items():
-            if selected_game != "All" and game != selected_game:
+results_data = load_json(RESULT_FILE, {})
+
+if results_data:
+    show_all = st.checkbox("✅ Show Saved Official Results", True)
+    selected_game = st.selectbox("🎯 Filter by Game", ["All"] + list(results_data.keys()))
+    today_only = st.checkbox("📅 Show Only Today's Results")
+
+    today = datetime.date.today().strftime("%Y-%m-%d")
+    total_results = 0
+
+    for game, entries in results_data.items():
+        if selected_game != "All" and game != selected_game:
+            continue
+
+        st.subheader(f"🎯 {game}")
+        filtered_entries = []
+
+        for e in entries:
+            e_date = str(e.get("date", ""))
+            if today_only and today not in e_date:
                 continue
+            filtered_entries.append(e)
 
-            filtered_entries = entries
-            if today_only:
-                today = datetime.date.today().strftime("%B %d, %Y")
-                filtered_entries = [e for e in entries if e["date"] == today]
-
-            if filtered_entries:
-                st.markdown(f"### 🎯 {game}")
-                for e in filtered_entries[-10:]:
-                    st.write(f"📅 {e['date']} | 🕒 {e['draw']} | 🔢 Result: `{e['result']}`")
-                st.markdown("---")
+        if filtered_entries:
+            for e in filtered_entries[-10:]:
+                # ✅ FIXED: Safe access keys to prevent KeyError
+                st.write(
+                    f"📅 {e.get('date', 'N/A')} | 🕒 {e.get('time', 'N/A')} | 🔢 Result: `{e.get('numbers', 'N/A')}`"
+                )
+                st.caption(f"🧠 Saved on: {e.get('timestamp', 'Unknown')}")
+                total_results += 1
+            st.markdown("---")
+        else:
+            st.warning("⚠️ No results found for this filter.")
+    st.info(f"📊 Total Results Displayed: {total_results}")
+else:
+    st.warning("❌ No saved results yet. Please enter results first.")
 
 # ================================================================
 # 📊 Titan Accuracy Board — Performance Logs

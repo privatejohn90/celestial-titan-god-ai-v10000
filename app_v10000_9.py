@@ -356,6 +356,33 @@ if st.button("💾 Save Official Result", key="titan_save_btn"):
         st.warning("⚠️ Please select a game and enter numbers before saving.")
 
 # ================================================================
+# 📜 Titan Result Viewer — Filter by Date or Game
+# ================================================================
+if st.checkbox("📂 Show Saved Official Results"):
+    data = load_json(RESULT_FILE, {})
+    if not data:
+        st.info("No results saved yet.")
+    else:
+        # Optional filter by game or date
+        selected_game = st.selectbox("🎯 Filter by Game", ["All"] + list(data.keys()))
+        today_only = st.checkbox("📅 Show Only Today's Results")
+
+        for game, entries in data.items():
+            if selected_game != "All" and game != selected_game:
+                continue
+
+            filtered_entries = entries
+            if today_only:
+                today = datetime.date.today().strftime("%B %d, %Y")
+                filtered_entries = [e for e in entries if e["date"] == today]
+
+            if filtered_entries:
+                st.markdown(f"### 🎯 {game}")
+                for e in filtered_entries[-10:]:
+                    st.write(f"📅 {e['date']} | 🕒 {e['draw']} | 🔢 Result: `{e['result']}`")
+                st.markdown("---")
+
+# ================================================================
 # 📊 Titan Accuracy Board — Performance Logs
 # ================================================================
 st.markdown("---")
@@ -401,6 +428,33 @@ if accuracy_logs:
         st.write(f"**{log['game']}** — {log['draw']} {log['date']} → Result `{log['result']}` → {icon}")
 else:
     st.info("No accuracy logs yet. Generate forecasts and enter results first.")
+
+# ================================================================
+# ⚡ Titan Forecast vs Result Sync Analyzer — Hit Detection
+# ================================================================
+st.markdown("## ⚡ Titan Forecast vs Result Sync Analyzer")
+
+forecasts = load_json(FORECAST_FILE, {})
+results = load_json(RESULT_FILE, {})
+
+if forecasts and results:
+    total_hits = 0
+    for game, entries in forecasts.items():
+        if game in results:
+            st.markdown(f"### 🎯 {game}")
+            for f_entry in entries[-5:]:  # last 5 forecasts
+                for r_entry in results[game]:
+                    if f_entry["date"] == r_entry["date"]:
+                        forecast_nums = [f["display"] for f in f_entry["forecasts"]]
+                        if any(num.replace(" ", "") in r_entry["numbers"].replace(" ", "") for num in forecast_nums):
+                            total_hits += 1
+                            st.success(f"💥 **HIT DETECTED!** `{r_entry['numbers']}` matched {f_entry['date']} forecast!")
+                        else:
+                            st.info(f"❌ {r_entry['numbers']} — no match on {f_entry['date']}")
+    if total_hits == 0:
+        st.warning("⚠️ No hits detected yet. Continue updating results.")
+else:
+    st.info("🔍 Awaiting forecasts and results to perform sync analysis.")
 
 # ================================================================
 # 📈 Titan Accuracy Trend Graph — Cosmic Analytics Core

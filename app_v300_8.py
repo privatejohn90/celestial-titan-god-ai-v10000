@@ -384,7 +384,7 @@ else:
     st.info("No forecast history yet.")
 
 # ================================================================
-# ⚡ Titan Official Result Console — Smart Dynamic Region + Game Selector (FIXED)
+# ⚡ Titan Official Result Console — Smart Dynamic Region + Auto Repair JSON (FINAL FIX)
 # ================================================================
 st.markdown("### ⚡ Titan Result Input Console")
 
@@ -427,7 +427,7 @@ ph_games = {
 }
 
 # -----------------------------
-# 🧭 Step 1: Select Region
+# 🧭 Step 1: Select Game Category
 # -----------------------------
 category = st.radio(
     "🌍 Select Game Category",
@@ -448,7 +448,7 @@ else:
 selected_game = st.selectbox("🎯 Select Game", game_list, key="game_select")
 
 # -----------------------------
-# 🕐 Step 3: Select Draw Time (auto from chosen game)
+# 🕐 Step 3: Select Draw Time (auto)
 # -----------------------------
 if category == "US Daily Games":
     time_options = daily_games[selected_game]
@@ -460,13 +460,13 @@ else:
 selected_time = st.selectbox("🕐 Select Draw Time", time_options, key="time_select")
 
 # -----------------------------
-# 🧮 Step 4: Enter Result Number
+# 📅 Step 4: Select Date + Enter Numbers
 # -----------------------------
 result_date = st.date_input("📅 Select Draw Date", datetime.date.today(), key="result_date_input")
 result_numbers = st.text_input("💡 Enter Official Result Number(s)", placeholder="e.g. 557", key="numbers_input")
 
 # -----------------------------
-# 💾 Step 5: Save Function
+# 💾 Step 5: Save Official Result
 # -----------------------------
 if st.button("💾 Save Official Result", key="save_result_button"):
     if selected_game and result_numbers:
@@ -480,13 +480,22 @@ if st.button("💾 Save Official Result", key="save_result_button"):
             }
 
             results_data = load_json(RESULT_FILE, {})
-            results_data.setdefault(selected_game, []).append(entry)
+
+            # 💫 Auto-Repair: Ensure valid dictionary structure
+            if not isinstance(results_data, dict):
+                results_data = {}
+                st.info("🛠 Titan repaired results archive automatically (invalid format detected).")
+
+            if selected_game not in results_data:
+                results_data[selected_game] = []
+
+            results_data[selected_game].append(entry)
 
             with open(RESULT_FILE, "w") as f:
                 json.dump(results_data, f, indent=2)
 
-            st.success(f"✅ Saved official result for **{selected_game} ({selected_time})** on {result_date}!")
-            st.markdown("🌌 *Titan has recorded this result into the cosmic archive...*")
+            st.success(f"✅ Official result for **{selected_game} ({selected_time})** on {result_date} saved successfully!")
+            st.caption("🌌 Titan has recorded this result into the cosmic archive.")
 
             st.rerun()
 
@@ -495,6 +504,12 @@ if st.button("💾 Save Official Result", key="save_result_button"):
     else:
         st.warning("Please select a game and enter result numbers before saving.")
 
+# ================================================================
+# ✅ Titan Final Save Confirmation
+# ================================================================
+if "entry" in locals() and selected_game and result_numbers:
+    st.markdown("✅ **Titan Result Logged Successfully.**")
+    st.caption(f"Game: {selected_game} | Draw: {selected_time} | Date: {result_date} | Numbers: {result_numbers}")
 # ================================================================
 # 🧠 Titan Auto-Accuracy Analyzer — Instant Match + Accuracy %
 # ================================================================

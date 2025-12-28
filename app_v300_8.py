@@ -384,9 +384,9 @@ else:
     st.info("No forecast history yet.")
 
 # ================================================================
-# ⚡ Titan Official Result Console — Smart Dynamic Region + Auto Repair JSON (FINAL FIX)
+# ⚡ Titan Official Result Console — Safe Keys (v300.8-UQF)
 # ================================================================
-st.markdown("### ⚡ Titan Result Input Console")
+st.markdown("### ⚡ Titan Result Input Console (Fixed Keys)")
 
 # -----------------------------
 # 🎯 Define Game Dictionaries
@@ -427,12 +427,12 @@ ph_games = {
 }
 
 # -----------------------------
-# 🧭 Step 1: Select Game Category
+# 🧭 Step 1: Select Game Category (UNIQUE KEY)
 # -----------------------------
 category = st.radio(
     "🌍 Select Game Category",
     ["US Daily Games", "Major Games", "Philippine Games"],
-    key="region_select"
+    key="result_region_select"   # 🔑 unique key fixed here
 )
 
 # -----------------------------
@@ -445,10 +445,10 @@ elif category == "Major Games":
 else:
     game_list = list(ph_games.keys())
 
-selected_game = st.selectbox("🎯 Select Game", game_list, key="game_select")
+selected_game = st.selectbox("🎯 Select Game", game_list, key="result_game_select")
 
 # -----------------------------
-# 🕐 Step 3: Select Draw Time (auto)
+# 🕐 Step 3: Select Draw Time
 # -----------------------------
 if category == "US Daily Games":
     time_options = daily_games[selected_game]
@@ -457,18 +457,18 @@ elif category == "Major Games":
 else:
     time_options = ph_games[selected_game]
 
-selected_time = st.selectbox("🕐 Select Draw Time", time_options, key="time_select")
+selected_time = st.selectbox("🕐 Select Draw Time", time_options, key="result_time_select")
 
 # -----------------------------
 # 📅 Step 4: Select Date + Enter Numbers
 # -----------------------------
-result_date = st.date_input("📅 Select Draw Date", datetime.date.today(), key="result_date_input")
-result_numbers = st.text_input("💡 Enter Official Result Number(s)", placeholder="e.g. 557", key="numbers_input")
+result_date = st.date_input("📅 Select Draw Date", datetime.date.today(), key="result_date_unique")
+result_numbers = st.text_input("💡 Enter Official Result Number(s)", placeholder="e.g. 557", key="result_numbers_input")
 
 # -----------------------------
 # 💾 Step 5: Save Official Result
 # -----------------------------
-if st.button("💾 Save Official Result", key="save_result_button"):
+if st.button("💾 Save Official Result", key="save_result_btn_final"):
     if selected_game and result_numbers:
         try:
             entry = {
@@ -477,14 +477,14 @@ if st.button("💾 Save Official Result", key="save_result_button"):
                 "date": str(result_date),
                 "numbers": result_numbers,
                 "time": selected_time,
+                "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }
 
             results_data = load_json(RESULT_FILE, {})
 
-            # 💫 Auto-Repair: Ensure valid dictionary structure
             if not isinstance(results_data, dict):
                 results_data = {}
-                st.info("🛠 Titan repaired results archive automatically (invalid format detected).")
+                st.info("🛠 Titan repaired results archive automatically.")
 
             if selected_game not in results_data:
                 results_data[selected_game] = []
@@ -494,9 +494,8 @@ if st.button("💾 Save Official Result", key="save_result_button"):
             with open(RESULT_FILE, "w") as f:
                 json.dump(results_data, f, indent=2)
 
-            st.success(f"✅ Official result for **{selected_game} ({selected_time})** on {result_date} saved successfully!")
-            st.caption("🌌 Titan has recorded this result into the cosmic archive.")
-
+            st.success(f"✅ Official result for **{selected_game} ({selected_time})** saved on {result_date}!")
+            st.caption("🌌 Titan has recorded this into the cosmic archive.")
             st.rerun()
 
         except Exception as e:

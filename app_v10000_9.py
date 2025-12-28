@@ -377,6 +377,7 @@ if results_data:
         st.subheader(f"🎯 {game}")
         filtered_entries = []
 
+        # Filter entries by today's date (optional)
         for e in entries:
             e_date = str(e.get("date", ""))
             if today_only and today not in e_date:
@@ -385,11 +386,11 @@ if results_data:
 
         if filtered_entries:
             for e in filtered_entries[-10:]:
-                # ✅ FIXED: Safe access keys to prevent KeyError
+                # ✅ FIXED: Safe access for both old/new versions
                 st.write(
-                    f"📅 {e.get('date', 'N/A')} | 🕒 {e.get('time', 'N/A')} | 🔢 Result: `{e.get('numbers', 'N/A')}`"
+                    f"📅 {e.get('date', 'N/A')} | 🕒 {e.get('time', e.get('draw', 'N/A'))} | 🔢 Result: `{e.get('numbers', e.get('result', 'N/A'))}`"
                 )
-                st.caption(f"🧠 Saved on: {e.get('timestamp', 'Unknown')}")
+                st.caption(f"🧠 Saved on: {e.get('timestamp', 'Unknown')} | 🌐 Region: {e.get('region', 'N/A')}")
                 total_results += 1
             st.markdown("---")
         else:

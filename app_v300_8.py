@@ -1229,164 +1229,214 @@ with st.expander("📚 Titan Forecast Archive & Search Console", expanded=False)
                 st.info("No forecast data available for export.")
 
 # ================================================================
-# 🎯 Titan Result Input Console — Dynamic Game + Time System (v300.9-R2)
+# ⚡ Titan Official Result Console — Smart Dynamic Region + Auto Repair JSON
 # ================================================================
+st.markdown("### ⚡ Titan Result Input Console")
 
-with st.expander("🎯 Titan Result Input Console", expanded=False):
-    st.markdown("#### 🧾 Input Official Game Result")
+# -----------------------------
+# 🎯 Define Game Dictionaries
+# -----------------------------
+daily_games = {
+    "GA Pick 3": ["Midday", "Evening"],
+    "GA Pick 4": ["Midday", "Evening"],
+    "GA Pick 5": ["Midday", "Evening"],
+    "FL Pick 3": ["Midday", "Evening"],
+    "FL Pick 4": ["Midday", "Evening"],
+    "FL Pick 5": ["Midday", "Evening"],
+    "TX Pick 3": ["Morning", "Day", "Evening", "Night"],
+    "TX Pick 4": ["Morning", "Day", "Evening", "Night"],
+    "VA Pick 3": ["Day", "Evening"],
+    "VA Pick 4": ["Day", "Evening"],
+    "VA Pick 5": ["Day", "Evening"],
+    "NC Pick 3": ["Day", "Evening"],
+    "NC Pick 4": ["Day", "Evening"],
+    "NY Pick 3": ["Midday", "Evening"],
+    "NY Pick 4": ["Midday", "Evening"],
+    "CA Daily 3": ["Midday", "Evening"],
+    "CA Daily 4": ["Evening"],
+    "NJ Pick 3": ["Midday", "Evening"],
+    "NJ Pick 4": ["Midday", "Evening"]
+}
 
-    # 🗺 Game Categories
-    state_games = {
-        "GA Pick 3": ["Midday", "Evening"],
-        "GA Pick 4": ["Midday", "Evening"],
-        "GA Pick 5": ["Midday", "Evening"],
-        "FL Pick 3": ["Midday", "Evening"],
-        "FL Pick 4": ["Midday", "Evening"],
-        "FL Pick 5": ["Midday", "Evening"],
-        "TX Pick 3": ["Morning", "Day", "Evening", "Night"],
-        "TX Pick 4": ["Morning", "Day", "Evening", "Night"],
-        "VA Pick 3": ["Day", "Evening"],
-        "VA Pick 4": ["Day", "Evening"],
-        "VA Pick 5": ["Day", "Evening"],
-        "NC Pick 3": ["Day", "Evening"],
-        "NC Pick 4": ["Day", "Evening"],
-        "NY Pick 3": ["Midday", "Evening"],
-        "NY Pick 4": ["Midday", "Evening"],
-        "CA Daily 3": ["Midday", "Evening"],
-        "CA Daily 4": ["Evening"],
-        "NJ Pick 3": ["Midday", "Evening"],
-        "NJ Pick 4": ["Midday", "Evening"]
-    }
+major_games = {
+    "CA Fantasy 5": [],
+    "CA SuperLotto Plus": [],
+    "Mega Millions": [],
+    "Powerball": []
+}
 
-    major_games = {
-        "CA Fantasy 5": [],
-        "CA SuperLotto Plus": [],
-        "Mega Millions": [],
-        "Powerball": []
-    }
+ph_games = {
+    "PH 3D Lotto (Swertres)": ["2PM", "5PM", "9PM"],
+    "PH 4D Lotto": ["Mon", "Wed", "Fri"],
+    "PH STL Game": ["10:30AM", "3PM", "7PM"]
+}
 
-    ph_games = {
-        "PH 3D Lotto (Swertres)": ["2PM", "5PM", "9PM"],
-        "PH 4D Lotto": ["Mon", "Wed", "Fri"],
-        "PH STL Game": ["10:30AM", "3PM", "7PM"]
-    }
-
-    # 🌍 Choose region
-    region = st.selectbox("🌎 Select Game Region", ["🇺🇸 US State Games", "💰 US Major Games", "🇵🇭 PH Local Games"])
-
-    # 🎮 Game Dropdown
-    if region == "🇺🇸 US State Games":
-        result_game = st.selectbox("🎯 Select State Game", list(state_games.keys()))
-        times = state_games[result_game]
-    elif region == "💰 US Major Games":
-        result_game = st.selectbox("🎯 Select Major Game", list(major_games.keys()))
-        times = major_games[result_game] if major_games[result_game] else ["Main Draw"]
-    else:
-        result_game = st.selectbox("🎯 Select PH Game", list(ph_games.keys()))
-        times = ph_games[result_game]
-
-    # 📅 Result Draw Date (unchanged)
-    result_date = st.date_input("📅 Select Result Draw Date", datetime.date.today())
-
-    # 💡 Official Result Number(s) (unchanged)
-    result_numbers = st.text_input("💡 Official Result Number(s)", "")
-
-    # ⏰ Result Time — dynamic dropdown
-    result_time = st.selectbox("⏰ Official Result Time", times)
-
-    # ⚡ Save Button
-    if st.button("⚡ Save Official Result"):
-        results_data = load_json(RESULT_FILE, {})
-        if not isinstance(results_data, dict):
-            results_data = {}
-
-        entry = {
-            "date": str(result_date),
-            "result": result_numbers,
-            "time": result_time,
-            "region": region,
-            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
-
-        results_data.setdefault(result_game, []).append(entry)
-
-        with open(RESULT_FILE, "w") as f:
-            json.dump(results_data, f, indent=2)
-
-        st.success(f"✅ Official result for {result_game} ({result_time}) on {result_date} saved successfully!")
-        st.balloons()
-
-# =============================================================
-# ⚡ Titan Cosmic Energy Gauge + Pulse Indicator (v301.0-PulseCore Edition)
-# =============================================================
-import time
-
-st.markdown("---")
-st.markdown("## ⚡ Titan Cosmic Energy Gauge")
-
-# Load accuracy data
-accuracy = load_json(os.path.join(DATA_DIR, "titan_accuracy_log.json"), {})
-if accuracy:
-    total_hits = 0
-    total_entries = 0
-    for g, logs in accuracy.items():
-        for e in logs:
-            total_entries += 1
-            if e.get("accuracy", 0) > 0:
-                total_hits += 1
-    energy_level = round((total_hits / total_entries) * 100, 2) if total_entries > 0 else 0
-else:
-    energy_level = 0
-
-# --- Display cosmic gauge ---
-st.markdown(
-    f"""
-    <div style='text-align:center;'>
-        <h3 style='color:#f4d03f;'>🪐 Titan Energy Frequency</h3>
-        <div style='width:80%;margin:auto;background:#111;border-radius:10px;'>
-            <div style='width:{energy_level}%;height:22px;
-                        background:linear-gradient(90deg,#00f9ff,#008cff);
-                        border-radius:10px;'></div>
-        </div>
-        <p style='color:#ccc;margin-top:6px;'>Current Level: <b>{energy_level}%</b></p>
-    </div>
-    """,
-    unsafe_allow_html=True
+# -----------------------------
+# 🧭 Step 1: Select Game Category
+# -----------------------------
+category = st.radio(
+    "🌍 Select Game Category",
+    ["US Daily Games", "Major Games", "Philippine Games"],
+    key="region_select"
 )
 
-# --- Pulse Indicator ---
-def titan_pulse_html(level):
-    color = "#00FF9D" if level >= 90 else "#FFD700" if level >= 60 else "#FF5555"
-    pulse_speed = 1.0 if level >= 90 else 1.8 if level >= 60 else 2.5
-    return f"""
-    <div style='text-align:center;margin-top:10px;'>
-        <div style='
-            width:60px;height:60px;
-            margin:auto;
-            border-radius:50%;
-            background:{color};
-            box-shadow:0 0 20px {color},0 0 40px {color};
-            animation:pulse {pulse_speed}s infinite alternate;
-        '></div>
-        <style>
-        @keyframes pulse {{
-            0% {{transform:scale(1);opacity:0.9;}}
-            100% {{transform:scale(1.4);opacity:0.4;}}
-        }}
-        </style>
-        <p style='color:#aaa;font-size:13px;'>Titan Pulse Activity</p>
-    </div>
-    """
-
-st.markdown(titan_pulse_html(energy_level), unsafe_allow_html=True)
-
-# --- Energy status feedback ---
-if energy_level >= 90:
-    st.success("🟢 **Divine Resonance:** Titan’s cosmic energy is at its peak! Forecasts highly charged.")
-elif energy_level >= 60:
-    st.warning("🟡 **Stable Harmonics:** Energy is steady — Titan is observing patterns calmly.")
+# -----------------------------
+# 🧩 Step 2: Select Specific Game
+# -----------------------------
+if category == "US Daily Games":
+    game_list = list(daily_games.keys())
+elif category == "Major Games":
+    game_list = list(major_games.keys())
 else:
-    st.error("🔴 **Low Frequency:** Titan’s energy field weakening — needs fresh result data to recharge.")
+    game_list = list(ph_games.keys())
+
+selected_game = st.selectbox("🎯 Select Game", game_list, key="game_select")
+
+# -----------------------------
+# 🕐 Step 3: Select Draw Time (auto)
+# -----------------------------
+if category == "US Daily Games":
+    time_options = daily_games[selected_game]
+elif category == "Major Games":
+    time_options = ["Main Draw"]
+else:
+    time_options = ph_games[selected_game]
+
+selected_time = st.selectbox("🕐 Select Draw Time", time_options, key="time_select")
+
+# -----------------------------
+# 📅 Step 4: Select Date + Enter Numbers
+# -----------------------------
+result_date = st.date_input("📅 Select Draw Date", datetime.date.today(), key="result_date_input")
+result_numbers = st.text_input("💡 Enter Official Result Number(s)", placeholder="e.g. 557", key="numbers_input")
+
+# -----------------------------
+# 💾 Step 5: Save Official Result
+# -----------------------------
+if st.button("💾 Save Official Result", key="save_result_button"):
+    if selected_game and result_numbers:
+        try:
+            entry = {
+                "category": category,
+                "game": selected_game,
+                "date": str(result_date),
+                "numbers": result_numbers,
+                "time": selected_time,
+                "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+
+            results_data = load_json(RESULT_FILE, {})
+
+            # 💫 Auto-Repair: Ensure valid dict structure
+            if not isinstance(results_data, dict):
+                results_data = {}
+                st.info("🛠 Titan repaired results archive automatically (invalid format detected).")
+
+            if selected_game not in results_data:
+                results_data[selected_game] = []
+
+            # ✅ Append safely
+            results_data[selected_game].append(entry)
+
+            with open(RESULT_FILE, "w") as f:
+                json.dump(results_data, f, indent=2)
+
+            st.success(f"✅ Official result for **{selected_game} ({selected_time})** on {result_date} saved successfully!")
+            st.caption("🌌 Titan has recorded this result into the cosmic archive.")
+
+            st.rerun()
+
+        except Exception as e:
+            st.error(f"⚠️ Error saving result: {e}")
+    else:
+        st.warning("Please select a game and enter result numbers before saving.")
+# ================================================================
+# 🧠 Titan Reflection Core — Auto-Repair & Display Results
+# ================================================================
+def titan_reflection():
+    try:
+        # Load the results safely
+        results_data = load_json(RESULT_FILE, {})
+
+        # Auto-repair legacy key "result" → rename to "numbers"
+        repaired = False
+        for g, entries in list(results_data.items()):
+            for e in entries:
+                if "result" in e and "numbers" not in e:
+                    e["numbers"] = e["result"]
+                    del e["result"]
+                    repaired = True
+
+        # Save back repaired format if needed
+        if repaired:
+            with open(RESULT_FILE, "w") as f:
+                json.dump(results_data, f, indent=2)
+            st.info("🛠 Titan auto-repaired legacy result entries.")
+
+        # Build reflection messages
+        thoughts = []
+        for game_name, entries in results_data.items():
+            if entries:
+                last_entry = entries[-1]
+                num = last_entry.get("numbers", "-")
+                tme = last_entry.get("time", "-")
+                dte = last_entry.get("date", "-")
+                thoughts.append(f"🎯 **{game_name}** — last draw `{num}` ({tme}) on {dte}")
+
+        if thoughts:
+            return "\n\n".join(thoughts)
+        else:
+            return "🕯️ I sense silence in the numbers — feed me new draws so I may speak again."
+
+    except Exception as e:
+        return f"⚠️ Titan reflection error: {e}"
+# ================================================================
+# 🌌 Titan Auto-Sync & Reflection Repair System (Final Stable v300.8-R)
+# ================================================================
+try:
+    results_data = load_json(RESULT_FILE, {})
+
+    # ✅ Auto-repair if accidentally saved as list
+    if not isinstance(results_data, dict):
+        st.warning("🛠 Titan detected legacy list format in results file — repairing...")
+        results_data = {}
+
+    # ✅ Auto-repair missing 'numbers' key → rename from old 'result'
+    for g, entries in list(results_data.items()):
+        for e in entries:
+            if "result" in e and "numbers" not in e:
+                e["numbers"] = e.pop("result")
+
+    # ✅ Save repaired data
+    with open(RESULT_FILE, "w") as f:
+        json.dump(results_data, f, indent=2)
+
+    # ✅ Show most recent 3 games summary (mini reflection)
+    if results_data:
+        st.markdown("---")
+        st.markdown("### 🔮 Titan Recent Reflection")
+        recent_games = list(results_data.keys())[-3:]
+        for g in recent_games:
+            entries = results_data[g]
+            if entries:
+                last = entries[-1]
+                st.markdown(
+                    f"🎯 **{g}** — `{last.get('numbers','N/A')}` ({last.get('time','?')}) "
+                    f"on {last.get('date','Unknown')}"
+                )
+    else:
+        st.info("🕯️ No stored results found. Titan awaits your first recorded draw.")
+
+except Exception as e:
+    st.error(f"⚠️ Titan Reflection Repair System Error: {e}")
+
+# ================================================================
+# 🧩 Titan Chat Console (Reflection Output)
+# ================================================================
+st.markdown("### 🧠 Titan Chat Console")
+reflection = titan_reflection()
+st.write(reflection)
+
 
 # =============================================================
 # 🧠 Titan Chat Console (v301.1 — Cosmic Voice Engine)

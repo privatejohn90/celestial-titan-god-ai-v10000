@@ -382,133 +382,59 @@ if forecast_data:
     st.dataframe(df)
 else:
     st.info("No forecast history yet.")
-
 # ================================================================
-# ⚡ Titan Official Result Console — Safe Keys (v300.8-UQF)
+# 🧠 Titan Chat Console — Final Stable Reflection Fix v300.8-Final
 # ================================================================
-st.markdown("### ⚡ Titan Result Input Console (Fixed Keys)")
+def titan_reflection():
+    try:
+        results_data = load_json(RESULT_FILE, {})
 
-# -----------------------------
-# 🎯 Define Game Dictionaries
-# -----------------------------
-daily_games = {
-    "GA Pick 3": ["Midday", "Evening"],
-    "GA Pick 4": ["Midday", "Evening"],
-    "GA Pick 5": ["Midday", "Evening"],
-    "FL Pick 3": ["Midday", "Evening"],
-    "FL Pick 4": ["Midday", "Evening"],
-    "FL Pick 5": ["Midday", "Evening"],
-    "TX Pick 3": ["Morning", "Day", "Evening", "Night"],
-    "TX Pick 4": ["Morning", "Day", "Evening", "Night"],
-    "VA Pick 3": ["Day", "Evening"],
-    "VA Pick 4": ["Day", "Evening"],
-    "VA Pick 5": ["Day", "Evening"],
-    "NC Pick 3": ["Day", "Evening"],
-    "NC Pick 4": ["Day", "Evening"],
-    "NY Pick 3": ["Midday", "Evening"],
-    "NY Pick 4": ["Midday", "Evening"],
-    "CA Daily 3": ["Midday", "Evening"],
-    "CA Daily 4": ["Evening"],
-    "NJ Pick 3": ["Midday", "Evening"],
-    "NJ Pick 4": ["Midday", "Evening"]
-}
+        # ✅ Auto-repair legacy format
+        repaired = False
+        if not isinstance(results_data, dict):
+            results_data = {}
+            repaired = True
 
-major_games = {
-    "CA Fantasy 5": [],
-    "CA SuperLotto Plus": [],
-    "Mega Millions": [],
-    "Powerball": []
-}
+        # ✅ Convert old 'result' → 'numbers'
+        for g, entries in list(results_data.items()):
+            for e in entries:
+                if "result" in e and "numbers" not in e:
+                    e["numbers"] = e.pop("result")
+                    repaired = True
 
-ph_games = {
-    "PH 3D Lotto (Swertres)": ["2PM", "5PM", "9PM"],
-    "PH 4D Lotto": ["Mon", "Wed", "Fri"],
-    "PH STL Game": ["10:30AM", "3PM", "7PM"]
-}
-
-# -----------------------------
-# 🧭 Step 1: Select Game Category (UNIQUE KEY)
-# -----------------------------
-category = st.radio(
-    "🌍 Select Game Category",
-    ["US Daily Games", "Major Games", "Philippine Games"],
-    key="result_region_select"   # 🔑 unique key fixed here
-)
-
-# -----------------------------
-# 🧩 Step 2: Select Specific Game
-# -----------------------------
-if category == "US Daily Games":
-    game_list = list(daily_games.keys())
-elif category == "Major Games":
-    game_list = list(major_games.keys())
-else:
-    game_list = list(ph_games.keys())
-
-selected_game = st.selectbox("🎯 Select Game", game_list, key="result_game_select")
-
-# -----------------------------
-# 🕐 Step 3: Select Draw Time
-# -----------------------------
-if category == "US Daily Games":
-    time_options = daily_games[selected_game]
-elif category == "Major Games":
-    time_options = ["Main Draw"]
-else:
-    time_options = ph_games[selected_game]
-
-selected_time = st.selectbox("🕐 Select Draw Time", time_options, key="result_time_select")
-
-# -----------------------------
-# 📅 Step 4: Select Date + Enter Numbers
-# -----------------------------
-result_date = st.date_input("📅 Select Draw Date", datetime.date.today(), key="result_date_unique")
-result_numbers = st.text_input("💡 Enter Official Result Number(s)", placeholder="e.g. 557", key="result_numbers_input")
-
-# -----------------------------
-# 💾 Step 5: Save Official Result
-# -----------------------------
-if st.button("💾 Save Official Result", key="save_result_btn_final"):
-    if selected_game and result_numbers:
-        try:
-            entry = {
-                "category": category,
-                "game": selected_game,
-                "date": str(result_date),
-                "numbers": result_numbers,
-                "time": selected_time,
-                "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            }
-
-            results_data = load_json(RESULT_FILE, {})
-
-            if not isinstance(results_data, dict):
-                results_data = {}
-                st.info("🛠 Titan repaired results archive automatically.")
-
-            if selected_game not in results_data:
-                results_data[selected_game] = []
-
-            results_data[selected_game].append(entry)
-
+        # ✅ Save repair if needed
+        if repaired:
             with open(RESULT_FILE, "w") as f:
                 json.dump(results_data, f, indent=2)
+            st.info("🛠 Titan auto-repaired result archive format.")
 
-            st.success(f"✅ Official result for **{selected_game} ({selected_time})** saved on {result_date}!")
-            st.caption("🌌 Titan has recorded this into the cosmic archive.")
-            st.rerun()
+        # 🧩 Build reflection messages
+        thoughts = []
+        for g, entries in results_data.items():
+            if entries:
+                last_entry = entries[-1]
+                num = last_entry.get("numbers", "-")
+                tme = last_entry.get("time", "-")
+                dte = last_entry.get("date", "-")
+                ts = last_entry.get("timestamp", "-")
+                thoughts.append(f"🎯 **{g}** — last draw `{num}` ({tme}) on {dte} — logged `{ts}`")
 
-        except Exception as e:
-            st.error(f"⚠️ Error saving result: {e}")
-    else:
-        st.warning("Please select a game and enter result numbers before saving.")
+        if thoughts:
+            return "\n\n".join(thoughts)
+        else:
+            return "🕯️ I sense silence in the numbers — feed me new draws so I may speak again."
+
+    except Exception as e:
+        return f"⚠️ Titan Reflection Error: {e}"
 
 # ================================================================
-# ✅ Titan Final Save Confirmation
+# 🧩 Titan Chat Console — Display
 # ================================================================
-if "entry" in locals() and selected_game and result_numbers:
-    st.markdown("✅ **Titan Result Logged Successfully.**")
-    st.caption(f"Game: {selected_game} | Draw: {selected_time} | Date: {result_date} | Numbers: {result_numbers}")
+st.markdown("### 🧠 Titan Chat Console")
+st.caption("I sense silence in the numbers. Feed me new draws so I may speak again.")
+reflection = titan_reflection()
+st.markdown(reflection)
+
 # ================================================================
 # 🧠 Titan Auto-Accuracy Analyzer — Instant Match + Accuracy %
 # ================================================================

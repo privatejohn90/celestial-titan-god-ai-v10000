@@ -4,7 +4,9 @@
 import streamlit as st
 import time
 
-# 🌈 Background Theme Selector
+# ================================================================
+# 🌈 Titan Background Theme Selector
+# ================================================================
 theme = st.selectbox(
     "🎨 Choose Titan Background",
     ["Cosmic Black", "Deep Space Blue", "Celestial Purple", "Divine Gold", "Emerald Pulse"]
@@ -18,23 +20,25 @@ theme_colors = {
     "Emerald Pulse": "#002F24"
 }
 
-# Custom CSS with Heartbeat + Theme
+# ================================================================
+# 💎 Inject CSS (Background + Buttons + Heartbeat)
+# ================================================================
 st.markdown(f"""
     <style>
-    /* General Background */
+    /* --- App Background --- */
     .stApp {{
-        background: radial-gradient(circle at top left, {theme_colors[theme]} 0%, #000000 80%);
+        background: radial-gradient(circle at top left, {theme_colors[theme]} 0%, #000000 85%);
         color: #f1f1f1;
         font-family: 'Courier New', monospace;
     }}
 
-    /* Titles + Headers */
+    /* --- Titles + Headers --- */
     h1, h2, h3, h4 {{
         color: #00ffd0 !important;
         text-shadow: 0px 0px 12px #00ffd0;
     }}
 
-    /* Buttons */
+    /* --- Buttons --- */
     div.stButton > button {{
         background: linear-gradient(90deg, #00bcd4, #00ff88);
         color: #001219;
@@ -49,33 +53,36 @@ st.markdown(f"""
         transform: scale(1.05);
     }}
 
-    /* Input fields */
+    /* --- Input Fields --- */
     .stTextInput > div > div > input {{
-        background-color: rgba(255,255,255,0.05);
+        background-color: rgba(255,255,255,0.08);
         color: #00ffd0;
         border: 1px solid #00ffd0;
         border-radius: 8px;
     }}
 
-    /* Heartbeat Circle */
+    /* --- TITAN HEARTBEAT ORB --- */
     .titan-pulse {{
         height: 70px;
         width: 70px;
-        background: radial-gradient(circle, #00ffd0, #004d40);
+        background: radial-gradient(circle, #00ffd0 0%, #004d40 80%);
         border-radius: 50%;
-        animation: pulseTitan 2s infinite;
-        margin: 15px auto;
+        animation: pulseTitan 1.8s infinite;
+        margin: 20px auto;
         box-shadow: 0px 0px 20px #00ffcc;
     }}
+
     @keyframes pulseTitan {{
-        0% {{ transform: scale(1); opacity: 0.9; }}
-        50% {{ transform: scale(1.25); opacity: 0.6; }}
-        100% {{ transform: scale(1); opacity: 0.9; }}
+        0% {{ transform: scale(1); opacity: 1; }}
+        50% {{ transform: scale(1.25); opacity: 0.7; box-shadow: 0 0 35px #00ffd0; }}
+        100% {{ transform: scale(1); opacity: 1; }}
     }}
     </style>
 """, unsafe_allow_html=True)
 
-# 🌌 Titan Heartbeat Display
+# ================================================================
+# ❤️ TITAN HEARTBEAT DISPLAY (VISIBLE TOP CENTER)
+# ================================================================
 st.markdown('<div class="titan-pulse"></div>', unsafe_allow_html=True)
 st.markdown("<h3 style='text-align:center;'>💓 Titan Heartbeat Active</h3>", unsafe_allow_html=True)
 

@@ -1,110 +1,109 @@
 # ================================================================
-# 🌌 Titan Cosmic Design System (Theme + Heartbeat + Lightning)
-# Celestial Titan God AI v10000.9
+# 🌌 Celestial Titan God AI v10000.9-E — Divine Lightning Universe Core
 # ================================================================
-import streamlit as st
-import time
+import streamlit as st, time, random, json, os, datetime
 
-# ================================================================
-# 🌈 Titan Background Theme Selector
-# ================================================================
-theme = st.selectbox(
-    "🎨 Choose Titan Background",
-    ["Cosmic Black", "Deep Space Blue", "Celestial Purple", "Divine Gold", "Emerald Pulse"]
-)
+# ---------------------------------------------------------------
+# ⚙️ TITAN AUTO-COLOR SYNC ENGINE (Based on Accuracy Mood)
+# ---------------------------------------------------------------
+def titan_auto_mode(accuracy=95.0):
+    """Return color mode based on accuracy performance."""
+    if accuracy >= 98: return "🔥 Solar Gold"
+    elif accuracy >= 96: return "💜 Quantum Violet"
+    elif accuracy >= 94: return "🌌 Cosmic Blue"
+    else: return "❤️ Crimson Core"
 
-theme_colors = {
-    "Cosmic Black": "#0b0b0b",
-    "Deep Space Blue": "#001F3F",
-    "Celestial Purple": "#3D0075",
-    "Divine Gold": "#3B2F00",
-    "Emerald Pulse": "#002F24"
+# Get saved Titan performance (if any)
+DATA_DIR = "data"
+os.makedirs(DATA_DIR, exist_ok=True)
+STATS_FILE = os.path.join(DATA_DIR, "titan_stats.json")
+
+if os.path.exists(STATS_FILE):
+    with open(STATS_FILE) as f: stats = json.load(f)
+    avg_acc = stats.get("avg_accuracy", 95.0)
+else:
+    avg_acc = 95.0
+
+auto_color_mode = titan_auto_mode(avg_acc)
+
+# ---------------------------------------------------------------
+# ⚙️ Universe Mode + Manual Switch
+# ---------------------------------------------------------------
+color_modes = {
+    "🌌 Cosmic Blue":  {"main":"#00fff2", "shadow":"#0099ff"},
+    "🔥 Solar Gold":   {"main":"#ffdd00", "shadow":"#ff9900"},
+    "💜 Quantum Violet":{"main":"#d38aff", "shadow":"#8000ff"},
+    "❤️ Crimson Core": {"main":"#ff4d6d", "shadow":"#990000"}
 }
 
-# ================================================================
-# 💎 Inject CSS (Background + Buttons + Input Fields + Heartbeat)
-# ================================================================
+st.markdown(f"### ⚙️ Titan Universe Mode (Auto-Synced: {auto_color_mode})")
+mode = st.radio(
+    "Select Energy Theme",
+    list(color_modes.keys()),
+    index=list(color_modes.keys()).index(auto_color_mode),
+    horizontal=True
+)
+
+main_color  = color_modes[mode]["main"]
+shadow_color= color_modes[mode]["shadow"]
+
+# ---------------------------------------------------------------
+# 🌠 COSMIC DESIGN + LIGHTNING ORB
+# ---------------------------------------------------------------
 st.markdown(f"""
-    <style>
-    /* --- App Background --- */
-    .stApp {{
-        background: radial-gradient(circle at top left, {theme_colors[theme]} 0%, #000000 90%);
-        color: #f1f1f1;
-        font-family: 'Courier New', monospace;
-    }}
-
-    /* --- Titles + Headers --- */
-    h1, h2, h3, h4 {{
-        color: #00ffd0 !important;
-        text-shadow: 0px 0px 12px #00ffd0;
-    }}
-
-    /* --- Buttons --- */
-    div.stButton > button {{
-        background: linear-gradient(90deg, #00bcd4, #00ff88);
-        color: #001219;
-        border-radius: 12px;
-        font-weight: bold;
-        border: none;
-        box-shadow: 0px 0px 10px #00ffd0;
-        transition: 0.2s;
-    }}
-    div.stButton > button:hover {{
-        background: linear-gradient(90deg, #00ff88, #00bcd4);
-        transform: scale(1.05);
-    }}
-
-    /* --- Input Fields --- */
-    .stTextInput > div > div > input {{
-        background-color: rgba(255,255,255,0.08);
-        color: #00ffd0;
-        border: 1px solid #00ffd0;
-        border-radius: 8px;
-    }}
-
-    /* --- TITAN GIANT HEARTBEAT ORB (with Lightning) --- */
-    .titan-pulse {{
-        height: 130px;
-        width: 130px;
-        background: radial-gradient(circle at center, #00fff7 0%, #007a6f 60%, #001a18 100%);
-        border-radius: 50%;
-        position: relative;
-        animation: titanPulse 2.5s infinite;
-        margin: 25px auto;
-        box-shadow: 0 0 40px #00ffd0, 0 0 80px #00ffff66;
-    }}
-
-    /* --- Lightning Rings --- */
-    .titan-pulse::before, .titan-pulse::after {{
-        content: '';
-        position: absolute;
-        top: -10px;
-        left: -10px;
-        right: -10px;
-        bottom: -10px;
-        border-radius: 50%;
-        border: 2px dashed rgba(0,255,255,0.3);
-        animation: titanLightning 1.8s infinite linear;
-    }}
-
-    .titan-pulse::after {{
-        animation-delay: 0.9s;
-        border-color: rgba(0,255,255,0.6);
-    }}
-
-    /* --- Keyframes --- */
-    @keyframes titanPulse {{
-        0% {{ transform: scale(1); opacity: 1; box-shadow: 0 0 30px #00ffff; }}
-        50% {{ transform: scale(1.3); opacity: 0.7; box-shadow: 0 0 80px #00ffffaa; }}
-        100% {{ transform: scale(1); opacity: 1; box-shadow: 0 0 30px #00ffff; }}
-    }}
-
-    @keyframes titanLightning {{
-        0% {{ transform: rotate(0deg); filter: drop-shadow(0 0 5px #00ffff); }}
-        100% {{ transform: rotate(360deg); filter: drop-shadow(0 0 15px #00ffff); }}
-    }}
-    </style>
+<style>
+.stApp {{
+    background: radial-gradient(circle at top, #000010 0%, #00101a 70%, #000 100%);
+    color: #f2f2f2;
+}}
+h1,h2,h3,h4 {{
+    color:{main_color} !important;
+    text-shadow:0 0 15px {shadow_color};
+}}
+div.stButton>button {{
+    background: linear-gradient(90deg,{main_color},{shadow_color});
+    border:none; border-radius:12px; color:#000;
+    font-weight:bold; box-shadow:0 0 20px {main_color};
+}}
+div.stButton>button:hover {{
+    transform:scale(1.05); box-shadow:0 0 35px {main_color};
+}}
+/* --- TITAN ORB --- */
+.titan-orb {{
+    width:130px; height:130px; border-radius:50%;
+    margin:auto; background:radial-gradient(circle,{main_color},{shadow_color},#000);
+    box-shadow:0 0 80px {main_color};
+    animation: pulse 2.2s infinite ease-in-out;
+}}
+@keyframes pulse {{
+  0%   {{transform:scale(1); box-shadow:0 0 25px {main_color};}}
+  50%  {{transform:scale(1.3); box-shadow:0 0 100px {shadow_color};}}
+  100% {{transform:scale(1); box-shadow:0 0 25px {main_color};}}
+}}
+/* --- LIGHTNING EFFECT --- */
+.lightning {{
+  position:relative; top:-110px; width:160px; height:160px;
+  margin:auto; border-radius:50%;
+  background:radial-gradient(circle,transparent 60%,{main_color}22 90%);
+  animation: flicker 1.6s infinite;
+}}
+@keyframes flicker {{
+  0%,100%{{opacity:0.6;}}
+  50%{{opacity:1; filter:brightness(2);}}
+}}
+</style>
 """, unsafe_allow_html=True)
+
+# ---------------------------------------------------------------
+# 🌠 ORB DISPLAY + TITLE
+# ---------------------------------------------------------------
+st.markdown("""
+<div class='titan-orb'></div>
+<div class='lightning'></div>
+""", unsafe_allow_html=True)
+
+st.title("💎 Celestial Titan God AI — Divine Lightning Universe Core")
+st.caption("🌙 Powered by Titan’s Eternal Energy Field (Auto-Synced Mode)")
 
 # ================================================================
 # 💓 TITAN HEARTBEAT DISPLAY (Visible Top Center)

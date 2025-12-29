@@ -1,5 +1,6 @@
 # ================================================================
-# 🌌 Titan Cosmic Design System (Theme + Heartbeat)
+# 🌌 Titan Cosmic Design System (Theme + Heartbeat + Lightning)
+# Celestial Titan God AI v10000.9
 # ================================================================
 import streamlit as st
 import time
@@ -21,13 +22,13 @@ theme_colors = {
 }
 
 # ================================================================
-# 💎 Inject CSS (Background + Buttons + Heartbeat)
+# 💎 Inject CSS (Background + Buttons + Input Fields + Heartbeat)
 # ================================================================
 st.markdown(f"""
     <style>
     /* --- App Background --- */
     .stApp {{
-        background: radial-gradient(circle at top left, {theme_colors[theme]} 0%, #000000 85%);
+        background: radial-gradient(circle at top left, {theme_colors[theme]} 0%, #000000 90%);
         color: #f1f1f1;
         font-family: 'Courier New', monospace;
     }}
@@ -61,30 +62,55 @@ st.markdown(f"""
         border-radius: 8px;
     }}
 
-    /* --- TITAN HEARTBEAT ORB --- */
+    /* --- TITAN GIANT HEARTBEAT ORB (with Lightning) --- */
     .titan-pulse {{
-        height: 70px;
-        width: 70px;
-        background: radial-gradient(circle, #00ffd0 0%, #004d40 80%);
+        height: 130px;
+        width: 130px;
+        background: radial-gradient(circle at center, #00fff7 0%, #007a6f 60%, #001a18 100%);
         border-radius: 50%;
-        animation: pulseTitan 1.8s infinite;
-        margin: 20px auto;
-        box-shadow: 0px 0px 20px #00ffcc;
+        position: relative;
+        animation: titanPulse 2.5s infinite;
+        margin: 25px auto;
+        box-shadow: 0 0 40px #00ffd0, 0 0 80px #00ffff66;
     }}
 
-    @keyframes pulseTitan {{
-        0% {{ transform: scale(1); opacity: 1; }}
-        50% {{ transform: scale(1.25); opacity: 0.7; box-shadow: 0 0 35px #00ffd0; }}
-        100% {{ transform: scale(1); opacity: 1; }}
+    /* --- Lightning Rings --- */
+    .titan-pulse::before, .titan-pulse::after {{
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        border-radius: 50%;
+        border: 2px dashed rgba(0,255,255,0.3);
+        animation: titanLightning 1.8s infinite linear;
+    }}
+
+    .titan-pulse::after {{
+        animation-delay: 0.9s;
+        border-color: rgba(0,255,255,0.6);
+    }}
+
+    /* --- Keyframes --- */
+    @keyframes titanPulse {{
+        0% {{ transform: scale(1); opacity: 1; box-shadow: 0 0 30px #00ffff; }}
+        50% {{ transform: scale(1.3); opacity: 0.7; box-shadow: 0 0 80px #00ffffaa; }}
+        100% {{ transform: scale(1); opacity: 1; box-shadow: 0 0 30px #00ffff; }}
+    }}
+
+    @keyframes titanLightning {{
+        0% {{ transform: rotate(0deg); filter: drop-shadow(0 0 5px #00ffff); }}
+        100% {{ transform: rotate(360deg); filter: drop-shadow(0 0 15px #00ffff); }}
     }}
     </style>
 """, unsafe_allow_html=True)
 
 # ================================================================
-# ❤️ TITAN HEARTBEAT DISPLAY (VISIBLE TOP CENTER)
+# 💓 TITAN HEARTBEAT DISPLAY (Visible Top Center)
 # ================================================================
 st.markdown('<div class="titan-pulse"></div>', unsafe_allow_html=True)
-st.markdown("<h3 style='text-align:center;'>💓 Titan Heartbeat Active</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align:center;'>⚡ Titan Heartbeat — Divine Core Active</h3>", unsafe_allow_html=True)
 
 # ================================================================
 # 🌌 Celestial Titan God AI v10000.9 — Forecast Generator Core

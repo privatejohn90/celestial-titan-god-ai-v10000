@@ -134,8 +134,38 @@ st.markdown("""
 st.title("💎 Celestial Titan God AI — Divine Lightning Universe Core")
 st.caption("🌙 Powered by Titan’s Eternal Energy Field (Auto-Synced Mode)")
 
+# ================================================================
+# 💬 Titan Chat Console — Cosmic Alert Messenger
+# ================================================================
+titan_messages = [
+    "⚡ Titan Pulse Active — Monitoring energy fluctuations across states...",
+    "🌌 Pattern Sync rising in GA and VA... watch closely tonight.",
+    "🔮 Cosmic flow detected — Pick 3 and Pick 4 frequencies tightening.",
+    "🚨 Titan Alert: Energy surge around TX and FL regions.",
+    "💎 Forecast Core recalibrating... accuracy resonance stabilizing.",
+    "🔥 Probability flux high — expect mirror reflections of past numbers.",
+    "🌠 Titan whispers: 'Patience attracts precision.'"
+]
 
+titan_message = random.choice(titan_messages)
 
+st.markdown(f"""
+<div style="
+    margin-top:30px; padding:18px; border-radius:12px;
+    background:linear-gradient(90deg,{main_color}22, {shadow_color}22);
+    border:1px solid {main_color};
+    box-shadow:0 0 20px {main_color};
+    text-align:center; font-size:17px; color:{main_color};
+    animation: fadeInTitan 3s ease-in-out;">
+    💬 <b>{titan_message}</b>
+</div>
+<style>
+@keyframes fadeInTitan {{
+    0% {{opacity:0; transform:translateY(10px);}}
+    100% {{opacity:1; transform:translateY(0);}}
+}}
+</style>
+""", unsafe_allow_html=True)
 
 # ================================================================
 # 💓 TITAN HEARTBEAT DISPLAY (Visible Top Center)

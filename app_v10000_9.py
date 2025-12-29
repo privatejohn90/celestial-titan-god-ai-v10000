@@ -4,23 +4,38 @@
 import streamlit as st
 import time
 
-# Custom CSS for colors + glowing + animated heart
-st.markdown("""
+# 🌈 Background Theme Selector
+theme = st.selectbox(
+    "🎨 Choose Titan Background",
+    ["Cosmic Black", "Deep Space Blue", "Celestial Purple", "Divine Gold", "Emerald Pulse"]
+)
+
+theme_colors = {
+    "Cosmic Black": "#0b0b0b",
+    "Deep Space Blue": "#001F3F",
+    "Celestial Purple": "#3D0075",
+    "Divine Gold": "#3B2F00",
+    "Emerald Pulse": "#002F24"
+}
+
+# Custom CSS with Heartbeat + Theme
+st.markdown(f"""
     <style>
-    /* General App Background */
-    .stApp {
-        background: radial-gradient(circle at top left, #081c24 0%, #001219 60%, #000 100%);
+    /* General Background */
+    .stApp {{
+        background: radial-gradient(circle at top left, {theme_colors[theme]} 0%, #000000 80%);
         color: #f1f1f1;
-    }
+        font-family: 'Courier New', monospace;
+    }}
 
     /* Titles + Headers */
-    h1, h2, h3, h4 {
+    h1, h2, h3, h4 {{
         color: #00ffd0 !important;
         text-shadow: 0px 0px 12px #00ffd0;
-    }
+    }}
 
     /* Buttons */
-    div.stButton > button {
+    div.stButton > button {{
         background: linear-gradient(90deg, #00bcd4, #00ff88);
         color: #001219;
         border-radius: 12px;
@@ -28,39 +43,41 @@ st.markdown("""
         border: none;
         box-shadow: 0px 0px 10px #00ffd0;
         transition: 0.2s;
-    }
-    div.stButton > button:hover {
+    }}
+    div.stButton > button:hover {{
         background: linear-gradient(90deg, #00ff88, #00bcd4);
         transform: scale(1.05);
-    }
+    }}
 
     /* Input fields */
-    .stTextInput > div > div > input {
+    .stTextInput > div > div > input {{
         background-color: rgba(255,255,255,0.05);
         color: #00ffd0;
         border: 1px solid #00ffd0;
         border-radius: 8px;
-    }
+    }}
 
-    /* Pulsing Circle */
-    .titan-pulse {
-        height: 60px;
-        width: 60px;
+    /* Heartbeat Circle */
+    .titan-pulse {{
+        height: 70px;
+        width: 70px;
         background: radial-gradient(circle, #00ffd0, #004d40);
         border-radius: 50%;
         animation: pulseTitan 2s infinite;
-        margin: 0 auto;
+        margin: 15px auto;
         box-shadow: 0px 0px 20px #00ffcc;
-    }
-
-    @keyframes pulseTitan {
-        0% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 20px #00ffcc; }
-        50% { transform: scale(1.2); opacity: 0.6; box-shadow: 0 0 40px #00ffcc; }
-        100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 20px #00ffcc; }
-    }
-
+    }}
+    @keyframes pulseTitan {{
+        0% {{ transform: scale(1); opacity: 0.9; }}
+        50% {{ transform: scale(1.25); opacity: 0.6; }}
+        100% {{ transform: scale(1); opacity: 0.9; }}
+    }}
     </style>
 """, unsafe_allow_html=True)
+
+# 🌌 Titan Heartbeat Display
+st.markdown('<div class="titan-pulse"></div>', unsafe_allow_html=True)
+st.markdown("<h3 style='text-align:center;'>💓 Titan Heartbeat Active</h3>", unsafe_allow_html=True)
 
 # ================================================================
 # 🌌 Celestial Titan God AI v10000.9 — Forecast Generator Core

@@ -1,5 +1,6 @@
 # ================================================================
-# 🌌 Celestial Titan God AI v10000.9-E — Divine Lightning Universe Core
+# 💎 Celestial Titan God AI v10000.9-F — Orb Realignment Build
+# Divine Lightning Universe Core (Complete Code)
 # ================================================================
 import streamlit as st, time, random, json, os, datetime
 
@@ -68,28 +69,54 @@ div.stButton>button {{
 div.stButton>button:hover {{
     transform:scale(1.05); box-shadow:0 0 35px {main_color};
 }}
-/* --- TITAN ORB --- */
+
+/* === TITAN ORB === */
 .titan-orb {{
-    width:130px; height:130px; border-radius:50%;
-    margin:auto; background:radial-gradient(circle,{main_color},{shadow_color},#000);
-    box-shadow:0 0 80px {main_color};
-    animation: pulse 2.2s infinite ease-in-out;
+    position:relative;
+    width:160px; height:160px; border-radius:50%;
+    margin:60px auto;
+    background: radial-gradient(circle at 30% 30%, {main_color}, {shadow_color}, #000);
+    box-shadow:
+        0 0 60px {main_color}aa,
+        inset 0 0 40px {shadow_color}aa;
+    animation: corePulse 2s ease-in-out infinite;
 }}
-@keyframes pulse {{
-  0%   {{transform:scale(1); box-shadow:0 0 25px {main_color};}}
-  50%  {{transform:scale(1.3); box-shadow:0 0 100px {shadow_color};}}
-  100% {{transform:scale(1); box-shadow:0 0 25px {main_color};}}
+@keyframes corePulse {{
+  0%   {{ transform:scale(1); box-shadow:0 0 40px {main_color}, inset 0 0 25px {shadow_color}; }}
+  50%  {{ transform:scale(1.25); box-shadow:0 0 90px {shadow_color}, inset 0 0 60px {main_color}; }}
+  100% {{ transform:scale(1); box-shadow:0 0 40px {main_color}, inset 0 0 25px {shadow_color}; }}
 }}
-/* --- LIGHTNING EFFECT --- */
+
+/* === ELECTRIC LIGHTNING FIELD === */
 .lightning {{
-  position:relative; top:-110px; width:160px; height:160px;
-  margin:auto; border-radius:50%;
-  background:radial-gradient(circle,transparent 60%,{main_color}22 90%);
-  animation: flicker 1.6s infinite;
+  position:absolute;
+  top:-10px; left:50%;
+  transform:translateX(-50%);
+  width:220px; height:220px;
+  border-radius:50%;
+  background: radial-gradient(circle, transparent 60%, {main_color}22 100%);
+  overflow:hidden;
 }}
-@keyframes flicker {{
-  0%,100%{{opacity:0.6;}}
-  50%{{opacity:1; filter:brightness(2);}}
+.lightning::before, .lightning::after {{
+  content:"";
+  position:absolute;
+  top:0; left:0; right:0; bottom:0;
+  border-radius:50%;
+  background: conic-gradient(from 0deg, transparent 0%, {main_color} 5%, transparent 10%);
+  animation: sparkRotate 2s linear infinite;
+  opacity:0.9;
+}}
+.lightning::after {{
+  animation: sparkRotateReverse 3s linear infinite;
+  filter: blur(3px) brightness(2);
+}}
+@keyframes sparkRotate {{
+  from {{ transform:rotate(0deg); }}
+  to   {{ transform:rotate(360deg); }}
+}}
+@keyframes sparkRotateReverse {{
+  from {{ transform:rotate(360deg); }}
+  to   {{ transform:rotate(0deg); }}
 }}
 </style>
 """, unsafe_allow_html=True)
@@ -98,12 +125,17 @@ div.stButton>button:hover {{
 # 🌠 ORB DISPLAY + TITLE
 # ---------------------------------------------------------------
 st.markdown("""
-<div class='titan-orb'></div>
-<div class='lightning'></div>
+<div style='position:relative;'>
+    <div class='titan-orb'></div>
+    <div class='lightning'></div>
+</div>
 """, unsafe_allow_html=True)
 
 st.title("💎 Celestial Titan God AI — Divine Lightning Universe Core")
 st.caption("🌙 Powered by Titan’s Eternal Energy Field (Auto-Synced Mode)")
+
+
+
 
 # ================================================================
 # 💓 TITAN HEARTBEAT DISPLAY (Visible Top Center)

@@ -467,6 +467,51 @@ if st.button("💾 Save Official Result", key="titan_save_btn"):
         st.warning("⚠️ Please select a game and enter numbers before saving.")
 
 # ================================================================
+# 🧩 TITAN VCS HISTORICAL MEMORY LOADER — January–November Archive
+# ================================================================
+st.markdown("---")
+st.subheader("🧠 Titan VCS Historical Memory Loader")
+st.caption("📦 Integrating January–November results into Titan’s learning field")
+
+VCS_FILE = os.path.join(DATA_DIR, "titan_vcs_results.json")
+
+# Create file if missing
+if not os.path.exists(VCS_FILE):
+    with open(VCS_FILE, "w") as f:
+        json.dump({}, f, indent=2)
+
+# Load data
+try:
+    with open(VCS_FILE, "r") as f:
+        vcs_data = json.load(f)
+except:
+    vcs_data = {}
+
+# Display status
+total_games = len(vcs_data.keys())
+total_records = sum(len(v) for v in vcs_data.values()) if vcs_data else 0
+st.success(f"✅ VCS Connected — {total_games} game types loaded, {total_records} records stored.")
+
+# Merge function
+def merge_vcs_data(new_data):
+    for game, entries in new_data.items():
+        vcs_data.setdefault(game, [])
+        vcs_data[game].extend(entries)
+    with open(VCS_FILE, "w") as f:
+        json.dump(vcs_data, f, indent=2)
+
+# Upload old results
+uploaded_vcs = st.file_uploader("📤 Upload your historical results (JSON format)", type=["json"])
+if uploaded_vcs is not None:
+    new_vcs = json.load(uploaded_vcs)
+    merge_vcs_data(new_vcs)
+    st.success("💾 Historical results successfully merged into Titan VCS archive!")
+
+# Optional: show preview
+if st.checkbox("👁️ View Titan VCS Records Preview"):
+    st.write(vcs_data)
+
+# ================================================================
 # 📜 Titan Result Viewer — Filter by Date or Game
 # ================================================================
 st.markdown("## 📜 Titan Result Viewer — Filter by Date or Game")

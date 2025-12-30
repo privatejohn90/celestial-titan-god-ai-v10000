@@ -512,6 +512,39 @@ if st.checkbox("👁️ View Titan VCS Records Preview"):
     st.write(vcs_data)
 
 # ================================================================
+# ⚙️ Titan CSV → VCS Auto-Converter Module
+# ================================================================
+import io
+
+st.markdown("### 🔄 Convert CSV → Titan VCS Format")
+csv_file = st.file_uploader("Upload your raw CSV result file", type=["csv"], key="csv_upload")
+
+if csv_file is not None:
+    try:
+        df = pd.read_csv(csv_file)
+        # Ensure column names
+        df.columns = [c.strip().title() for c in df.columns]
+        required_cols = {"Game", "Date", "Draw", "Result"}
+        if required_cols.issubset(set(df.columns)):
+            # Create VCS text format
+            vcs_data = "# GAME,DATE,DRAW,RESULT\n"
+            for _, row in df.iterrows():
+                vcs_data += f"{row['Game']},{row['Date']},{row['Draw']},{row['Result']}\n"
+            
+            # Offer download link
+            st.success("✅ Conversion successful! Ready to download Titan VCS file.")
+            st.download_button(
+                label="💾 Download Titan VCS File",
+                data=vcs_data,
+                file_name="Titan_Converted.vcs",
+                mime="text/plain"
+            )
+        else:
+            st.error("❌ Missing one or more required columns: Game, Date, Draw, Result")
+    except Exception as e:
+        st.error(f"⚠️ Conversion failed: {e}")
+
+# ================================================================
 # 📜 Titan Result Viewer — Filter by Date or Game
 # ================================================================
 st.markdown("## 📜 Titan Result Viewer — Filter by Date or Game")

@@ -1174,3 +1174,48 @@ def titan_voice_reflection(accuracy):
 if "voice_done" not in st.session_state:
     titan_voice_reflection(latest_accuracy)
     st.session_state["voice_done"] = True
+
+# ================================================================
+# 🧠 Titan Terminal Result Saver
+# ================================================================
+def titan_terminal_saver():
+    print("\n💎 Titan Terminal Saver Active — type 'exit' to quit\n")
+    data = load_json(RESULT_FILE, {})
+    while True:
+        line = input("📝 Enter result (ex: TX Pick 3 Night 01/01/2025 = 390): ").strip()
+        if line.lower() in ["exit", "quit"]:
+            break
+        try:
+            parts = line.split("=")
+            if len(parts) != 2:
+                print("⚠️ Invalid format, try again.")
+                continue
+
+            left, result = parts[0].strip(), parts[1].strip()
+            tokens = left.split()
+
+            state = tokens[0]
+            game = f"{tokens[1]} {tokens[2]}"
+            draw_time = tokens[3]
+            date_str = tokens[4]
+
+            date_obj = datetime.datetime.strptime(date_str, "%m/%d/%Y")
+            date_fmt = date_obj.strftime("%B %d, %Y")
+
+            entry = {
+                "date": date_fmt,
+                "draw": draw_time,
+                "result": result,
+                "timestamp": datetime.datetime.now().strftime("%I:%M %p"),
+            }
+
+            key = f"{state} {game}"
+            data.setdefault(key, []).append(entry)
+            save_json(RESULT_FILE, data)
+            print(f"✅ Saved {key} [{draw_time}] = {result}")
+        except Exception as e:
+            print(f"❌ Error: {e}")
+
+# Uncomment this to enable terminal saver
+# titan_terminal_saver()
+

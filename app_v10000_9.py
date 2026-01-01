@@ -1218,7 +1218,7 @@ def titan_sequence_analyzer():
     st.divider()
 
 # ================================================================
-# 💎 Titan Retention Zone — Maintain Numbers (1–3 Draws)
+# 💎 Titan Retention Zone — Maintain Numbers (1–3 Draws) [FIXED]
 # ================================================================
 def titan_retention_zone():
     st.markdown("## 💎 Titan Retention Zone")
@@ -1230,9 +1230,19 @@ def titan_retention_zone():
     for g, entries in forecasts.items():
         if not entries:
             continue
+
         last = entries[-1]
-        num = last["priority"]["display"]
-        conf = last["priority"]["confidence"]
+
+        # 🔹 Compatibility patch for old / new forecast format
+        try:
+            if "priority" in last:
+                num = last["priority"].get("display", "")
+                conf = last["priority"].get("confidence", 0)
+            else:
+                num = last.get("numbers") or last.get("display", "")
+                conf = last.get("confidence", 0)
+        except Exception:
+            continue
 
         if conf >= 96:
             retention_list.append({

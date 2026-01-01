@@ -1176,46 +1176,86 @@ if "voice_done" not in st.session_state:
     st.session_state["voice_done"] = True
 
 # ================================================================
-# 🧠 Titan Terminal Result Saver
+# ⚙️ Titan Sequence Analyzer + Retention Zone Core (v10000.9-RZ)
 # ================================================================
-def titan_terminal_saver():
-    print("\n💎 Titan Terminal Saver Active — type 'exit' to quit\n")
+
+import datetime
+
+def titan_sequence_analyzer():
+    st.markdown("## 🧩 Titan Sequence Stability Analyzer")
+    st.caption("🔬 Detects sliding digits, stable cores, and retention-worthy sets")
+
     data = load_json(RESULT_FILE, {})
-    while True:
-        line = input("📝 Enter result (ex: TX Pick 3 Night 01/01/2025 = 390): ").strip()
-        if line.lower() in ["exit", "quit"]:
-            break
-        try:
-            parts = line.split("=")
-            if len(parts) != 2:
-                print("⚠️ Invalid format, try again.")
-                continue
+    forecasts = load_json(FORECAST_FILE, {})
 
-            left, result = parts[0].strip(), parts[1].strip()
-            tokens = left.split()
+    state = st.selectbox("🎯 Select Game for Analysis", list(data.keys()))
+    if state:
+        results = data[state][-10:]  # last 10 draws
+        st.write(f"📊 Analyzing last {len(results)} draws for `{state}`")
 
-            state = tokens[0]
-            game = f"{tokens[1]} {tokens[2]}"
-            draw_time = tokens[3]
-            date_str = tokens[4]
+        # --- Sequence Pattern Extraction ---
+        digits_seen = {}
+        for e in results:
+            res = e.get("result", "")
+            for d in res:
+                digits_seen[d] = digits_seen.get(d, 0) + 1
 
-            date_obj = datetime.datetime.strptime(date_str, "%m/%d/%Y")
-            date_fmt = date_obj.strftime("%B %d, %Y")
+        st.markdown("### 🔢 Digit Frequency (Last 10 Draws)")
+        freq_df = pd.DataFrame(list(digits_seen.items()), columns=["Digit","Count"]).sort_values(by="Count", ascending=False)
+        st.dataframe(freq_df, use_container_width=True)
 
-            entry = {
-                "date": date_fmt,
-                "draw": draw_time,
-                "result": result,
-                "timestamp": datetime.datetime.now().strftime("%I:%M %p"),
-            }
+        # --- Detect Sliding or Stable Digits ---
+        if len(results) >= 3:
+            last3 = [e.get("result","") for e in results[-3:]]
+            core_digits = set.intersection(*[set(x) for x in last3])
+            st.markdown(f"### 🧠 Core Digits (Repeated in Last 3 Draws): `{', '.join(core_digits)}`")
 
-            key = f"{state} {game}"
-            data.setdefault(key, []).append(entry)
-            save_json(RESULT_FILE, data)
-            print(f"✅ Saved {key} [{draw_time}] = {result}")
-        except Exception as e:
-            print(f"❌ Error: {e}")
+            if core_digits:
+                st.success(f"✅ Stable Core Detected — {', '.join(core_digits)}")
+            else:
+                st.warning("⚠️ No stable core detected yet (Titan still adjusting order).")
 
-# Uncomment this to enable terminal saver
-# titan_terminal_saver()
+    st.divider()
+
+# ================================================================
+# 💎 Titan Retention Zone — Maintain Numbers (1–3 Draws)
+# ================================================================
+def titan_retention_zone():
+    st.markdown("## 💎 Titan Retention Zone")
+    st.caption("🔥 Numbers recommended to maintain for 1–3 draws based on harmonic repetition")
+
+    forecasts = load_json(FORECAST_FILE, {})
+    retention_list = []
+
+    for g, entries in forecasts.items():
+        if not entries:
+            continue
+        last = entries[-1]
+        num = last["priority"]["display"]
+        conf = last["priority"]["confidence"]
+
+        if conf >= 96:
+            retention_list.append({
+                "game": g,
+                "number": num,
+                "confidence": conf,
+                "expires_in": random.randint(1,3)
+            })
+
+    if retention_list:
+        st.markdown("### 🔁 Maintain these 1–3 Draws:")
+        df = pd.DataFrame(retention_list)
+        st.dataframe(df, use_container_width=True)
+    else:
+        st.info("No high-confidence sets available yet. Generate new forecasts first.")
+
+# ================================================================
+# 🌌 Display Modules
+# ================================================================
+with st.expander("🧠 Titan Sequence Analyzer"):
+    titan_sequence_analyzer()
+
+with st.expander("💎 Titan Retention Zone"):
+    titan_retention_zone()
+
 

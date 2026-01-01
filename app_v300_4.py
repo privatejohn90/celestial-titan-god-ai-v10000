@@ -178,6 +178,8 @@ def generate_numbers(game, num_sets=5):
         })
 
     return sets
+
+
 # 📜 Display + Save
 def show_forecast(game,forecasts,draw_time):
     date=datetime.date.today().strftime("%B %d, %Y")
@@ -271,7 +273,7 @@ def log_titan_accuracy(result_game, result_number):
     else:
         return f"❌ No match found. Accuracy recorded as {acc_percent}%"
 
-# ================================================================
+  # ================================================================
 # 🧠 Titan Accuracy Analyzer + Official Result Checker (v300.9-FXR9 Safe)
 # ================================================================
 st.markdown("---")
@@ -284,16 +286,19 @@ with st.expander("🧩 Log Official Result & Analyze Accuracy", expanded=False):
         placeholder="e.g., GA Pick 3 Midday",
         key="fxr9_game_name"
     )
+
     result_number = st.text_input(
         "🏆 Official Result Number(s)",
         placeholder="e.g., 557 or 12 24 36 38 41",
         key="fxr9_result_number"
     )
 
+    # ✅ Added timestamp when logging accuracy
     if st.button("⚡ Run Titan Accuracy Log", key="fxr9_run_button"):
         if result_game and result_number:
             msg = log_titan_accuracy(result_game, result_number)
-            st.success(msg)
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            st.success(f"{msg}\n🕓 Recorded on: {timestamp}")
         else:
             st.warning("⚠️ Please provide both game and result number.")
 
@@ -303,12 +308,10 @@ with st.expander("📊 View Titan Accuracy Logs", expanded=False):
     if len(accuracy) == 0:
         st.info("No accuracy logs yet.")
     else:
-        st.markdown("### 📅 Recent Titan Accuracy Records")
         for g, entries in list(accuracy.items())[-5:]:
             last = entries[-1]
             st.markdown(
-                f"🎯 **{g}** — 🗓️ {last.get('date', 'Unknown')} — "
-                f"🏆 {last.get('result', 'N/A')} | Accuracy: `{last.get('accuracy', 0)}%`"
+                f"🎯 **{g}** — {last['result']} | Accuracy: `{last['accuracy']}%` | 🕓 {last.get('date', 'Unknown')}"
             )
 
 # =============================================================

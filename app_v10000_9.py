@@ -1031,56 +1031,55 @@ def titan_voice_reflection():
 titan_voice_reflection()
 
 # ================================================================
-# 🌌 TITAN LEARNING PULSE VISUALIZER — v10001.2
+# 🌠 Titan Learning Pulse Visualizer — Neural Harmonic Engine
 # ================================================================
-import math
+def titan_learning_pulse_visualizer():
+    st.markdown("### 🌠 Titan Learning Pulse Visualizer — Neural Harmonic Engine")
 
-def titan_learning_visualizer():
-    st.subheader("🌠 Titan Learning Pulse Visualizer")
+    # Load Titan's learning data
+    learning_data = load_json("data/titan_learning_map.json", {
+        "memory_level": 0.0,
+        "harmonics": [],
+        "energy": "inactive"
+    })
 
-    try:
-        learn_map = load_json(os.path.join(DATA_DIR, "titan_learning_map.json"), {})
-        if not learn_map:
-            st.warning("⚠️ Titan has not learned any data yet.")
-            return
+    memory_level = learning_data.get("memory_level", 0.0)
+    harmonics = learning_data.get("harmonics", [])
+    energy_state = learning_data.get("energy", "inactive")
 
-        # Memory saturation level
-        total_games = len(learn_map)
-        total_entries = sum([info["total_entries"] for info in learn_map.values()])
-        saturation = min(100, math.ceil(total_entries / (total_games * 300) * 100))
+    # Define orb color and message based on learning level
+    if memory_level >= 0.98:
+        orb_color = "#00ffff"
+        mood = "💎 Divine clarity — Titan’s mind transcends pattern limits."
+    elif memory_level >= 0.94:
+        orb_color = "#66ccff"
+        mood = "🌙 Harmonic resonance stable — learning coherence achieved."
+    elif memory_level >= 0.88:
+        orb_color = "#3399ff"
+        mood = "⚡ Neural fields expanding — Titan absorbs cosmic data."
+    elif memory_level >= 0.75:
+        orb_color = "#0077ff"
+        mood = "💫 Processing vast harmonics — forming new alignment."
+    else:
+        orb_color = "#333366"
+        mood = "🌌 Dormant state — awaiting new result streams."
 
-        st.progress(saturation / 100)
-        st.caption(f"🧩 Memory Saturation: {saturation}% — {total_entries} total draws learned.")
-
-        for game, info in learn_map.items():
-            col1, col2 = st.columns([2, 1])
-            with col1:
-                st.markdown(f"### 🎯 {game}")
-                st.write(f"**Recent Pattern:** {', '.join(info['recent_pattern'][-5:])}")
-                st.write(f"**Harmonic Signature:** `{info.get('harmonic_signature', '-')}`")
-                freq = ", ".join([f"{d}:{c}" for d, c in list(info['frequency'].items())[:5]])
-                st.write(f"**Top Digits:** {freq}")
-            with col2:
-                st.markdown(
-                    f"""
-                    <div style='width:80px;height:80px;border-radius:50%;
-                    background: radial-gradient(circle, #00fff2, #001219);
-                    animation:pulse 2s infinite;display:flex;
-                    align-items:center;justify-content:center;
-                    box-shadow:0 0 30px #00fff2'>
-                    <b style='color:#001219;font-size:20px'>{len(info['recent_pattern'])}</b>
-                    </div>
-                    <style>@keyframes pulse {{
-                        0%{{transform:scale(1);opacity:1}}
-                        50%{{transform:scale(1.2);opacity:0.7}}
-                        100%{{transform:scale(1);opacity:1}}
-                    }}</style>
-                    """, unsafe_allow_html=True
-                )
-
-        st.success("💎 Titan’s learning pulse is active across all games.")
-    except Exception as e:
-        st.error(f"⚠️ Visualizer Error: {e}")
+    # Display orb and learning summary
+    st.markdown(
+        f"""
+        <div style='text-align:center; padding:20px;'>
+            <div style='width:120px; height:120px; border-radius:60px; margin:auto;
+                        background: radial-gradient(circle at center, {orb_color}, transparent);
+                        box-shadow: 0 0 30px {orb_color}, inset 0 0 20px {orb_color};'>
+            </div>
+            <p style='margin-top:10px; color:{orb_color}; font-size:18px;'>{mood}</p>
+            <p style='color:#aaa;'>🧠 Memory Level: <b>{memory_level*100:.2f}%</b></p>
+            <p style='color:#aaa;'>🔹 Harmonic Nodes: {harmonics}</p>
+            <p style='color:#888;'>Energy Mode: {energy_state}</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 # ================================================================
 # 📊 Titan Accuracy Trend Graph — Cosmic Analytics Core

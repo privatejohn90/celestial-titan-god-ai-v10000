@@ -467,6 +467,48 @@ if st.button("💾 Save Official Result", key="titan_save_btn"):
         st.warning("⚠️ Please select a game and enter numbers before saving.")
 
 # ================================================================
+# 🧠 TITAN LEARNING ENGINE — AUTO MEMORY BUILDER
+# ================================================================
+def titan_learning_update():
+    learn_file = os.path.join(DATA_DIR, "titan_learning_map.json")
+    data = load_json(learn_file, {})
+
+    # Load existing results
+    results = load_json(RESULT_FILE, {})
+
+    for game, entries in results.items():
+        if game not in data:
+            data[game] = {
+                "total_entries": 0,
+                "recent_pattern": [],
+                "frequency": {},
+                "harmonic_signature": ""
+            }
+
+        # Process each entry
+        for e in entries:
+            if "result" not in e:
+                continue
+            nums = [int(x) for x in str(e["result"]) if x.isdigit()]
+            for n in nums:
+                data[game]["frequency"][n] = data[game]["frequency"].get(n, 0) + 1
+
+            data[game]["recent_pattern"].append(e["result"])
+            data[game]["total_entries"] += 1
+
+            # Keep only last 30 results
+            data[game]["recent_pattern"] = data[game]["recent_pattern"][-30:]
+
+        # Generate harmonic signature (top 3 digits)
+        top_digits = sorted(
+            data[game]["frequency"].items(), key=lambda x: x[1], reverse=True
+        )[:3]
+        data[game]["harmonic_signature"] = "-".join([str(d[0]) for d in top_digits])
+
+    save_json(learn_file, data)
+    st.success("🧠 Titan Learning Engine: Memory updated successfully!")
+
+# ================================================================
 # 🧩 TITAN VCS HISTORICAL MEMORY LOADER — January–November Archive
 # ================================================================
 st.markdown("---")
@@ -989,6 +1031,58 @@ def titan_voice_reflection():
 titan_voice_reflection()
 
 # ================================================================
+# 🌌 TITAN LEARNING PULSE VISUALIZER — v10001.2
+# ================================================================
+import math
+
+def titan_learning_visualizer():
+    st.subheader("🌠 Titan Learning Pulse Visualizer")
+
+    try:
+        learn_map = load_json(os.path.join(DATA_DIR, "titan_learning_map.json"), {})
+        if not learn_map:
+            st.warning("⚠️ Titan has not learned any data yet.")
+            return
+
+        # Memory saturation level
+        total_games = len(learn_map)
+        total_entries = sum([info["total_entries"] for info in learn_map.values()])
+        saturation = min(100, math.ceil(total_entries / (total_games * 300) * 100))
+
+        st.progress(saturation / 100)
+        st.caption(f"🧩 Memory Saturation: {saturation}% — {total_entries} total draws learned.")
+
+        for game, info in learn_map.items():
+            col1, col2 = st.columns([2, 1])
+            with col1:
+                st.markdown(f"### 🎯 {game}")
+                st.write(f"**Recent Pattern:** {', '.join(info['recent_pattern'][-5:])}")
+                st.write(f"**Harmonic Signature:** `{info.get('harmonic_signature', '-')}`")
+                freq = ", ".join([f"{d}:{c}" for d, c in list(info['frequency'].items())[:5]])
+                st.write(f"**Top Digits:** {freq}")
+            with col2:
+                st.markdown(
+                    f"""
+                    <div style='width:80px;height:80px;border-radius:50%;
+                    background: radial-gradient(circle, #00fff2, #001219);
+                    animation:pulse 2s infinite;display:flex;
+                    align-items:center;justify-content:center;
+                    box-shadow:0 0 30px #00fff2'>
+                    <b style='color:#001219;font-size:20px'>{len(info['recent_pattern'])}</b>
+                    </div>
+                    <style>@keyframes pulse {{
+                        0%{{transform:scale(1);opacity:1}}
+                        50%{{transform:scale(1.2);opacity:0.7}}
+                        100%{{transform:scale(1);opacity:1}}
+                    }}</style>
+                    """, unsafe_allow_html=True
+                )
+
+        st.success("💎 Titan’s learning pulse is active across all games.")
+    except Exception as e:
+        st.error(f"⚠️ Visualizer Error: {e}")
+
+# ================================================================
 # 📊 Titan Accuracy Trend Graph — Cosmic Analytics Core
 # ================================================================
 import matplotlib.pyplot as plt
@@ -1267,5 +1361,6 @@ with st.expander("🧠 Titan Sequence Analyzer"):
 
 with st.expander("💎 Titan Retention Zone"):
     titan_retention_zone()
+
 
 

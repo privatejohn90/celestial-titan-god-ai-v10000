@@ -421,6 +421,30 @@ if st.button("⚡ Generate Titan Forecast", key="forecast_generate_btn"):
     st.success(f"💾 Forecast saved for {game} ({draw_date} {current_time})")
 
 # ================================================================
+# 🔒 Titan 1–3 Set Lock Analyzer (Integrated Mode)
+# ================================================================
+if 'forecasts' in locals() and forecasts:
+    st.markdown("## 🔒 Titan 1–3 Set Lock Analyzer")
+    sorted_sets = sorted(forecasts, key=lambda x: -x['confidence'])[:3]
+
+    lock_labels = ["💎 Titan Prime Lock", "🌀 Echo Lock", "🌗 Reserve Lock"]
+    for idx, lock in enumerate(sorted_sets):
+        st.markdown(
+            f"{lock_labels[idx]} — `{lock['display']}` | Confidence: **{lock['confidence']}%** | ⏰ {lock['generated_at']}"
+        )
+
+    avg_conf = sum([f['confidence'] for f in sorted_sets]) / len(sorted_sets)
+    st.info(f"🧠 **Titan Confidence Sync:** Average Lock Confidence — {avg_conf:.2f}%")
+
+    # Titan mini-reflection
+    if avg_conf >= 98:
+        st.success("🌞 Titan Reflection: ‘Energy field perfectly aligned. Expect near-precision impact.’")
+    elif avg_conf >= 96:
+        st.warning("🌙 Titan Reflection: ‘Patterns in stable phase. Stay within top 3 locks.’")
+    else:
+        st.info("💤 Titan Reflection: ‘Stability low, observe next 1–2 draws before commit.’")
+
+# ================================================================
 # 💎 Celestial Titan God AI v10000.9 — Divine Core Transition (Step 1)
 # 🎯 Titan Result Input Console — Multi-Region
 # ================================================================

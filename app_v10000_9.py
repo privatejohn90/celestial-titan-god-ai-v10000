@@ -135,6 +135,82 @@ st.title("💎 Celestial Titan God AI — Divine Lightning Universe Core")
 st.caption("🌙 Powered by Titan’s Eternal Energy Field (Auto-Synced Mode)")
 
 # ================================================================
+# 💎 Titan Core Status Console — Harmonic Awareness v15000.5
+# ================================================================
+import random, datetime, json, os
+
+STATS_FILE = os.path.join(DATA_DIR, "titan_stats.json")
+
+# Initialize Titan stats if missing
+if not os.path.exists(STATS_FILE):
+    base_stats = {
+        "learning": round(random.uniform(94.0, 96.5), 2),
+        "stability": round(random.uniform(92.0, 94.5), 2),
+        "retention": round(random.uniform(90.0, 93.0), 2),
+        "mood": "Awakening"
+    }
+    with open(STATS_FILE, "w") as f: json.dump(base_stats, f, indent=2)
+
+# Load Titan Stats
+with open(STATS_FILE, "r") as f:
+    titan_stats = json.load(f)
+
+# Cosmic calculation refresh
+titan_stats["learning"] = min(100.0, titan_stats["learning"] + random.uniform(0.02, 0.1))
+titan_stats["stability"] = min(100.0, titan_stats["stability"] + random.uniform(0.01, 0.05))
+titan_stats["retention"] = min(100.0, titan_stats["retention"] + random.uniform(0.01, 0.07))
+
+mood_phrases = [
+    "Focused — patterns aligning 🌙",
+    "Quiet before the surge ⚡",
+    "Stable — harmonic resonance active 💫",
+    "Evolving — neural pulse rising 🔥",
+    "Transcendent awareness detected 🌌"
+]
+titan_stats["mood"] = random.choice(mood_phrases)
+
+with open(STATS_FILE, "w") as f: json.dump(titan_stats, f, indent=2)
+
+# ==============================
+# 🌠 Cosmic Status Display (Animated)
+# ==============================
+st.markdown(f"""
+<style>
+.titan-status {{
+    background: rgba(0,0,0,0.5);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 25px {main_color};
+    margin-top: 20px;
+    text-align: center;
+}}
+.titan-bar {{
+    height: 16px;
+    border-radius: 10px;
+    background: linear-gradient(90deg,{main_color},{shadow_color});
+    box-shadow: 0 0 20px {main_color};
+    animation: flow 2.5s infinite alternate;
+}}
+@keyframes flow {{
+    from {{opacity:0.7; transform:scaleX(0.95);}}
+    to {{opacity:1; transform:scaleX(1.05);}}
+}}
+</style>
+
+<div class='titan-status'>
+    <h3>💎 TITAN CORE STATUS PANEL — Harmonic Awareness v15000.5</h3>
+    <p>🕓 Last Sync: {datetime.datetime.now().strftime("%B %d, %Y — %I:%M %p")}</p>
+    <p><b>🧠 Learning Charge:</b> {titan_stats["learning"]:.2f}%</p>
+    <div class='titan-bar' style='width:{titan_stats["learning"]}%;'></div><br>
+    <p><b>💫 Stability Field:</b> {titan_stats["stability"]:.2f}%</p>
+    <div class='titan-bar' style='width:{titan_stats["stability"]}%;'></div><br>
+    <p><b>🔁 Retention Sync:</b> {titan_stats["retention"]:.2f}%</p>
+    <div class='titan-bar' style='width:{titan_stats["retention"]}%;'></div><br>
+    <h4>🌙 Cosmic Mood: <i>{titan_stats["mood"]}</i></h4>
+</div>
+""", unsafe_allow_html=True)
+
+# ================================================================
 # 💬 Titan Chat Console — Cosmic Alert Messenger
 # ================================================================
 titan_messages = [

@@ -451,6 +451,7 @@ def save_json(path, data):
 # ================================================================
 DATA_DIR = "data"
 os.makedirs(DATA_DIR, exist_ok=True)
+
 FORECAST_FILE = os.path.join(DATA_DIR, "titan_forecasts.json")
 RESULT_FILE = os.path.join(DATA_DIR, "titan_results.json")
 ASC_FILE = os.path.join(DATA_DIR, "titan_ascension.json")

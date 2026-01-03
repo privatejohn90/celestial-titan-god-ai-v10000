@@ -421,7 +421,7 @@ st.markdown('<div class="titan-pulse"></div>', unsafe_allow_html=True)
 st.markdown("<h3 style='text-align:center;'>⚡ Titan Heartbeat — Divine Core Active</h3>", unsafe_allow_html=True)
 
 # ================================================================
-# 💎 Celestial Titan God AI — Lightning Universe Core
+# 💎 Celestial Titan God AI — Divine Lightning Universe Core
 # ================================================================
 
 import streamlit as st
@@ -432,7 +432,6 @@ import pandas as pd
 # 🔹 JSON Utilities (Fix for Ascension System)
 # ================================================================
 def load_json(path, default):
-    import os, json
     if not os.path.exists(path):
         with open(path, "w") as f:
             json.dump(default, f, indent=2)
@@ -445,7 +444,6 @@ def load_json(path, default):
 
 def save_json(path, data):
     with open(path, "w") as f:
-        import json
         json.dump(data, f, indent=2)
 
 # ================================================================

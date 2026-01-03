@@ -439,7 +439,7 @@ def load_json(path, default):
     try:
         with open(path, "r") as f:
             return json.load(f)
-    except:
+    except Exception:
         return default
 
 def save_json(path, data):

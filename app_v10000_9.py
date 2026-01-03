@@ -421,35 +421,46 @@ st.markdown('<div class="titan-pulse"></div>', unsafe_allow_html=True)
 st.markdown("<h3 style='text-align:center;'>⚡ Titan Heartbeat — Divine Core Active</h3>", unsafe_allow_html=True)
 
 # ================================================================
-# 🌌 Celestial Titan God AI v10000.9 — Forecast Generator Core
+# 💎 Celestial Titan God AI — Lightning Universe Core
 # ================================================================
+
 import streamlit as st
 import json, os, datetime, random
 import pandas as pd
+
+# ================================================================
+# 🔹 JSON Utilities (Fix for Ascension System)
+# ================================================================
+def load_json(path, default):
+    import os, json
+    if not os.path.exists(path):
+        with open(path, "w") as f:
+            json.dump(default, f, indent=2)
+        return default
+    try:
+        with open(path, "r") as f:
+            return json.load(f)
+    except:
+        return default
+
+def save_json(path, data):
+    with open(path, "w") as f:
+        import json
+        json.dump(data, f, indent=2)
 
 # ================================================================
 # 🔹 Setup + File Paths
 # ================================================================
 DATA_DIR = "data"
 os.makedirs(DATA_DIR, exist_ok=True)
-
 FORECAST_FILE = os.path.join(DATA_DIR, "titan_forecasts.json")
 RESULT_FILE = os.path.join(DATA_DIR, "titan_results.json")
+ASC_FILE = os.path.join(DATA_DIR, "titan_ascension.json")
 
 # ================================================================
-# 🔹 JSON Utilities
+# 🔹 Load or initialize Titan Ascension Data
 # ================================================================
-def load_json(path, default):
-    if not os.path.exists(path):
-        with open(path, "w") as f:
-            json.dump(default, f, indent=2)
-        return default
-    with open(path, "r") as f:
-        return json.load(f)
-
-def save_json(path, data):
-    with open(path, "w") as f:
-        json.dump(data, f, indent=2)
+asc_data = load_json(ASC_FILE, {"level": 1, "xp": 0, "next_xp": 100})
 
 # ================================================================
 # 🎯 Game Dictionaries — Full Multi-Region

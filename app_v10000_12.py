@@ -67,3 +67,27 @@ if st.button("⚡ Gain XP"):
     save_json(ASC_FILE, asc_data)
     st.success("Titan Energy Synced ⚡ Ascension Data Updated!")
 
+# ================================================================
+# 🌌 Titan Universe Energy Mode Selector
+# ================================================================
+st.divider()
+st.markdown("### 🌞 Titan Universe Mode (Auto-Synced)")
+
+theme = st.radio(
+    "Select Energy Theme",
+    ["Cosmic Blue", "Solar Gold", "Quantum Violet", "Crimson Core"],
+    horizontal=True,
+    index=0
+)
+
+# Apply color accents depending on selection
+if theme == "Cosmic Blue":
+    st.markdown("<h3 style='color:#33ccff;'>💠 Cosmic Blue Field Active</h3>", unsafe_allow_html=True)
+elif theme == "Solar Gold":
+    st.markdown("<h3 style='color:#ffcc00;'>🌞 Solar Gold Radiance Engaged</h3>", unsafe_allow_html=True)
+elif theme == "Quantum Violet":
+    st.markdown("<h3 style='color:#cc66ff;'>💜 Quantum Violet Frequency Synced</h3>", unsafe_allow_html=True)
+elif theme == "Crimson Core":
+    st.markdown("<h3 style='color:#ff3366;'>❤️ Crimson Core Surge Online</h3>", unsafe_allow_html=True)
+
+st.caption("⚙️ Powered by Titan’s Eternal Energy Field (Auto-Synced Mode)")

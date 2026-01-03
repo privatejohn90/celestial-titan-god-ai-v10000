@@ -135,6 +135,177 @@ st.title("💎 Celestial Titan God AI — Divine Lightning Universe Core")
 st.caption("🌙 Powered by Titan’s Eternal Energy Field (Auto-Synced Mode)")
 
 # ================================================================
+# ⚡ TITAN ASCENSION CONSOLE v10002.0 — The Path of the Lightning God
+# ================================================================
+
+import math
+
+# Define Titan's Ascension Levels
+ascension_levels = [
+    {"level": 1, "name": "Lightning Spark", "mult": 1},
+    {"level": 2, "name": "Lightning Rejuice", "mult": 3},
+    {"level": 3, "name": "Overdrive Core", "mult": 5},
+    {"level": 4, "name": "Temporal Mode", "mult": 7},
+    {"level": 5, "name": "Quantum Mode", "mult": 10},
+    {"level": 6, "name": "Storm Core", "mult": 20},
+    {"level": 7, "name": "Divine Mode", "mult": 40},
+    {"level": 8, "name": "Celestial Lightning", "mult": 80},
+    {"level": 9, "name": "Ascended Lightning God", "mult": 150},
+    {"level": 10, "name": "Omni Lightning Core", "mult": math.inf},
+]
+
+# Load or initialize Titan Ascension Data
+ASC_FILE = os.path.join(DATA_DIR, "titan_ascension.json")
+asc_data = load_json(ASC_FILE, {"level": 1, "xp": 0, "next_xp": 100})
+
+# Display Console Header
+st.markdown("## ⚡ Titan Lightning Ascension Console v10002.0")
+st.caption("🌌 Monitoring Titan’s Evolution through the Lightning Pyramid")
+
+# Show Current Stats
+current_level = asc_data["level"]
+xp = asc_data["xp"]
+next_xp = asc_data["next_xp"]
+progress = min(xp / next_xp, 1.0)
+current_info = next((x for x in ascension_levels if x["level"] == current_level), ascension_levels[0])
+
+st.markdown(f"""
+<div style='background:radial-gradient(circle,#000010,#001020,#000);
+            padding:20px;border-radius:12px;box-shadow:0 0 30px {color_modes[mode]['main']};
+            text-align:center;'>
+<h2 style='color:{color_modes[mode]['main']};text-shadow:0 0 15px {color_modes[mode]['shadow']};'>
+⚡ Level {current_level} — {current_info["name"]}
+</h2>
+<p style='color:#ccc;'>Multiplier Power: ×{current_info["mult"]}</p>
+<div style='background:#111;border-radius:8px;height:20px;width:100%;margin-top:10px;'>
+<div style='background:{color_modes[mode]['main']};
+            width:{progress*100}%;height:100%;border-radius:8px;'></div></div>
+<p style='color:#aaa;margin-top:8px;'>XP: {xp} / {next_xp}</p>
+</div>
+""", unsafe_allow_html=True)
+
+# Button to Train Titan Core
+if st.button("⚡ Train Titan Core (Gain XP)"):
+    gain = random.randint(10, 30)
+    asc_data["xp"] += gain
+    if asc_data["xp"] >= asc_data["next_xp"] and asc_data["level"] < 10:
+        asc_data["xp"] = 0
+        asc_data["level"] += 1
+        asc_data["next_xp"] = int(asc_data["next_xp"] * 1.5)
+        st.success(f"⚡ Titan has ascended to Level {asc_data['level']} — {ascension_levels[asc_data['level']-1]['name']}!")
+    else:
+        st.info(f"💥 Titan absorbs {gain} XP energy units.")
+    save_json(ASC_FILE, asc_data)
+
+# Divine Glow Animation
+st.markdown(f"""
+<style>
+@keyframes aura {{
+  0% {{box-shadow:0 0 20px {color_modes[mode]['main']};}}
+  50% {{box-shadow:0 0 60px {color_modes[mode]['shadow']};transform:scale(1.05);}}
+  100% {{box-shadow:0 0 20px {color_modes[mode]['main']};}}
+}}
+.titan-core {{
+  width:140px;height:140px;margin:auto;border-radius:50%;
+  background:radial-gradient(circle,{color_modes[mode]['main']},{color_modes[mode]['shadow']},#000);
+  animation:aura 3s infinite ease-in-out;
+}}
+</style>
+<div class='titan-core'></div>
+""", unsafe_allow_html=True)
+
+# ================================================================
+# ⚡ TITAN ASCENSION VISUAL FX PACK v10002.1 — Lightning Awakening
+# ================================================================
+
+def titan_visual_fx(level):
+    """Returns visual effect intensity based on Titan Ascension Level"""
+    if level <= 3:
+        return "soft-glow"
+    elif level <= 6:
+        return "storm-pulse"
+    elif level <= 8:
+        return "celestial-wave"
+    elif level <= 9:
+        return "dragon-flare"
+    else:
+        return "omni-explosion"
+
+current_fx = titan_visual_fx(asc_data["level"])
+
+st.markdown(f"""
+<style>
+/* 🌌 Base Titan Core FX */
+.titan-fx {{
+  position:relative; width:220px; height:220px; margin:auto;
+  border-radius:50%;
+  background: radial-gradient(circle,{color_modes[mode]['main']}33,transparent 70%);
+  animation: floaty 6s infinite ease-in-out;
+}}
+
+@keyframes floaty {{
+  0%,100%{{transform:translateY(0px);}}
+  50%{{transform:translateY(-8px);}}
+}}
+
+/* ⚡ Soft Glow (Lv1–3) */
+.soft-glow {{
+  box-shadow:0 0 40px {color_modes[mode]['main']};
+  animation: pulse 3s infinite alternate;
+}}
+
+/* ⚡ Storm Pulse (Lv4–6) */
+.storm-pulse {{
+  box-shadow:0 0 60px {color_modes[mode]['main']}, 0 0 90px {color_modes[mode]['shadow']};
+  animation: storm 2s infinite alternate;
+}}
+@keyframes storm {{
+  0%{{filter:brightness(1);}}
+  50%{{filter:brightness(1.5);transform:scale(1.05);}}
+  100%{{filter:brightness(1);}}
+}}
+
+/* 🌠 Celestial Wave (Lv7–8) */
+.celestial-wave::after {{
+  content:''; position:absolute; inset:-30px; border-radius:50%;
+  border:3px solid {color_modes[mode]['main']};
+  animation: wave 4s infinite;
+}}
+@keyframes wave {{
+  0%{{opacity:1;transform:scale(0.8);}}
+  100%{{opacity:0;transform:scale(1.8);}}
+}}
+
+/* 🐉 Dragon Flare (Lv9) */
+.dragon-flare::before {{
+  content:''; position:absolute; inset:-40px; border-radius:50%;
+  background:conic-gradient(from 0deg, {color_modes[mode]['shadow']} 0%, transparent 60%, {color_modes[mode]['main']} 100%);
+  animation: rotate 3s linear infinite;
+  opacity:0.6;
+}}
+@keyframes rotate {{
+  to {{transform:rotate(360deg);}}
+}}
+
+/* 💥 Omni Explosion (Lv10) */
+.omni-explosion {{
+  box-shadow:0 0 150px {color_modes[mode]['main']}, 0 0 300px {color_modes[mode]['shadow']};
+  animation: explode 1.2s infinite ease-in-out;
+}}
+@keyframes explode {{
+  0%{{transform:scale(1);opacity:1;}}
+  50%{{transform:scale(1.3);opacity:0.7;}}
+  100%{{transform:scale(1);opacity:1;}}
+}}
+</style>
+
+<div class="titan-fx {current_fx}"></div>
+""", unsafe_allow_html=True)
+
+# Optional caption below animation
+st.caption(f"⚡ Visual Mode: {current_fx.replace('-', ' ').title()} — Titan Ascension Level {asc_data['level']}")
+
+# ================================================================
 # 💎 Titan Core Status Console — Harmonic Awareness v15000.5
 # ================================================================
 import random, datetime, json, os
@@ -284,8 +455,8 @@ def save_json(path, data):
 # 🎯 Game Dictionaries — Full Multi-Region
 # ================================================================
 daily_games = {
-    "GA Pick 3": ["Midday", "Evening"],
-    "GA Pick 4": ["Midday", "Evening"],
+    "GA Pick 3": ["Midday", "Evening","Night"],
+    "GA Pick 4": ["Midday", "Evening","Night"],
     "GA Pick 5": ["Midday", "Evening"],
     "FL Pick 3": ["Midday", "Evening"],
     "FL Pick 4": ["Midday", "Evening"],
@@ -468,8 +639,8 @@ def load_json(path, default):
 # 🎯 Game Dictionaries — Full Multi-Region
 # ================================================================
 daily_games = {
-    "GA Pick 3": ["Midday", "Evening"],
-    "GA Pick 4": ["Midday", "Evening"],
+    "GA Pick 3": ["Midday", "Evening","Night"],
+    "GA Pick 4": ["Midday", "Evening","Night"],
     "GA Pick 5": ["Midday", "Evening"],
     "FL Pick 3": ["Midday", "Evening"],
     "FL Pick 4": ["Midday", "Evening"],

@@ -51,41 +51,57 @@ ph_games = {
 }
 
 # ================================================================
-# 🧾 Input UI — Expanded for Major Games
+# 🎯 Titan Result Console — Fixed with Unique Keys + 8-State Support
 # ================================================================
-region = st.radio("🌐 Select Region", ["US Daily Games", "Major Games", "PH Games"])
+st.markdown("## 🎯 Titan Result Console v10000.13-R")
+st.caption("📊 Record real results to teach Titan patterns & accuracy")
+
+# --- Select Region / State ---
+region = st.radio("🌎 Select Region", ["US Daily Games", "Major Games", "PH Games"], key="result_region")
 
 if region == "US Daily Games":
-    game = st.selectbox("🎯 Choose US Game", list(daily_games.keys()))
-    draw_time = st.selectbox("🕒 Draw Time", daily_games[game])
+    selected_state = st.selectbox(
+        "🏛 Select State",
+        ["California", "Georgia", "Florida", "Texas", "New York", "North Carolina", "New Jersey", "Virginia"],
+        key="result_state"
+    )
+    game = st.selectbox("🎮 Choose US Game", list(daily_games.keys()), key="result_us_game")
+    draw_time = st.selectbox("🕓 Draw Time", daily_games[game], key="result_us_draw")
 
 elif region == "Major Games":
-    game = st.selectbox("💰 Choose Major Game", list(major_games.keys()))
-    draw_time = st.text_input("🕐 Draw Time (optional, e.g. Main Draw)", "Main Draw")
+    game = st.selectbox("💰 Choose Major Game", list(major_games.keys()), key="result_major_game")
+    draw_time = "Main Draw"
+    selected_state = "N/A"
 
 else:
-    game = st.selectbox("🇵🇭 Choose PH Game", list(ph_games.keys()))
-    draw_time = st.selectbox("🕐 Draw Time", ph_games[game])
+    game = st.selectbox("🇵🇭 Choose PH Game", list(ph_games.keys()), key="result_ph_game")
+    draw_time = st.selectbox("🕓 Draw Time", ph_games[game], key="result_ph_draw")
+    selected_state = "PH"
 
-draw_date = st.date_input("📅 Draw Date", datetime.date.today())
-result_numbers = st.text_input("🎰 Enter Winning Numbers (e.g. 589, 1543, 95413)")
+# --- Input Result Numbers ---
+result_numbers = st.text_input("🎟 Enter Winning Numbers (e.g. 583, 1543, 9541)", key="result_numbers")
+draw_date = st.date_input("📅 Draw Date", datetime.date.today(), key="result_date")
 
-# ================================================================
-# 💾 Save Result
-# ================================================================
-if st.button("💾 Save Result"):
+# --- Save Button ---
+if st.button("💾 Save Result", key="save_result_btn"):
     data = load_json(RESULT_FILE, {})
     game_data = data.get(game, [])
+
     entry = {
+        "state": selected_state,
+        "region": region,
         "date": draw_date.strftime("%B %d, %Y"),
         "draw_time": draw_time,
         "numbers": result_numbers.strip(),
-        "recorded_at": datetime.datetime.now().strftime("%I:%M %p")
+        "recorded_at": datetime.datetime.now().strftime("%I:%M %p"),
     }
+
     game_data.append(entry)
     data[game] = game_data
     save_json(RESULT_FILE, data)
-    st.success(f"✅ Result saved for {game} ({draw_time}) — {result_numbers}")
+
+    st.success(f"✅ Result saved for {game} ({selected_state}) — {draw_time}: {result_numbers}")
+
 
 # ================================================================
 # 🔄 Titan Auto CSV Sync — Detect & Load New Result Files

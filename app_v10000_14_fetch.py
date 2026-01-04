@@ -772,7 +772,58 @@ def titan_phantom_fetch():
 # Trigger after regular fetch if PCSO still missing
 titan_phantom_fetch()
 
+# ================================================================
+# 💠 Part 16 — Titan Auto-Sync Integrator v16.0 (Full Accuracy Link)
+# ================================================================
+# This integrates freshly fetched results into Titan Accuracy Logs
+# Automatically checks for new files and updates linked history
+# ---------------------------------------------------------------
 
+import os, json, datetime
 
+def titan_auto_sync_integrator():
+    """Automatically detect and integrate fetched result files."""
+    print("💠 Activating Titan Auto-Sync Integrator v16.0...")
+
+    sync_files = [
+        "titan_results.json",
+        "titan_results_pcso.json"
+    ]
+
+    integrated = {}
+    for file in sync_files:
+        if os.path.exists(file):
+            try:
+                with open(file, "r") as f:
+                    data = json.load(f)
+                for region, result in data.items():
+                    integrated[region] = result
+                    print(f"🔁 Synced {region} — new results integrated.")
+            except Exception as e:
+                print(f"⚠️ Sync error in {file}: {e}")
+        else:
+            print(f"⏸ No {file} found — skipping.")
+
+    if integrated:
+        # Save to master Titan accuracy log
+        master_file = "titan_accuracy_master.json"
+        master = {}
+
+        if os.path.exists(master_file):
+            with open(master_file, "r") as f:
+                master = json.load(f)
+
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        master[timestamp] = integrated
+
+        with open(master_file, "w") as f:
+            json.dump(master, f, indent=2)
+
+        print(f"✅ Auto-Sync complete — {len(integrated)} sources integrated at {timestamp}")
+    else:
+        print("🕊 No new results to sync.")
+
+# Trigger automatically after Titan Phantom Fetch
+titan_auto_sync_integrator()
 
 

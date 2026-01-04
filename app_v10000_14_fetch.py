@@ -649,11 +649,31 @@ def titan_accuracy_linker():
 titan_accuracy_linker()
 
 # ================================================================
-# ⚙️ Part 14 — Titan Multi-Source Mirror Fetch v14.8 (Stable)
+# 🌐 Part 14 — Titan Multi-Source Mirror Fetch v14.8 (Stable)
 # ================================================================
 # Fixed indentation + universal headers initialization outside loop
+# Includes mirror list for FL, GA, and PCSO (multi-source adaptive mode)
 
-# 🛰 Titan Universal Request Headers
+# 🌍 Titan Mirror Sources (multi-site backup URLs)
+sites = {
+    "Florida": [
+        "https://www.flalottery.com/",
+        "https://www.lotteryusa.com/florida/",
+        "https://www.lotterypost.com/game/fl",
+    ],
+    "Georgia": [
+        "https://www.galottery.com/",
+        "https://www.lotteryusa.com/georgia/",
+        "https://www.lotterypost.com/game/ga",
+    ],
+    "PCSO": [
+        "https://www.pcso.gov.ph/SearchLottoResult.aspx",
+        "https://www.lottopcso.com/philippines/3d-results",
+        "https://www.philippinespcsolotto.com/3d-results",
+    ],
+}
+
+# 🌐 Titan Universal Request Headers
 headers = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -663,7 +683,7 @@ headers = {
     "Accept-Language": "en-US,en;q=0.9",
 }
 
-# 🌐 Titan Mirror Fetch Loop
+# 🌌 Titan Mirror Fetch Loop
 for state, url_list in sites.items():
     try:
         print(f"🌍 Fetching {state} data...")
@@ -672,7 +692,7 @@ for state, url_list in sites.items():
             try:
                 r = requests.get(url, headers=headers, timeout=10)
                 if r.status_code == 200:
-                    print(f"✅ {state} mirror fetched successfully — {url}")
+                    print(f"✅ {state} mirror success: {url[:50]}...")
                     success = True
                     break
                 else:
@@ -682,9 +702,7 @@ for state, url_list in sites.items():
         if not success:
             print(f"❌ {state} — All mirrors failed.")
     except Exception as e:
-        print(f"⚠️ {state} general error: {e}")
-
-print("🌙 Titan Mirror Engine v14.8 completed — full adaptive sync enabled.")
+        print(f"🔥 Unexpected error in {state}: {e}")
 
 
 

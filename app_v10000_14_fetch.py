@@ -691,5 +691,42 @@ def titan_archive_backsync():
 # Auto-run after Accuracy Linker
 titan_archive_backsync()
 
+# 🌍 Titan Multi-Source Mirror Engine (Part 14)
+sites = {
+    "Florida": [
+        "https://www.flalottery.com/",
+        "https://www.lotteryusa.com/florida/",
+        "https://www.lotterypost.com/game/fl"
+    ],
+    "Georgia": [
+        "https://www.galottery.com/",
+        "https://www.lotteryusa.com/georgia/",
+        "https://www.lotterypost.com/game/ga"
+    ],
+    "PCSO": [
+        "https://www.pcso.gov.ph/SearchLottoResult.aspx",
+        "https://www.lottonumbers.com/philippines/3d-results",
+        "https://philippinepcsolotto.com/3d-results"
+    ]
+}
+
+for state, url_list in sites.items():
+    success = False
+    for url in url_list:
+        try:
+            print(f"🌐 Fetching {state} data from {url} ...")
+            r = requests.get(url, headers=headers, timeout=10)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "html.parser")
+                text = smart_find_text(soup, ["3D", "Pick 3", "Result", "Winning Numbers"])
+                if text:
+                    print(f"✅ {state} fetched successfully — found text snippet: {text[:80]}...")
+                    success = True
+                    break
+        except Exception as e:
+            print(f"⚠️ {state} mirror fetch failed: {e}")
+    if not success:
+        print(f"❌ {state} — All mirrors failed.")
+
 
 

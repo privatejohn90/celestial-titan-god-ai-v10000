@@ -492,3 +492,23 @@ st.markdown("""
     <p style='font-size:13px;color:#aaa;'>Powered by Hyper-Learning ×10 | Quantum Pulse Core | Divine Forecast Field</p>
 </div>
 """, unsafe_allow_html=True)
+
+# ================================================================
+# 🔄 Titan Unified Module Bridge (Forecast + Result Integration)
+# ================================================================
+import importlib.util
+
+def load_titan_module(module_name, file_path, label):
+    try:
+        spec = importlib.util.spec_from_file_location(module_name, file_path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        st.sidebar.success(f"✅ {label} loaded successfully.")
+    except Exception as e:
+        st.sidebar.error(f"⚠️ Failed to load {label}: {e}")
+
+# Load Forecast System
+load_titan_module("forecast_system", "app_v10000_13_forecast.py", "Forecast System")
+
+# Load Result Console
+load_titan_module("result_console", "app_v10000_13_result.py", "Result Console")

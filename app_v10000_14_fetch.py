@@ -537,5 +537,32 @@ def extract_numbers_from_text(text):
         found += re.findall(p, text)
     return [f.strip().replace(" ", "").replace(",", "") for f in found]
 
+# ================================================================
+# ⚙️ Part 11 — Titan HTML Table Scanner Engine v14.7
+# ================================================================
+from bs4 import BeautifulSoup
+
+def extract_numbers_from_html(html):
+    """Scan all <td>, <span>, <div> for numeric sequences."""
+    soup = BeautifulSoup(html, "html.parser")
+    candidates = []
+    for tag in soup.find_all(["td", "span", "div"]):
+        text = tag.get_text(strip=True)
+        nums = re.findall(r"\b\d{3,6}\b", text)
+        if nums:
+            candidates.extend(nums)
+    return candidates
+
+def titan_result_extractor_engine(html_text):
+    """Unified extractor that merges raw text + HTML scanning."""
+    raw_text_numbers = extract_numbers_from_text(html_text)
+    html_numbers = extract_numbers_from_html(html_text)
+    combined = list(set(raw_text_numbers + html_numbers))
+    if combined:
+        print(f"✅ Extracted {len(combined)} numeric patterns.")
+    else:
+        print("⚠️ No numeric patterns found in HTML or text.")
+    return combined
+
 
 

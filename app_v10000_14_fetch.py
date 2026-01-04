@@ -647,3 +647,49 @@ def titan_accuracy_linker():
 
 # Trigger automatically after extraction
 titan_accuracy_linker()
+
+# ================================================================
+# 🧩 Part 14 — Titan Archive Back-Sync v15.0
+# ================================================================
+import pandas as pd, glob, os, json
+
+ARCHIVE_DIR = os.path.join(DATA_DIR, "archives")
+os.makedirs(ARCHIVE_DIR, exist_ok=True)
+
+def titan_archive_backsync():
+    """Auto-load CSV archives (2020–2024) and extract results."""
+    archive_files = glob.glob(os.path.join(ARCHIVE_DIR, "*.csv"))
+    if not archive_files:
+        print("⚠️ No archive CSVs found in /data/archives.")
+        return
+
+    all_data = []
+    for file in archive_files:
+        try:
+            df = pd.read_csv(file)
+            # Normalize column names
+            df.columns = [c.strip().lower() for c in df.columns]
+            for _, row in df.iterrows():
+                entry = {
+                    "date": str(row.get("date", "")),
+                    "game": row.get("game", ""),
+                    "numbers": str(row.get("numbers", "")),
+                    "source_file": os.path.basename(file)
+                }
+                all_data.append(entry)
+            print(f"✅ Loaded {len(df)} rows from {os.path.basename(file)}")
+        except Exception as e:
+            print(f"⚠️ Failed to load {file}: {e}")
+
+    if all_data:
+        with open("titan_archive_results.json", "w") as f:
+            json.dump(all_data, f, indent=2)
+        print(f"💾 Titan Archive Back-Sync complete — {len(all_data)} total results saved.")
+    else:
+        print("⚠️ No data extracted from archives.")
+
+# Auto-run after Accuracy Linker
+titan_archive_backsync()
+
+
+

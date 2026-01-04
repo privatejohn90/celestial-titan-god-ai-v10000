@@ -57,4 +57,72 @@ if st.button("⚡ Fetch Results"):
     st.info(f"🔗 Connecting to: {url}")
     # Placeholder: Titan will parse next step
 
+# ================================================================
+# 🔹 Titan Auto-Fetch Chrono Bridge v14 — Part 2: Parser Framework
+# ================================================================
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+import datetime, os, json
 
+FETCH_DATA_FILE = os.path.join(DATA_DIR, "titan_auto_fetch_log.json")
+
+def fetch_lottery_results(source_name, url, selectors):
+    """
+    Base fetcher for a given state or country.
+    selectors = {
+        'draw_date': 'css_selector_here',
+        'numbers': 'css_selector_here'
+    }
+    """
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        draw_date = soup.select_one(selectors["draw_date"]).get_text(strip=True)
+        numbers = soup.select_one(selectors["numbers"]).get_text(strip=True)
+
+        entry = {
+            "source": source_name,
+            "draw_date": draw_date,
+            "numbers": numbers,
+            "fetched_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+
+        data = load_json(FETCH_DATA_FILE, [])
+        data.append(entry)
+        save_json(FETCH_DATA_FILE, data)
+
+        print(f"✅ {source_name}: {numbers} ({draw_date})")
+        return entry
+
+    except Exception as e:
+        print(f"⚠️ {source_name} fetch failed: {e}")
+        return None
+
+
+# Example state sources (expandable later)
+LOTTERY_SOURCES = {
+    "Florida": {
+        "url": "https://www.flalottery.com/pick3",
+        "selectors": {"draw_date": ".gamePageNumbers > h2", "numbers": ".numbers"}
+    },
+    "Georgia": {
+        "url": "https://www.galottery.com/en-us/games/draw-games/cash-3.html",
+        "selectors": {"draw_date": ".drawDate", "numbers": ".drawNumbers"}
+    },
+    "PCSO": {
+        "url": "https://www.pcso.gov.ph/SearchLottoResult.aspx",
+        "selectors": {"draw_date": "#date", "numbers": ".results"}
+    }
+}
+
+def run_auto_fetch():
+    print("🔄 Running Titan Auto-Fetch Chrono Bridge…")
+    for name, src in LOTTERY_SOURCES.items():
+        fetch_lottery_results(name, src["url"], src["selectors"])
+    print("💾 Auto-fetch complete — data saved.")
+
+if __name__ == "__main__":
+    run_auto_fetch()

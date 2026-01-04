@@ -564,5 +564,38 @@ def titan_result_extractor_engine(html_text):
         print("⚠️ No numeric patterns found in HTML or text.")
     return combined
 
+# ================================================================
+# ⚙️ Part 12 — Titan Auto-Align + JSON Deep Scanner Engine v14.8
+# ================================================================
+import json, re
 
+def extract_numbers_from_json_blocks(html):
+    """Find 3-6 digit numbers inside <script> or JSON data blocks."""
+    patterns = [r'\b\d{3}\b', r'\b\d{4}\b', r'\b\d{5}\b', r'\b\d{6}\b']
+    blocks = re.findall(r'\{[^}]+\}', html)
+    results = []
+    for block in blocks:
+        try:
+            obj = json.loads(block)
+            text = json.dumps(obj)
+            for p in patterns:
+                results.extend(re.findall(p, text))
+        except Exception:
+            # if not valid JSON, still scan for digits
+            for p in patterns:
+                results.extend(re.findall(p, block))
+    return list(set(results))
+
+def titan_auto_align_analyzer(raw_html):
+    """Combine all scanners — text, HTML table, JSON — into unified result set."""
+    text_hits = extract_numbers_from_text(raw_html)
+    html_hits = extract_numbers_from_html(raw_html)
+    json_hits = extract_numbers_from_json_blocks(raw_html)
+
+    combined = list(set(text_hits + html_hits + json_hits))
+    if combined:
+        print(f"💾 Auto-Align complete — {len(combined)} numeric patterns detected and aligned.")
+    else:
+        print("⚠️ No numeric patterns found in any scanner layer.")
+    return combined
 

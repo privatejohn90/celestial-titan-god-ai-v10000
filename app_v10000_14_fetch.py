@@ -409,8 +409,7 @@ def titan_webdriver_bridge():
         except Exception as e:
             print(f"🚫 {game} WebDriver failed: {e}")
 
-    print("🌌 Titan WebDriver Bridge v14.2 complete — full JS rendering enabled."
-
+print("🌌 Titan WebDriver Bridge v14.2 complete — full JS rendering enabled.")
 
 
 

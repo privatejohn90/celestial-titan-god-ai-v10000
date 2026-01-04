@@ -649,72 +649,11 @@ def titan_accuracy_linker():
 titan_accuracy_linker()
 
 # ================================================================
-# 🧩 Part 14 — Titan Archive Back-Sync v15.0
+# ⚙️ Part 14 — Titan Multi-Source Mirror Fetch v14.8 (Stable)
 # ================================================================
-import pandas as pd, glob, os, json
+# Fixed indentation + universal headers initialization outside loop
 
-ARCHIVE_DIR = os.path.join(DATA_DIR, "archives")
-os.makedirs(ARCHIVE_DIR, exist_ok=True)
-
-def titan_archive_backsync():
-    """Auto-load CSV archives (2020–2024) and extract results."""
-    archive_files = glob.glob(os.path.join(ARCHIVE_DIR, "*.csv"))
-    if not archive_files:
-        print("⚠️ No archive CSVs found in /data/archives.")
-        return
-
-    all_data = []
-    for file in archive_files:
-        try:
-            df = pd.read_csv(file)
-            # Normalize column names
-            df.columns = [c.strip().lower() for c in df.columns]
-            for _, row in df.iterrows():
-                entry = {
-                    "date": str(row.get("date", "")),
-                    "game": row.get("game", ""),
-                    "numbers": str(row.get("numbers", "")),
-                    "source_file": os.path.basename(file)
-                }
-                all_data.append(entry)
-            print(f"✅ Loaded {len(df)} rows from {os.path.basename(file)}")
-        except Exception as e:
-            print(f"⚠️ Failed to load {file}: {e}")
-
-    if all_data:
-        with open("titan_archive_results.json", "w") as f:
-            json.dump(all_data, f, indent=2)
-        print(f"💾 Titan Archive Back-Sync complete — {len(all_data)} total results saved.")
-    else:
-        print("⚠️ No data extracted from archives.")
-
-# Auto-run after Accuracy Linker
-titan_archive_backsync()
-
-# 🌍 Titan Multi-Source Mirror Engine (Part 14)
-sites = {
-    "Florida": [
-        "https://www.flalottery.com/",
-        "https://www.lotteryusa.com/florida/",
-        "https://www.lotterypost.com/game/fl"
-    ],
-    "Georgia": [
-        "https://www.galottery.com/",
-        "https://www.lotteryusa.com/georgia/",
-        "https://www.lotterypost.com/game/ga"
-    ],
-    "PCSO": [
-        "https://www.pcso.gov.ph/SearchLottoResult.aspx",
-        "https://www.lottonumbers.com/philippines/3d-results",
-        "https://philippinepcsolotto.com/3d-results"
-    ]
-}
-
-for state, url_list in sites.items():
-
-# ================================================================
-# 🛰 Titan Universal Request Headers (for all mirrors)
-# ================================================================
+# 🛰 Titan Universal Request Headers
 headers = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -724,29 +663,28 @@ headers = {
     "Accept-Language": "en-US,en;q=0.9",
 }
 
-# ================================================================
 # 🌐 Titan Mirror Fetch Loop
-# ================================================================
 for state, url_list in sites.items():
     try:
         print(f"🌍 Fetching {state} data...")
+        success = False
         for url in url_list:
             try:
                 r = requests.get(url, headers=headers, timeout=10)
                 if r.status_code == 200:
                     print(f"✅ {state} mirror fetched successfully — {url}")
+                    success = True
                     break
                 else:
                     print(f"⚠️ {state} mirror fetch failed: HTTP {r.status_code}")
             except Exception as e:
                 print(f"⚠️ {state} mirror fetch failed: {e}")
-        else:
+        if not success:
             print(f"❌ {state} — All mirrors failed.")
     except Exception as e:
         print(f"⚠️ {state} general error: {e}")
 
-
-
+print("🌙 Titan Mirror Engine v14.8 completed — full adaptive sync enabled.")
 
 
 

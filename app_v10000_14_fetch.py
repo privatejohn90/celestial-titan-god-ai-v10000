@@ -365,9 +365,51 @@ def titan_html_bypass_harvest():
 
     print("🌌 Titan Smart-HTML Fetch v14.1 completed — resilience enabled.")
 
+# ================================================================
+# ⚙️ Titan Auto-Fetch Chrono Bridge v14.2 — WebDriver Mode
+# ================================================================
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+
+def titan_webdriver_fetch(url):
+    """Use headless Chrome to fully render JS-heavy pages."""
+    opts = Options()
+    opts.add_argument("--headless=new")
+    opts.add_argument("--disable-gpu")
+    opts.add_argument("--no-sandbox")
+    opts.add_argument("--window-size=1920,1080")
+    opts.add_argument("--disable-dev-shm-usage")
+
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=opts)
+    driver.get(url)
+    time.sleep(3)  # wait for JS content to render
+    html = driver.page_source
+    driver.quit()
+    return html
 
 
+def titan_webdriver_bridge():
+    """Fetch key lottery sources with WebDriver fallback."""
+    targets = {
+        "FL Pick 3": "https://www.flalottery.com/pick3",
+        "GA Pick 3": "https://www.galottery.com/en-us/games/draw-games/cash-3/results.html",
+        "PCSO 3D Lotto": "https://www.pcso.gov.ph/SearchLottoResult.aspx",
+    }
 
+    for game, link in targets.items():
+        try:
+            html = titan_webdriver_fetch(link)
+            if html:
+                print(f"✅ WebDriver success — {game}")
+                parsed = adaptive_parse(html, game)
+                print(f"🧩 {game}: {len(parsed)} records parsed.")
+            else:
+                print(f"⚠️ Empty page for {game}")
+        except Exception as e:
+            print(f"🚫 {game} WebDriver failed: {e}")
+
+    print("🌌 Titan WebDriver Bridge v14.2 complete — full JS rendering enabled."
 
 
 

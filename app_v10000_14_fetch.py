@@ -461,6 +461,19 @@ def titan_auto_fetch_smart():
 
 titan_auto_fetch_smart()
 
+
+# Save raw text for extractor
+raw_data = {
+    "Florida": "En EspañolPromotionsDo Business With UsSearchSearch Our SitePagesWinning Numbers...",
+    "Georgia": "SearchAbout UsRetailersCOAMPress CenterLatest ResultsToggle navigationToggle Car...",
+    "PCSO": "Toggle navigationAbout About PCSOHistoryPCSO HymnVision and MissionPCSO PrayerMan..."
+}
+
+with open("titan_auto_fetch_raw.json", "w") as f:
+    json.dump(raw_data, f, indent=2)
+
+print("💾 Raw auto-fetch data saved → titan_auto_fetch_raw.json")
+
 # ================================================================
 # 🎯 Part 9 — Titan Result Extractor Engine v14.4
 # ================================================================

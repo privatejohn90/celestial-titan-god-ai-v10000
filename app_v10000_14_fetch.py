@@ -649,12 +649,10 @@ def titan_accuracy_linker():
 titan_accuracy_linker()
 
 # ================================================================
-# 🌐 Part 14 — Titan Multi-Source Mirror Fetch v14.8 (Stable)
+# ⚡ Titan Smart Proxy Bridge v14.9 — PCSO Adaptive Mode
 # ================================================================
-# Fixed indentation + universal headers initialization outside loop
-# Includes mirror list for FL, GA, and PCSO (multi-source adaptive mode)
+# Adds proxy headers, alternate domain mirrors, and timeout handling
 
-# 🌍 Titan Mirror Sources (multi-site backup URLs)
 sites = {
     "Florida": [
         "https://www.flalottery.com/",
@@ -668,8 +666,9 @@ sites = {
     ],
     "PCSO": [
         "https://www.pcso.gov.ph/SearchLottoResult.aspx",
-        "https://www.lottopcso.com/philippines/3d-results",
-        "https://www.philippinespcsolotto.com/3d-results",
+        "https://phlottoresults.com/3d-lotto-results/",
+        "https://philippine-lotto-results.com/3d-results/",
+        "https://lottopcso.com/3d-results/",
     ],
 }
 
@@ -681,29 +680,31 @@ headers = {
         "Chrome/120.0 Safari/537.36"
     ),
     "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://www.google.com/",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Connection": "keep-alive",
 }
 
-# 🌌 Titan Mirror Fetch Loop
+# 🌀 Titan Mirror Fetch Loop (Smart Proxy)
 for state, url_list in sites.items():
     try:
         print(f"🌍 Fetching {state} data...")
         success = False
         for url in url_list:
             try:
-                r = requests.get(url, headers=headers, timeout=10)
+                r = requests.get(url, headers=headers, timeout=12)
                 if r.status_code == 200:
                     print(f"✅ {state} mirror success: {url[:50]}...")
                     success = True
                     break
                 else:
                     print(f"⚠️ {state} mirror fetch failed: HTTP {r.status_code}")
-            except Exception as e:
-                print(f"⚠️ {state} mirror fetch failed: {e}")
+            except requests.exceptions.RequestException as e:
+                print(f"⚠️ {state} mirror fetch error: {e}")
         if not success:
             print(f"❌ {state} — All mirrors failed.")
     except Exception as e:
         print(f"🔥 Unexpected error in {state}: {e}")
-
 
 
 

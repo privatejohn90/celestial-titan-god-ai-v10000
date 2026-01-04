@@ -599,3 +599,51 @@ def titan_auto_align_analyzer(raw_html):
         print("⚠️ No numeric patterns found in any scanner layer.")
     return combined
 
+# ================================================================
+# ⚙️ Part 13 — Titan Accuracy Linker & Pattern Expander v14.9
+# ================================================================
+import re, json, os
+
+def expand_numeric_patterns(text):
+    """Catch separated or dash-delimited 3–6 digit combos."""
+    combo_patterns = [
+        r"\b(\d\s\d\s\d)\b",
+        r"\b(\d\s\d\s\d\s\d)\b",
+        r"\b(\d-\d-\d)\b",
+        r"\b(\d-\d-\d-\d)\b",
+        r"\b\d{3,6}\b",
+    ]
+    found = []
+    for p in combo_patterns:
+        for m in re.findall(p, text):
+            cleaned = re.sub(r"[^0-9]", "", m)
+            if 3 <= len(cleaned) <= 6:
+                found.append(cleaned)
+    return list(set(found))
+
+def titan_accuracy_linker():
+    """Link extracted numbers into Titan Accuracy system."""
+    if not os.path.exists("titan_results.json"):
+        print("⚠️ No titan_results.json found.")
+        return
+
+    with open("titan_results.json") as f:
+        data = json.load(f)
+
+    linked = []
+    for state, text in data.items():
+        expanded = expand_numeric_patterns(text)
+        if expanded:
+            print(f"✅ {state}: {len(expanded)} aligned numbers.")
+            linked.extend(expanded)
+        else:
+            print(f"⚠️ {state}: No numbers aligned.")
+    if linked:
+        with open("titan_accuracy_link.json", "w") as out:
+            json.dump(linked, out, indent=2)
+        print(f"💾 Accuracy Linker complete — {len(linked)} total patterns synced.")
+    else:
+        print("⚠️ No patterns to sync.")
+
+# Trigger automatically after extraction
+titan_accuracy_linker()

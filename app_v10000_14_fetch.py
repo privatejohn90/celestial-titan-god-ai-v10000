@@ -310,6 +310,60 @@ def titan_smart_repair_harvest():
 
     print("🌈 Titan Smart Fetch Repair completed — adaptive parser active.")
 
+# ================================================================
+# ⚡ Titan Smart-HTML Fetch v14.1 — Full Bypass + Multi-Parser
+# ================================================================
+import time, random
+from urllib.parse import urlparse
+
+ADV_HEADERS = {
+    "User-Agent": random.choice([
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 "
+        "(KHTML, like Gecko) Version/17.1 Safari/605.1.15",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/121.0.0.0 Safari/537.36"
+    ]),
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://google.com",
+    "Connection": "keep-alive",
+}
+
+def smart_html_fetch(url, retries=3, delay=2):
+    """Try several times with stronger headers."""
+    for attempt in range(1, retries + 1):
+        try:
+            resp = requests.get(url, headers=ADV_HEADERS, timeout=20)
+            if resp.status_code == 200:
+                print(f"✅ Access success → {urlparse(url).netloc}")
+                return resp.text
+            else:
+                print(f"⚠️ Attempt {attempt}: HTTP {resp.status_code}")
+        except Exception as e:
+            print(f"⚠️ Attempt {attempt} failed: {e}")
+        time.sleep(delay + random.uniform(0.5, 2.5))
+    print(f"❌ Smart-HTML fetch failed after {retries} attempts → {url}")
+    return None
+
+
+def titan_html_bypass_harvest():
+    """Re-fetch critical sources using enhanced HTML bypass."""
+    targets = {
+        "FL Pick 3": "https://www.flalottery.com/pick3",
+        "GA Pick 3": "https://www.galottery.com/en-us/games/draw-games/cash-3/results.html",
+        "PCSO 3D Lotto": "https://www.pcso.gov.ph/SearchLottoResult.aspx",
+    }
+
+    for game, link in targets.items():
+        html = smart_html_fetch(link)
+        if not html:
+            print(f"🚫 {game} still blocked.")
+            continue
+
+        parsed = adaptive_parse(html, game)
+        print(f"🧩 {game}: {len(parsed)} records recovered.")
+
+    print("🌌 Titan Smart-HTML Fetch v14.1 completed — resilience enabled.")
 
 
 

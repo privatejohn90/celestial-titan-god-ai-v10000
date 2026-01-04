@@ -167,7 +167,70 @@ def titan_auto_sync_bridge():
     sync_fetched_results_to_csv()
     print("🌙 Titan Chrono Sync Complete — All data aligned.")
 
+# ================================================================
+# 🔹 Titan Auto-Fetch Chrono Bridge v14 — Part 4: Year History Downloader
+# ================================================================
+def download_yearly_history(game_name, base_url, year_range):
+    """
+    Generic downloader for historical draw results per year.
+    Example: base_url='https://www.flalottery.com/pick3?year={}'
+    """
+    history_dir = os.path.join(DATA_DIR, "history")
+    os.makedirs(history_dir, exist_ok=True)
 
+    all_years = []
+    for year in year_range:
+        url = base_url.format(year)
+        print(f"🕰 Fetching {game_name} {year} → {url}")
+
+        try:
+            resp = requests.get(url, timeout=12)
+            resp.raise_for_status()
+
+            soup = BeautifulSoup(resp.text, "html.parser")
+            rows = soup.find_all("tr")
+
+            year_records = []
+            for r in rows:
+                cols = [c.get_text(strip=True) for c in r.find_all("td")]
+                if len(cols) >= 2:
+                    year_records.append({
+                        "game": game_name,
+                        "year": year,
+                        "date": cols[0],
+                        "numbers": cols[1],
+                    })
+
+            all_years.extend(year_records)
+            print(f"✅ {game_name} {year}: {len(year_records)} records")
+
+        except Exception as e:
+            print(f"⚠️ {game_name} {year} fetch failed → {e}")
+
+    # Save combined CSV + JSON
+    df = pd.DataFrame(all_years)
+    csv_path = os.path.join(history_dir, f"{game_name}_history.csv")
+    df.to_csv(csv_path, index=False)
+    json_path = csv_path.replace(".csv", ".json")
+    save_json(json_path, all_years)
+    print(f"💾 Saved {len(df)} records for {game_name} → {csv_path}")
+
+
+def titan_yearly_harvest():
+    """Runs automatic yearly history downloads for configured games."""
+    print("🌌 Launching Titan Chrono Harvest (2010 → 2024)…")
+    year_range = range(2010, 2025)
+
+    HISTORY_SOURCES = {
+        "FL Pick 3": "https://www.flalottery.com/site/pick3?year={}",
+        "GA Pick 4": "https://www.galottery.com/en-us/games/draw-games/cash-4/results?year={}",
+        "PCSO 3D Lotto": "https://www.pcso.gov.ph/SearchLottoResult.aspx?Year={}",
+    }
+
+    for game, link in HISTORY_SOURCES.items():
+        download_yearly_history(game, link, year_range)
+
+    print("🌙 Titan Yearly Harvest Complete — Chrono Data Ready for Learning.")
 
 
 

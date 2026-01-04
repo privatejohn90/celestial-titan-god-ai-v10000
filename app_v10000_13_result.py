@@ -21,18 +21,29 @@ st.caption("📊 Record real results to teach Titan patterns & accuracy")
 daily_games = {
     "GA Pick 3": ["Midday", "Evening", "Night"],
     "GA Pick 4": ["Midday", "Evening", "Night"],
-    "FL Pick 3": ["Midday", "Evening"],
-    "FL Pick 4": ["Midday", "Evening"],
+    "GA Pick 5": ["Evening"],
+
+    "FL Pick 3": ["Midday", "Evening", "Night"],
+    "FL Pick 4": ["Midday", "Evening", "Night"],
+    "FL Pick 5": ["Evening"],
+
     "TX Pick 3": ["Morning", "Day", "Evening", "Night"],
     "TX Pick 4": ["Morning", "Day", "Evening", "Night"],
+
     "VA Pick 3": ["Day", "Evening"],
     "VA Pick 4": ["Day", "Evening"],
+    "VA Pick 5": ["Day", "Evening"],
+
     "NC Pick 3": ["Day", "Evening"],
     "NC Pick 4": ["Day", "Evening"],
+
     "NY Pick 3": ["Midday", "Evening"],
     "NY Pick 4": ["Midday", "Evening"],
+
     "CA Daily 3": ["Midday", "Evening"],
     "CA Daily 4": ["Evening"],
+    "CA Fantasy 5": ["Main Draw"],
+
     "NJ Pick 3": ["Midday", "Evening"],
     "NJ Pick 4": ["Midday", "Evening"]
 }

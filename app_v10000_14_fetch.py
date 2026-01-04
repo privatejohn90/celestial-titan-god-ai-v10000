@@ -126,3 +126,58 @@ def run_auto_fetch():
 
 if __name__ == "__main__":
     run_auto_fetch()
+
+# ================================================================
+# 🔹 Titan Auto-Fetch Chrono Bridge v14 — Part 3: CSV + Sync System
+# ================================================================
+def sync_fetched_results_to_csv():
+    print("🧩 Syncing fetched results to Titan Data CSV...")
+    try:
+        data = load_json(FETCH_DATA_FILE, [])
+        if not data:
+            print("⚠️ No fetched data yet to sync.")
+            return
+
+        df = pd.DataFrame(data)
+        csv_path = os.path.join(DATA_DIR, "titan_auto_results.csv")
+
+        # Merge if CSV exists
+        if os.path.exists(csv_path):
+            old_df = pd.read_csv(csv_path)
+            merged_df = pd.concat([old_df, df], ignore_index=True).drop_duplicates(
+                subset=["source", "draw_date", "numbers"], keep="last"
+            )
+        else:
+            merged_df = df
+
+        merged_df.to_csv(csv_path, index=False)
+        print(f"✅ Synced {len(merged_df)} records to {csv_path}")
+
+        # Also backup to JSON mirror
+        save_json(FETCH_DATA_FILE, merged_df.to_dict(orient="records"))
+
+    except Exception as e:
+        print(f"⚠️ Sync error: {e}")
+
+
+# 🔁 Combined run (fetch + sync)
+def titan_auto_sync_bridge():
+    print("🚀 Starting Titan Chrono Fetch + Sync Bridge...")
+    run_auto_fetch()
+    sync_fetched_results_to_csv()
+    print("🌙 Titan Chrono Sync Complete — All data aligned.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

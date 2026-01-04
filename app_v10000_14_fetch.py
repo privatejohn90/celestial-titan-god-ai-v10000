@@ -711,29 +711,46 @@ sites = {
 }
 
 for state, url_list in sites.items():
+
+# ================================================================
 # 🛰 Titan Universal Request Headers (for all mirrors)
+# ================================================================
 headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                  "AppleWebKit/537.36 (KHTML, like Gecko) "
-                  "Chrome/120.0 Safari/537.36",
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/120.0 Safari/537.36"
+    ),
     "Accept-Language": "en-US,en;q=0.9",
 }
-    success = False
-    for url in url_list:
-        try:
-            print(f"🌐 Fetching {state} data from {url} ...")
-            r = requests.get(url, headers=headers, timeout=10)
-            if r.status_code == 200:
-                soup = BeautifulSoup(r.text, "html.parser")
-                text = smart_find_text(soup, ["3D", "Pick 3", "Result", "Winning Numbers"])
-                if text:
-                    print(f"✅ {state} fetched successfully — found text snippet: {text[:80]}...")
-                    success = True
+
+# ================================================================
+# 🌐 Titan Mirror Fetch Loop
+# ================================================================
+for state, url_list in sites.items():
+    try:
+        print(f"🌍 Fetching {state} data...")
+        for url in url_list:
+            try:
+                r = requests.get(url, headers=headers, timeout=10)
+                if r.status_code == 200:
+                    print(f"✅ {state} mirror fetched successfully — {url}")
                     break
-        except Exception as e:
-            print(f"⚠️ {state} mirror fetch failed: {e}")
-    if not success:
-        print(f"❌ {state} — All mirrors failed.")
+                else:
+                    print(f"⚠️ {state} mirror fetch failed: HTTP {r.status_code}")
+            except Exception as e:
+                print(f"⚠️ {state} mirror fetch failed: {e}")
+        else:
+            print(f"❌ {state} — All mirrors failed.")
+    except Exception as e:
+        print(f"⚠️ {state} general error: {e}")
+
+
+
+
+
+
+
 
 
 

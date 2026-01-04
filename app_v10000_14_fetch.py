@@ -826,4 +826,41 @@ def titan_auto_sync_integrator():
 # Trigger automatically after Titan Phantom Fetch
 titan_auto_sync_integrator()
 
+# ================================================================
+# 💠 Part 17 — Titan Accuracy Dashboard Linker v17.0 (Live Streamlit Integration)
+# ================================================================
+# Automatically loads synced data into the Titan Streamlit Console UI
+# Shows each synced region, latest results, and timestamp
+# ---------------------------------------------------------------
+
+import streamlit as st
+import json, os, datetime
+
+def titan_accuracy_dashboard():
+    st.subheader("💠 Titan Accuracy Dashboard — Live Result Sync")
+    master_file = "titan_accuracy_master.json"
+
+    if not os.path.exists(master_file):
+        st.warning("⚠️ No master accuracy data found yet. Run the fetch integrator first.")
+        return
+
+    with open(master_file, "r") as f:
+        data = json.load(f)
+
+    # Sort by latest timestamp
+    sorted_times = sorted(data.keys(), reverse=True)
+    latest = sorted_times[0]
+    st.info(f"🕒 Last Sync: {latest}")
+
+    latest_data = data[latest]
+    for region, result in latest_data.items():
+        with st.expander(f"🌍 {region} — Latest Result"):
+            st.json(result)
+
+    st.success("✅ Live dashboard sync complete — all regions displayed.")
+
+# ---------------------------------------------------------------
+# Activate dashboard when app runs
+if __name__ == "__main__":
+    titan_accuracy_dashboard()
 

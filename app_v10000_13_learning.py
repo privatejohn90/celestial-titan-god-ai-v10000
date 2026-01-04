@@ -463,3 +463,39 @@ if learning.get("accuracy_log"):
     st.info(f"🧘 Titan Mental State: **{mood}**")
 else:
     st.info("🔭 No Neural Reflection available yet — run Titan Learning Sync to initialize data.")
+
+# ================================================================
+# ⚡ Titan Auto-Fetch → Learning Sync (v16 Bridge)
+# ================================================================
+FETCH_FILE = "data/titan_results.json"
+LEARN_FILE = "data/titan_learning_map.json"
+
+fetch_data = load_json(FETCH_FILE, {})
+learn_data = load_json(LEARN_FILE, {
+    "states": {},
+    "last_sync": None,
+    "total_records": 0
+})
+
+import datetime
+
+for state, entries in fetch_data.items():
+    learn_data["states"].setdefault(state, {
+        "total": 0,
+        "numbers": {},
+        "recent": []
+    })
+    for e in entries:
+        nums = e.get("numbers", [])
+        for n in nums:
+            learn_data["states"][state]["numbers"][n] = \
+                learn_data["states"][state]["numbers"].get(n, 0) + 1
+        learn_data["states"][state]["recent"].extend(nums)
+        learn_data["states"][state]["recent"] = learn_data["states"][state]["recent"][-50:]
+        learn_data["states"][state]["total"] += 1
+        learn_data["total_records"] += 1
+
+learn_data["last_sync"] = datetime.datetime.now().isoformat()
+save_json(LEARN_FILE, learn_data)
+
+print("🧠 Titan Learning Sync Complete — v16 data absorbed")

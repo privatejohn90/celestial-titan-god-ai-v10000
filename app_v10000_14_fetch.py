@@ -461,7 +461,50 @@ def titan_auto_fetch_smart():
 
 titan_auto_fetch_smart()
 
+# ================================================================
+# 🎯 Part 9 — Titan Result Extractor Engine v14.4
+# ================================================================
+import re, json
 
+def extract_numbers_from_text(text):
+    """Find 3D, 4D, or 5D numbers within mixed website text."""
+    patterns = [
+        r"\b\d{3}\b",     # 3-digit
+        r"\b\d{4}\b",     # 4-digit
+        r"\b\d{2}\s\d{2}\s\d{2}\b"  # 6-digit with spaces
+    ]
+    found = []
+    for p in patterns:
+        found += re.findall(p, text)
+    return list(set(found))
+
+def titan_result_extractor():
+    print("🧩 Running Titan Result Extractor Engine v14.4...")
+    raw_file = "titan_auto_fetch_raw.json"
+    result_file = "titan_results.json"
+    extracted_data = {}
+
+    try:
+        with open(raw_file, "r") as f:
+            raw_data = json.load(f)
+    except:
+        print("⚠️ No raw auto-fetch data found.")
+        return
+
+    for region, text in raw_data.items():
+        nums = extract_numbers_from_text(text)
+        if nums:
+            extracted_data[region] = nums
+            print(f"✅ {region}: Extracted {len(nums)} numbers → {nums[:5]}")
+        else:
+            print(f"⚠️ {region}: No numeric patterns detected.")
+
+    with open(result_file, "w") as f:
+        json.dump(extracted_data, f, indent=2)
+
+    print("💾 Extraction complete — results saved to titan_results.json")
+
+titan_result_extractor()
 
 
 

@@ -1,9 +1,0 @@
-streamlit==1.41.1
-pandas
-numpy
-altair
-plotly
-matplotlib
-datetime
-gtts
-requests

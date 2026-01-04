@@ -494,21 +494,27 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ================================================================
-# 🔄 Titan Unified Module Bridge (Forecast + Result Integration)
+# ⚡ TITAN UNIFIED BRIDGE — AUTO LOAD MODULES (Forecast + Result)
 # ================================================================
-import importlib.util
+import importlib.util, sys, os
 
-def load_titan_module(module_name, file_path, label):
-    try:
-        spec = importlib.util.spec_from_file_location(module_name, file_path)
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        st.sidebar.success(f"✅ {label} loaded successfully.")
-    except Exception as e:
-        st.sidebar.error(f"⚠️ Failed to load {label}: {e}")
+def load_titan_module(alias_name, file_name, module_label):
+    """Universal loader for Titan submodules"""
+    file_path = os.path.join(os.getcwd(), file_name)
+    if os.path.exists(file_path):
+        try:
+            spec = importlib.util.spec_from_file_location(alias_name, file_path)
+            module = importlib.util.module_from_spec(spec)
+            sys.modules[alias_name] = module
+            spec.loader.exec_module(module)
+            st.success(f"✅ {module_label} loaded successfully.")
+        except Exception as e:
+            st.error(f"⚠️ Failed to load {module_label}: {e}")
+    else:
+        st.warning(f"⚠️ {module_label} not found at path: {file_path}")
 
-# Load Forecast System
+# ================================================================
+# 🔹 Auto-Load Forecast & Result Modules
+# ================================================================
 load_titan_module("forecast_system", "app_v10000_13_forecast.py", "Forecast System")
-
-# Load Result Console
 load_titan_module("result_console", "app_v10000_13_result.py", "Result Console")

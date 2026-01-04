@@ -411,6 +411,56 @@ def titan_webdriver_bridge():
 
 print("🌌 Titan WebDriver Bridge v14.2 complete — full JS rendering enabled.")
 
+# ================================================================
+# 🌌 Part 8 — Smart Finder + Stealth Bridge Mode v14.3
+# ================================================================
+import random, time
+
+def smart_find_text(soup, keywords):
+    """Tries to find text from multiple possible tags or classes."""
+    for key in keywords:
+        el = soup.find(lambda tag: tag.name in ["td","div","span","p"] and key.lower() in tag.get_text(strip=True).lower())
+        if el:
+            return el.get_text(strip=True)
+    return None
+
+def titan_auto_fetch_smart():
+    print("🧠 Activating Smart Finder + Stealth Bridge...")
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://google.com"
+    }
+
+    sites = {
+        "Florida": "https://www.flalottery.com/pick3",
+        "Georgia": "https://www.galottery.com/en-us/games/draw-games/cash-3.html",
+        "PCSO": "https://www.pcso.gov.ph/SearchLottoResult.aspx"
+    }
+
+    for state, url in sites.items():
+        try:
+            print(f"🌍 Fetching {state} data...")
+            r = requests.get(url, headers=headers, timeout=10)
+            if r.status_code != 200:
+                print(f"⚠️ {state} fetch failed: HTTP {r.status_code}")
+                continue
+
+            soup = BeautifulSoup(r.text, "html.parser")
+            text = smart_find_text(soup, ["Pick 3", "3D", "Results", "Draw", "Winning"])
+            if text:
+                print(f"✅ {state} found: {text[:80]}...")
+            else:
+                print(f"⚠️ {state} no recognizable draw data found")
+
+            time.sleep(random.uniform(2.5, 4.5))
+        except Exception as e:
+            print(f"⚠️ {state} fetch error: {e}")
+
+    print("🌙 Smart Finder Mode complete — stealth fetch finished.")
+
+titan_auto_fetch_smart()
+
 
 
 

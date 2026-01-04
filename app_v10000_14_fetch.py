@@ -519,7 +519,23 @@ def titan_result_extractor():
 
 titan_result_extractor()
 
-
+# ================================================================
+# 🚀 Part 10 — Titan Pattern Booster v14.5
+# ================================================================
+def extract_numbers_from_text(text):
+    """Find 3D, 4D, 5D, 6D patterns (with or without spaces/commas)."""
+    patterns = [
+        r"\b\d{3}\b",                 # 3-digit
+        r"\b\d{4}\b",                 # 4-digit
+        r"\b\d{5}\b",                 # 5-digit
+        r"\b\d{6}\b",                 # 6-digit
+        r"\b\d[\s,]\d[\s,]\d\b",      # spaced 3-digit
+        r"\b\d[\s,]\d[\s,]\d[\s,]\d\b" # spaced 4-digit
+    ]
+    found = []
+    for p in patterns:
+        found += re.findall(p, text)
+    return [f.strip().replace(" ", "").replace(",", "") for f in found]
 
 
 

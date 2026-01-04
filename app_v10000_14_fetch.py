@@ -706,6 +706,71 @@ for state, url_list in sites.items():
     except Exception as e:
         print(f"🔥 Unexpected error in {state}: {e}")
 
+# ================================================================
+# 👻 Part 15 — Titan Phantom Fetch Bridge v15.0 (Headless Mode)
+# ================================================================
+# Enables dynamic JS-rendered pages using Selenium (for PCSO)
+# ---------------------------------------------------------------
+# Requires:
+#   pip install selenium webdriver-manager
+# ---------------------------------------------------------------
+
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+from bs4 import BeautifulSoup
+import time, random, json
+
+def titan_phantom_fetch():
+    """Use a headless Chrome instance to fetch PCSO results."""
+    print("👻 Activating Titan Phantom Fetch Bridge v15.0...")
+    chrome_options = Options()
+    chrome_options.add_argument("--headless=new")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--log-level=3")
+    chrome_options.add_argument("window-size=1920,1080")
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+
+    urls = [
+        "https://www.pcso.gov.ph/SearchLottoResult.aspx",
+        "https://philippinepcsolotto.com/3d-results/",
+        "https://lottopcso.com/3d-results/",
+        "https://phlottoresults.com/3d-lotto-results/"
+    ]
+
+    data = None
+    for url in urls:
+        try:
+            print(f"🌐 Loading {url} ...")
+            driver.get(url)
+            time.sleep(random.uniform(5, 8))
+            html = driver.page_source
+            soup = BeautifulSoup(html, "html.parser")
+
+            # Try to find any 3D or 4D numbers in page
+            text = soup.get_text(" ", strip=True)
+            if any(x in text for x in ["3D", "4D", "Result", "Winning", "PCSO"]):
+                data = text[:2000]
+                print(f"✅ PCSO dynamic fetch success from {url}")
+                break
+        except Exception as e:
+            print(f"⚠️ Phantom fetch failed at {url}: {e}")
+
+    driver.quit()
+
+    if data:
+        with open("titan_results_pcso.json", "w") as f:
+            json.dump({"PCSO": data}, f, indent=2)
+        print("💾 PCSO dynamic data saved → titan_results_pcso.json")
+    else:
+        print("❌ No PCSO dynamic data fetched after all mirrors.")
+
+# Trigger after regular fetch if PCSO still missing
+titan_phantom_fetch()
 
 
 

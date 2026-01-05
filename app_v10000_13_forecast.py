@@ -108,24 +108,23 @@ def generate_numbers(game, num_sets=5):
     return sets
 
 # ================================================================
-# 🔮 TITAN FORECAST CONSOLE — RESTORED & STABLE (US + MAJOR + PH)
+# 🔮 TITAN FORECAST CONSOLE — FIXED & FINAL (US + MAJOR + PH)
 # ================================================================
-
 st.markdown("## 🔮 Titan Forecast Console")
 st.caption("⚡ Generate aligned numbers based on Titan learning field")
 
-# -----------------------------
+# -------------------------------
 # 🌍 REGION SELECT
-# -----------------------------
+# -------------------------------
 forecast_region = st.radio(
     "🌍 Select Region",
     ["US Daily Games", "Major Games", "PH Games"],
-    key="forecast_region_radio"
+    key="forecast_region_select"
 )
 
-# -----------------------------
+# -------------------------------
 # 🎮 GAME + DRAW TIME
-# -----------------------------
+# -------------------------------
 if forecast_region == "US Daily Games":
     forecast_game = st.selectbox(
         "🎮 Select US Game",
@@ -161,32 +160,30 @@ else:  # PH Games
         key="forecast_ph_draw_time"
     )
 
-# -----------------------------
-# 🔢 NUMBER OF SETS
-# -----------------------------
+# -------------------------------
+# 🔢 FORECAST SETTINGS
+# -------------------------------
 forecast_sets = st.slider(
     "🔢 Number of Forecast Sets",
     1, 10, 5,
     key="forecast_sets"
 )
 
-# -----------------------------
+# -------------------------------
 # ⚡ GENERATE FORECAST
-# -----------------------------
+# -------------------------------
 if st.button("⚡ Generate Titan Forecast", key="forecast_generate_btn"):
     results = []
 
     for _ in range(forecast_sets):
-        if "Pick 3" in forecast_game or "Daily 3" in forecast_game:
+        if "Pick 3" in forecast_game or "Daily 3" in forecast_game or "3D" in forecast_game:
             nums = [random.randint(0, 9) for _ in range(3)]
-        elif "Pick 4" in forecast_game or "Daily 4" in forecast_game:
+        elif "Pick 4" in forecast_game or "Daily 4" in forecast_game or "4D" in forecast_game:
             nums = [random.randint(0, 9) for _ in range(4)]
         elif "Pick 5" in forecast_game:
             nums = [random.randint(0, 9) for _ in range(5)]
         elif "Fantasy 5" in forecast_game:
             nums = sorted(random.sample(range(1, 40), 5))
-        elif "SuperLotto" in forecast_game:
-            nums = sorted(random.sample(range(1, 49), 5)) + [random.randint(1, 27)]
         elif "Mega Millions" in forecast_game:
             nums = sorted(random.sample(range(1, 71), 5)) + [random.randint(1, 25)]
         elif "Powerball" in forecast_game:
@@ -203,6 +200,7 @@ if st.button("⚡ Generate Titan Forecast", key="forecast_generate_btn"):
     st.markdown(f"### 🎯 {forecast_game} — {forecast_draw_time}")
 
     top = max(results, key=lambda x: x["confidence"])
+
     st.success(
         f"💎 **Titan Priority Pick:** `{top['numbers']}` "
         f"(Confidence {top['confidence']}%)"

@@ -124,45 +124,84 @@ daily_games = {
 }
 
 # ================================================================
-# 🧭 UI
+# 🎯 TITAN RESULT CONSOLE — FIXED & FINAL (US + MAJOR + PH)
 # ================================================================
-game = st.selectbox(
-    "🎮 Choose Game",
-    list(daily_games.keys()),
-    key="result_game"
+st.markdown("## 🎯 Titan Result Console")
+st.caption("📥 Record real results to teach Titan patterns & accuracy")
+
+# -------------------------------
+# 🌍 REGION SELECT
+# -------------------------------
+result_region = st.radio(
+    "🌍 Select Region",
+    ["US Daily Games", "Major Games", "PH Games"],
+    key="result_region_select"
 )
 
-draw_time = st.selectbox(
-    "🕓 Draw Time",
-    daily_games[game],   # ✅ Midday / Evening / Night automatic
-    key="result_draw_time"
+# -------------------------------
+# 🎮 GAME + DRAW TIME
+# -------------------------------
+if result_region == "US Daily Games":
+    result_game = st.selectbox(
+        "🎮 Select US Game",
+        list(daily_games.keys()),
+        key="result_us_game"
+    )
+
+    result_draw_time = st.selectbox(
+        "🕓 Draw Time",
+        daily_games[result_game],
+        key="result_us_draw_time"
+    )
+
+elif result_region == "Major Games":
+    result_game = st.selectbox(
+        "🎮 Select Major Game",
+        list(major_games.keys()),
+        key="result_major_game"
+    )
+
+    result_draw_time = "Main Draw"
+
+else:  # PH Games
+    result_game = st.selectbox(
+        "🎮 Select PH Game",
+        list(ph_games.keys()),
+        key="result_ph_game"
+    )
+
+    result_draw_time = st.selectbox(
+        "🕓 Draw Time",
+        ph_games[result_game],
+        key="result_ph_draw_time"
+    )
+
+# -------------------------------
+# 🔢 RESULT INPUT
+# -------------------------------
+result_number = st.text_input(
+    "🔢 Enter Winning Number",
+    key="result_number_input"
 )
 
-result_numbers = st.text_input(
-    "🎟 Enter Winning Numbers (e.g. 583 / 1543 / 95413)",
-    key="result_numbers"
-)
+# -------------------------------
+# 💾 SAVE RESULT
+# -------------------------------
+if st.button("💾 Save Result", key="result_save_btn"):
+    if result_number.strip() == "":
+        st.warning("⚠️ Please enter a valid winning number.")
+    else:
+        data = load_json(RESULT_FILE, {})
 
-draw_date = st.date_input(
-    "📅 Draw Date",
-    datetime.date.today(),
-    key="result_date"
-)
+        data.setdefault(result_game, []).append({
+            "date": datetime.date.today().strftime("%Y-%m-%d"),
+            "draw_time": result_draw_time,
+            "number": result_number,
+            "region": result_region
+        })
 
-# ================================================================
-# 💾 SAVE
-# ================================================================
-if st.button("💾 Save Result", key="save_result"):
-    data = load_json(RESULT_FILE, {})
-    data.setdefault(game, []).append({
-        "date": draw_date.strftime("%Y-%m-%d"),
-        "draw_time": draw_time,
-        "numbers": result_numbers.strip(),
-        "saved_at": datetime.datetime.now().strftime("%H:%M:%S")
-    })
-    save_json(RESULT_FILE, data)
-
-    st.success(f"✅ Saved: {game} — {draw_time} — {result_numbers}")
+        save_json(RESULT_FILE, data)
+        st.success(f"✅ Result saved for **{result_game} — {result_draw_time}**")
 
 # ================================================================
 # 🔄 Titan Auto CSV Sync — Detect & Load New Result Files

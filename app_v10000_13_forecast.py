@@ -108,56 +108,133 @@ def generate_numbers(game, num_sets=5):
     return sets
 
 # ================================================================
-# 🎯 Forecast UI — Multi-State & Multi-Region Selector (Fixed)
+# 🔮 Titan Forecast UI — CLEAN & FIXED (Unique Keys)
 # ================================================================
-region = st.radio("🌎 Select Region", ["US Daily Games", "Major Games", "PH Games"], key="region_select")
 
-if region == "US Daily Games":
-    selected_state = st.selectbox(
+st.markdown("## 🔮 Titan Forecast Console v10000.13-F")
+st.caption("🌌 Multi-State & Multi-Region Forecast System")
+
+# -------------------------------
+# 🌍 Region Selector (UNIQUE KEY)
+# -------------------------------
+forecast_region = st.radio(
+    "🌍 Select Region",
+    ["US Daily Games", "Major Games", "PH Games"],
+    key="forecast_region_radio"
+)
+
+# -------------------------------
+# 🇺🇸 US DAILY GAMES
+# -------------------------------
+if forecast_region == "US Daily Games":
+    forecast_state = st.selectbox(
         "🏛 Select State",
         ["California", "Georgia", "Florida", "Texas", "New York", "North Carolina", "New Jersey", "Virginia"],
-        key="forecast_state"
+        key="forecast_state_select"
     )
-    game = st.selectbox("🎮 Choose US Game", list(daily_games.keys()), key="us_game")
-    draw_time = st.selectbox("🕓 Draw Time", daily_games[game], key="us_draw_time")
 
-elif region == "Major Games":
-    game = st.selectbox("💰 Choose Major Game", list(major_games.keys()), key="major_game")
-    draw_time = "Main Draw"
+    forecast_game = st.selectbox(
+        "🎮 Choose Game",
+        list(daily_games.keys()),
+        key="forecast_us_game"
+    )
 
+    forecast_draw_time = st.selectbox(
+        "🕓 Draw Time",
+        daily_games[forecast_game],
+        key="forecast_us_draw_time"
+    )
+
+# -------------------------------
+# 💰 MAJOR GAMES
+# -------------------------------
+elif forecast_region == "Major Games":
+    forecast_state = "N/A"
+
+    forecast_game = st.selectbox(
+        "💰 Choose Major Game",
+        list(major_games.keys()),
+        key="forecast_major_game"
+    )
+
+    forecast_draw_time = "Main Draw"
+
+# -------------------------------
+# 🇵🇭 PH GAMES
+# -------------------------------
 else:
-    game = st.selectbox("🇵🇭 Choose PH Game", list(ph_games.keys()), key="ph_game")
-    draw_time = st.selectbox("🕓 Draw Time", ph_games[game], key="ph_draw_time")
+    forecast_state = "PH"
 
-num_sets = st.slider("🎲 Number of Forecast Sets", 1, 10, 5, key="forecast_sets")
-draw_date_input = st.date_input("📅 Select Draw Date", datetime.date.today(), key="forecast_date")
+    forecast_game = st.selectbox(
+        "🇵🇭 Choose PH Game",
+        list(ph_games.keys()),
+        key="forecast_ph_game"
+    )
 
-if st.button("⚡ Generate Titan Forecast", key="generate_forecast"):
-    forecasts = generate_numbers(game, num_sets)
-    draw_date = draw_date_input.strftime("%B %d, %Y")
-    current_time = datetime.datetime.now().strftime("%I:%M %p")
-    top = max(forecasts, key=lambda x: x["confidence"])
+    forecast_draw_time = st.selectbox(
+        "🕓 Draw Time",
+        ph_games[forecast_game],
+        key="forecast_ph_draw_time"
+    )
 
-    st.markdown(f"## 🔮 {game} — Titan Forecasts ({draw_time})")
-    st.caption(f"📅 {draw_date} — Generated {current_time}")
-    st.success(f"💎 Titan Priority Pick: `{top['display']}` — Confidence **{top['confidence']}%**")
+# -------------------------------
+# ⚙️ Forecast Controls
+# -------------------------------
+forecast_sets = st.slider(
+    "🔢 Number of Forecast Sets",
+    min_value=1,
+    max_value=10,
+    value=5,
+    key="forecast_sets_slider"
+)
 
-    for f in sorted(forecasts, key=lambda x: -x["confidence"]):
-        if f != top:
-            st.markdown(f"• `{f['display']}` — Confidence **{f['confidence']}%**")
+forecast_date = st.date_input(
+    "📅 Forecast Date",
+    datetime.date.today(),
+    key="forecast_date_input"
+)
 
-    # Save forecast data
+# -------------------------------
+# 🚀 Generate Forecast
+# -------------------------------
+if st.button("⚡ Generate Titan Forecast", key="generate_forecast_btn"):
+
+    results = generate_numbers(forecast_game, forecast_sets)
+
+    draw_date = forecast_date.strftime("%B %d, %Y")
+    generated_time = datetime.datetime.now().strftime("%I:%M %p")
+
+    top_pick = max(results, key=lambda x: x["confidence"])
+
+    st.markdown(f"### 🔮 {forecast_game} — Titan Forecasts ({forecast_draw_time})")
+    st.caption(f"📅 {draw_date} | Generated {generated_time}")
+
+    st.success(
+        f"💎 **Titan Priority Pick:** `{top_pick['display']}` "
+        f"(Confidence: **{top_pick['confidence']}%**)"
+    )
+
+    for r in sorted(results, key=lambda x: -x["confidence"]):
+        if r != top_pick:
+            st.markdown(f"- `{r['display']}` — Confidence **{r['confidence']}%**")
+
+    # -------------------------------
+    # 💾 Save Forecast
+    # -------------------------------
     data = load_json(FORECAST_FILE, {})
-    data.setdefault(game, []).append({
+
+    data.setdefault(forecast_game, []).append({
         "date": draw_date,
-        "draw": draw_time,
-        "generated_time": current_time,
-        "priority": top,
-        "forecasts": forecasts,
-        "state": selected_state if region == "US Daily Games" else "N/A",
+        "draw_time": forecast_draw_time,
+        "generated_at": generated_time,
+        "state": forecast_state,
+        "priority_pick": top_pick,
+        "forecasts": results
     })
+
     save_json(FORECAST_FILE, data)
-    st.success(f"✅ Forecast saved for {game} ({draw_date})")
+
+    st.success(f"✅ Forecast saved for {forecast_game} ({draw_date})")
 
 # ================================================================
 # 🔒 Titan 1–3 Set Lock Analyzer

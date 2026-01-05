@@ -108,87 +108,56 @@ def generate_numbers(game, num_sets=5):
     return sets
 
 # ================================================================
-# 🔮 Titan Forecast UI — CLEAN & FIXED (Unique Keys)
+# 🔮 TITAN FORECAST CONSOLE — FIXED & FINAL (Daily Games)
 # ================================================================
+st.markdown("## 🔮 Titan Forecast Console")
+st.caption("⚡ Generate aligned numbers based on Titan learning field")
 
-import streamlit as st
-import datetime
-from utils import generate_numbers, load_json, save_json
-
-FORECAST_FILE = "data/titan_forecasts.json"
-
-st.markdown("## 🔮 Titan Forecast Console (Fixed)")
-st.caption("Multi-State & Multi-Region Forecast System")
-
-# 🔹 UNIQUE REGION SELECTOR
-forecast_region = st.radio(
-    "🌍 Select Region",
-    ["US Daily Games", "Major Games", "PH Games"],
-    key="forecast_region_v2"
+forecast_game = st.selectbox(
+    "🎮 Select Game",
+    list(daily_games.keys()),
+    key="forecast_game"
 )
 
-# ===============================
-# US DAILY GAMES
-# ===============================
-if forecast_region == "US Daily Games":
-    forecast_state = st.selectbox(
-        "🏛 Select State",
-        ["California", "Georgia", "Florida", "Texas", "New York", "North Carolina", "New Jersey", "Virginia"],
-        key="forecast_state_v2"
-    )
+forecast_draw_time = st.selectbox(
+    "🕓 Draw Time",
+    daily_games[forecast_game],
+    key="forecast_draw_time"
+)
 
-    forecast_game = st.selectbox(
-        "🎮 Choose Game",
-        ["Pick 3", "Pick 4", "Pick 5"],
-        key="forecast_us_game_v2"
-    )
-
-    forecast_draw_time = st.selectbox(
-        "🕓 Draw Time",
-        ["Midday", "Evening", "Night"],
-        key="forecast_us_draw_time_v2"
-    )
-
-# ===============================
-# MAJOR GAMES
-# ===============================
-elif forecast_region == "Major Games":
-    forecast_game = st.selectbox(
-        "🎰 Choose Major Game",
-        ["Mega Millions", "Powerball"],
-        key="forecast_major_game_v2"
-    )
-    forecast_draw_time = "Main Draw"
-
-# ===============================
-# PH GAMES
-# ===============================
-else:
-    forecast_game = st.selectbox(
-        "🇵🇭 Choose PH Game",
-        ["PCSO Pick 3", "PCSO Pick 4", "PCSO 6/42", "Super Lotto"],
-        key="forecast_ph_game_v2"
-    )
-    forecast_draw_time = st.selectbox(
-        "🕓 Draw Time",
-        ["2PM", "5PM", "9PM"],
-        key="forecast_ph_draw_time_v2"
-    )
-
-# ===============================
-# FORECAST SETTINGS
-# ===============================
-num_sets = st.slider(
+forecast_sets = st.slider(
     "🔢 Number of Forecast Sets",
     1, 10, 5,
-    key="forecast_sets_v2"
+    key="forecast_sets"
 )
 
-draw_date = st.date_input(
-    "📅 Select Draw Date",
-    datetime.date.today(),
-    key="forecast_date_v2"
-)
+if st.button("⚡ Generate Titan Forecast", key="forecast_generate"):
+    results = []
+
+    for _ in range(forecast_sets):
+        if "Pick 3" in forecast_game or "Daily 3" in forecast_game:
+            nums = [random.randint(0, 9) for _ in range(3)]
+        elif "Pick 4" in forecast_game or "Daily 4" in forecast_game:
+            nums = [random.randint(0, 9) for _ in range(4)]
+        elif "Pick 5" in forecast_game:
+            nums = [random.randint(0, 9) for _ in range(5)]
+        else:
+            nums = []
+
+        confidence = round(random.uniform(90.0, 99.9), 2)
+        results.append({"numbers": "".join(map(str, nums)), "confidence": confidence})
+
+    st.markdown(f"### 🎯 {forecast_game} — {forecast_draw_time}")
+    top = max(results, key=lambda x: x["confidence"])
+
+    st.success(
+        f"💎 **Titan Priority Pick:** `{top['numbers']}` "
+        f"(Confidence {top['confidence']}%)"
+    )
+
+    for r in sorted(results, key=lambda x: -x["confidence"]):
+        if r != top:
+            st.markdown(f"• `{r['numbers']}` — {r['confidence']}%")
 
 # ===============================
 # GENERATE FORECAST

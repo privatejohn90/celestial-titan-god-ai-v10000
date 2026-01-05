@@ -61,57 +61,108 @@ ph_games = {
 }
 
 # ================================================================
-# 🎯 Titan Result Console — Fixed with Unique Keys + 8-State Support
+# 🎯 Titan Result Console — FINAL FIX (Midday / Evening / Night)
 # ================================================================
-st.markdown("## 🎯 Titan Result Console v10000.13-R")
-st.caption("📊 Record real results to teach Titan patterns & accuracy")
+import streamlit as st
+import json, os, datetime
 
-# --- Select Region / State ---
-region = st.radio("🌎 Select Region", ["US Daily Games", "Major Games", "PH Games"], key="result_region")
+st.markdown("## 🎯 Titan Result Console")
+st.caption("📊 Record real results to teach Titan patterns")
 
-if region == "US Daily Games":
-    selected_state = st.selectbox(
-        "🏛 Select State",
-        ["California", "Georgia", "Florida", "Texas", "New York", "North Carolina", "New Jersey", "Virginia"],
-        key="result_state"
-    )
-    game = st.selectbox("🎮 Choose US Game", list(daily_games.keys()), key="result_us_game")
-    draw_time = st.selectbox("🕓 Draw Time", daily_games[game], key="result_us_draw")
+# ================================================================
+# 📁 Paths
+# ================================================================
+DATA_DIR = "data"
+os.makedirs(DATA_DIR, exist_ok=True)
+RESULT_FILE = os.path.join(DATA_DIR, "titan_results.json")
 
-elif region == "Major Games":
-    game = st.selectbox("💰 Choose Major Game", list(major_games.keys()), key="result_major_game")
-    draw_time = "Main Draw"
-    selected_state = "N/A"
+def load_json(path, default):
+    if not os.path.exists(path):
+        with open(path, "w") as f:
+            json.dump(default, f, indent=2)
+        return default
+    try:
+        with open(path, "r") as f:
+            return json.load(f)
+    except:
+        return default
 
-else:
-    game = st.selectbox("🇵🇭 Choose PH Game", list(ph_games.keys()), key="result_ph_game")
-    draw_time = st.selectbox("🕓 Draw Time", ph_games[game], key="result_ph_draw")
-    selected_state = "PH"
+def save_json(path, data):
+    with open(path, "w") as f:
+        json.dump(data, f, indent=2)
 
-# --- Input Result Numbers ---
-result_numbers = st.text_input("🎟 Enter Winning Numbers (e.g. 583, 1543, 9541)", key="result_numbers")
-draw_date = st.date_input("📅 Draw Date", datetime.date.today(), key="result_date")
+# ================================================================
+# 🎯 GAME DEFINITIONS (IMONG GI-HATAG — WALAY GIUSAB)
+# ================================================================
+daily_games = {
+    "GA Pick 3": ["Midday", "Evening", "Night"],
+    "GA Pick 4": ["Midday", "Evening", "Night"],
+    "GA Pick 5": ["Midday", "Evening"],
 
-# --- Save Button ---
-if st.button("💾 Save Result", key="save_result_btn"):
+    "FL Pick 3": ["Midday", "Evening", "Night"],
+    "FL Pick 4": ["Midday", "Evening", "Night"],
+    "FL Pick 5": ["Midday", "Evening"],
+
+    "TX Pick 3": ["Morning", "Day", "Evening", "Night"],
+    "TX Pick 4": ["Morning", "Day", "Evening", "Night"],
+
+    "VA Pick 3": ["Day", "Evening"],
+    "VA Pick 4": ["Day", "Evening"],
+    "VA Pick 5": ["Day", "Evening"],
+
+    "NC Pick 3": ["Day", "Evening"],
+    "NC Pick 4": ["Day", "Evening"],
+
+    "NY Pick 3": ["Midday", "Evening"],
+    "NY Pick 4": ["Midday", "Evening"],
+
+    "CA Daily 3": ["Midday", "Evening"],
+    "CA Daily 4": ["Evening"],
+
+    "NJ Pick 3": ["Midday", "Evening"],
+    "NJ Pick 4": ["Midday", "Evening"]
+}
+
+# ================================================================
+# 🧭 UI
+# ================================================================
+game = st.selectbox(
+    "🎮 Choose Game",
+    list(daily_games.keys()),
+    key="result_game"
+)
+
+draw_time = st.selectbox(
+    "🕓 Draw Time",
+    daily_games[game],   # ✅ Midday / Evening / Night automatic
+    key="result_draw_time"
+)
+
+result_numbers = st.text_input(
+    "🎟 Enter Winning Numbers (e.g. 583 / 1543 / 95413)",
+    key="result_numbers"
+)
+
+draw_date = st.date_input(
+    "📅 Draw Date",
+    datetime.date.today(),
+    key="result_date"
+)
+
+# ================================================================
+# 💾 SAVE
+# ================================================================
+if st.button("💾 Save Result", key="save_result"):
     data = load_json(RESULT_FILE, {})
-    game_data = data.get(game, [])
-
-    entry = {
-        "state": selected_state,
-        "region": region,
-        "date": draw_date.strftime("%B %d, %Y"),
+    data.setdefault(game, []).append({
+        "date": draw_date.strftime("%Y-%m-%d"),
         "draw_time": draw_time,
         "numbers": result_numbers.strip(),
-        "recorded_at": datetime.datetime.now().strftime("%I:%M %p"),
-    }
-
-    game_data.append(entry)
-    data[game] = game_data
+        "saved_at": datetime.datetime.now().strftime("%H:%M:%S")
+    })
     save_json(RESULT_FILE, data)
 
-    st.success(f"✅ Result saved for {game} ({selected_state}) — {draw_time}: {result_numbers}")
-
+    st.success(f"✅ Saved: {game} — {draw_time} — {result_numbers}")
 
 # ================================================================
 # 🔄 Titan Auto CSV Sync — Detect & Load New Result Files

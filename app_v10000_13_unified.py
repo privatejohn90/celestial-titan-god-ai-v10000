@@ -1,15 +1,46 @@
 # ================================================================
 # 💎 Celestial Titan God AI — Unified Core Dashboard v10000.13
 # ================================================================
-import streamlit as st
-import importlib.util, sys, os, json, datetime
 
-st.set_page_config(page_title="Celestial Titan Unified Console", page_icon="💎", layout="wide")
+# =========================
+# Core Imports (REQUIRED)
+# =========================
+import streamlit as st
+import importlib.util
+import sys
+import os
+import json
+import datetime
+
+# ================================================================
+# ⚠️ Streamlit Page Config
+# MUST be the FIRST Streamlit command
+# ================================================================
+st.set_page_config(
+    page_title="Celestial Titan Unified Console",
+    page_icon="💎",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# ================================================================
+# 📁 TITAN DATA PATHS (FIXED)
+# ================================================================
+DATA_DIR = "data"
+os.makedirs(DATA_DIR, exist_ok=True)
+
+RESULT_FILE = os.path.join(DATA_DIR, "titan_results.json")
+
+# ================================================================
+# 🌌 TITAN HEADER
+# ================================================================
+st.title("💎 Celestial Titan God AI")
+st.caption("Unified Core Dashboard v10000.13")
 
 # ================================================================
 # 🌈 TITAN AURORA BACKGROUND CUSTOMIZER
 # ================================================================
-st.markdown("### 🎨 Choose Titan Background Theme")
+st.markdown("### 🌌 Choose Titan Background Theme")
 
 backgrounds = {
     "💚 Aurora Green": {
@@ -30,35 +61,33 @@ backgrounds = {
     },
     "💛 Divine Gold": {
         "gradient": "radial-gradient(circle at top, #332200 0%, #000000 100%)",
-        "glow": "#ffdd00"
-    },
+        "glow": "#ffdd88"
+    }
 }
 
-# 🌠 Selector UI
-chosen_theme = st.selectbox("🌌 Select Aurora Theme", list(backgrounds.keys()), index=0)
+chosen_theme = st.selectbox(
+    "🎨 Select Aurora Theme",
+    list(backgrounds.keys()),
+    index=1
+)
 
 bg_style = backgrounds[chosen_theme]["gradient"]
 glow_color = backgrounds[chosen_theme]["glow"]
 
-# 🌌 Apply the style
-st.markdown(f"""
-<style>
-.stApp {{
-    background: {bg_style};
-    color: white;
-}}
-h1, h2, h3, h4, h5 {{
-    text-shadow: 0 0 15px {glow_color};
-    color: {glow_color};
-}}
-div[data-testid="stMetricValue"], div[data-testid="stMetricLabel"] {{
-    color: {glow_color} !important;
-}}
-</style>
-""", unsafe_allow_html=True)
-
-st.info(f"🎨 Active Theme: {chosen_theme} — Glow color {glow_color}")
-
+# -------------------------------
+# 🎨 Apply Background Style
+# -------------------------------
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background: {bg_style};
+        color: white;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 # ================================================================
 # 🌌 TITAN UNIFIED CONSOLE HEADER
 # ================================================================
@@ -531,3 +560,16 @@ if st.button("🚀 Fetch Results"):
     st.info(f"Connecting to: https://www.pcso.gov.ph/SearchLottoResult.aspx")
     st.success("✅ Titan Auto-Fetch Chrono Bridge initialized successfully.")
 
+# ================================================================
+# 📊 TITAN RESULTS LOADER (Unified Core)
+# ================================================================
+st.markdown("## 📊 Titan Synced Results")
+
+if os.path.exists(RESULT_FILE):
+    with open(RESULT_FILE, "r") as f:
+        titan_results = json.load(f)
+
+    st.success(f"✅ Titan Results Loaded ({len(titan_results)} states/sources)")
+    st.json(titan_results)
+else:
+    st.warning("⚠️ No titan_results.json found. Run Auto-Fetch first.")

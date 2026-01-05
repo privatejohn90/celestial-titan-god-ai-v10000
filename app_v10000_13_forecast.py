@@ -108,30 +108,70 @@ def generate_numbers(game, num_sets=5):
     return sets
 
 # ================================================================
-# 🔮 TITAN FORECAST CONSOLE — FIXED & FINAL (Daily Games)
+# 🔮 TITAN FORECAST CONSOLE — RESTORED (US + MAJOR + PH)
 # ================================================================
 st.markdown("## 🔮 Titan Forecast Console")
 st.caption("⚡ Generate aligned numbers based on Titan learning field")
 
-forecast_game = st.selectbox(
-    "🎮 Select Game",
-    list(daily_games.keys()),
-    key="forecast_game"
+# ----------------------------
+# 🌍 REGION SELECT
+# ----------------------------
+forecast_region = st.radio(
+    "🌍 Select Region",
+    ["US Daily Games", "Major Games", "PH Games"],
+    key="forecast_region_radio"
 )
 
-forecast_draw_time = st.selectbox(
-    "🕓 Draw Time",
-    daily_games[forecast_game],
-    key="forecast_draw_time"
-)
+# ----------------------------
+# 🎮 GAME + DRAW TIME
+# ----------------------------
+if forecast_region == "US Daily Games":
+    forecast_game = st.selectbox(
+        "🎮 Select US Game",
+        list(daily_games.keys()),
+        key="forecast_us_game"
+    )
 
+    forecast_draw_time = st.selectbox(
+        "🕓 Draw Time",
+        daily_games[forecast_game],
+        key="forecast_us_draw_time"
+    )
+
+elif forecast_region == "Major Games":
+    forecast_game = st.selectbox(
+        "💰 Select Major Game",
+        list(major_games.keys()),
+        key="forecast_major_game"
+    )
+    forecast_draw_time = "Main Draw"
+
+else:  # PH Games
+    forecast_game = st.selectbox(
+        "🇵🇭 Select PH Game",
+        list(ph_games.keys()),
+        key="forecast_ph_game"
+    )
+
+    forecast_draw_time = st.selectbox(
+        "🕓 Draw Time",
+        ph_games[forecast_game],
+        key="forecast_ph_draw_time"
+    )
+
+# ----------------------------
+# 🔢 FORECAST SETTINGS
+# ----------------------------
 forecast_sets = st.slider(
     "🔢 Number of Forecast Sets",
     1, 10, 5,
-    key="forecast_sets"
+    key="forecast_sets_slider"
 )
 
-if st.button("⚡ Generate Titan Forecast", key="forecast_generate"):
+# ----------------------------
+# ⚡ GENERATE FORECAST
+# ----------------------------
+if st.button("⚡ Generate Titan Forecast", key="forecast_generate_btn"):
     results = []
 
     for _ in range(forecast_sets):
@@ -145,9 +185,13 @@ if st.button("⚡ Generate Titan Forecast", key="forecast_generate"):
             nums = []
 
         confidence = round(random.uniform(90.0, 99.9), 2)
-        results.append({"numbers": "".join(map(str, nums)), "confidence": confidence})
+        results.append({
+            "numbers": "".join(map(str, nums)),
+            "confidence": confidence
+        })
 
     st.markdown(f"### 🎯 {forecast_game} — {forecast_draw_time}")
+
     top = max(results, key=lambda x: x["confidence"])
 
     st.success(
@@ -158,35 +202,6 @@ if st.button("⚡ Generate Titan Forecast", key="forecast_generate"):
     for r in sorted(results, key=lambda x: -x["confidence"]):
         if r != top:
             st.markdown(f"• `{r['numbers']}` — {r['confidence']}%")
-
-# ===============================
-# GENERATE FORECAST
-# ===============================
-if st.button("⚡ Generate Titan Forecast", key="forecast_generate_btn_v2"):
-    forecasts = generate_numbers(forecast_game, num_sets)
-
-    top_pick = max(forecasts, key=lambda x: x["confidence"])
-    now = datetime.datetime.now().strftime("%I:%M %p")
-
-    st.success(f"💎 Titan Priority Pick: {top_pick['display']} (Confidence {top_pick['confidence']}%)")
-
-    for f in sorted(forecasts, key=lambda x: -x["confidence"]):
-        if f != top_pick:
-            st.markdown(f"• {f['display']} — **{f['confidence']}%**")
-
-    # SAVE
-    data = load_json(FORECAST_FILE, {})
-    data.setdefault(forecast_game, []).append({
-        "date": draw_date.strftime("%Y-%m-%d"),
-        "draw_time": forecast_draw_time,
-        "generated": now,
-        "priority": top_pick,
-        "forecasts": forecasts,
-        "state": forecast_state if forecast_region == "US Daily Games" else "N/A"
-    })
-
-    save_json(FORECAST_FILE, data)
-    st.success("✅ Forecast saved successfully")
 
 # ================================================================
 # 🔒 Titan 1–3 Set Lock Analyzer

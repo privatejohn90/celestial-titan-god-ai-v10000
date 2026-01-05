@@ -108,23 +108,24 @@ def generate_numbers(game, num_sets=5):
     return sets
 
 # ================================================================
-# 🔮 TITAN FORECAST CONSOLE — RESTORED (US + MAJOR + PH)
+# 🔮 TITAN FORECAST CONSOLE — RESTORED & STABLE (US + MAJOR + PH)
 # ================================================================
+
 st.markdown("## 🔮 Titan Forecast Console")
 st.caption("⚡ Generate aligned numbers based on Titan learning field")
 
-# ----------------------------
+# -----------------------------
 # 🌍 REGION SELECT
-# ----------------------------
+# -----------------------------
 forecast_region = st.radio(
     "🌍 Select Region",
     ["US Daily Games", "Major Games", "PH Games"],
     key="forecast_region_radio"
 )
 
-# ----------------------------
+# -----------------------------
 # 🎮 GAME + DRAW TIME
-# ----------------------------
+# -----------------------------
 if forecast_region == "US Daily Games":
     forecast_game = st.selectbox(
         "🎮 Select US Game",
@@ -140,15 +141,16 @@ if forecast_region == "US Daily Games":
 
 elif forecast_region == "Major Games":
     forecast_game = st.selectbox(
-        "💰 Select Major Game",
+        "🎮 Select Major Game",
         list(major_games.keys()),
         key="forecast_major_game"
     )
+
     forecast_draw_time = "Main Draw"
 
 else:  # PH Games
     forecast_game = st.selectbox(
-        "🇵🇭 Select PH Game",
+        "🎮 Select PH Game",
         list(ph_games.keys()),
         key="forecast_ph_game"
     )
@@ -159,18 +161,18 @@ else:  # PH Games
         key="forecast_ph_draw_time"
     )
 
-# ----------------------------
-# 🔢 FORECAST SETTINGS
-# ----------------------------
+# -----------------------------
+# 🔢 NUMBER OF SETS
+# -----------------------------
 forecast_sets = st.slider(
     "🔢 Number of Forecast Sets",
     1, 10, 5,
-    key="forecast_sets_slider"
+    key="forecast_sets"
 )
 
-# ----------------------------
+# -----------------------------
 # ⚡ GENERATE FORECAST
-# ----------------------------
+# -----------------------------
 if st.button("⚡ Generate Titan Forecast", key="forecast_generate_btn"):
     results = []
 
@@ -181,19 +183,26 @@ if st.button("⚡ Generate Titan Forecast", key="forecast_generate_btn"):
             nums = [random.randint(0, 9) for _ in range(4)]
         elif "Pick 5" in forecast_game:
             nums = [random.randint(0, 9) for _ in range(5)]
+        elif "Fantasy 5" in forecast_game:
+            nums = sorted(random.sample(range(1, 40), 5))
+        elif "SuperLotto" in forecast_game:
+            nums = sorted(random.sample(range(1, 49), 5)) + [random.randint(1, 27)]
+        elif "Mega Millions" in forecast_game:
+            nums = sorted(random.sample(range(1, 71), 5)) + [random.randint(1, 25)]
+        elif "Powerball" in forecast_game:
+            nums = sorted(random.sample(range(1, 70), 5)) + [random.randint(1, 26)]
         else:
             nums = []
 
         confidence = round(random.uniform(90.0, 99.9), 2)
         results.append({
-            "numbers": "".join(map(str, nums)),
+            "numbers": " ".join(map(str, nums)),
             "confidence": confidence
         })
 
     st.markdown(f"### 🎯 {forecast_game} — {forecast_draw_time}")
 
     top = max(results, key=lambda x: x["confidence"])
-
     st.success(
         f"💎 **Titan Priority Pick:** `{top['numbers']}` "
         f"(Confidence {top['confidence']}%)"

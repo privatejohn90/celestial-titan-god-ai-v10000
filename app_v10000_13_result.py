@@ -175,6 +175,14 @@ else:  # PH Games
         ph_games[result_game],
         key="result_ph_draw_time"
     )
+# -------------------------
+# DRAW DATE (FIXED)
+# -------------------------
+st.markdown("### 📅 Draw Date")
+result_date = st.date_input(
+    "📅 Select Draw Date",
+    value=datetime.date.today(),
+    key="result_draw_date"
 
 # -------------------------------
 # 🔢 RESULT INPUT

@@ -14,6 +14,7 @@ FORECAST_FILE = os.path.join(DATA_DIR, "titan_forecasts.json")
  
 st.markdown("## 🔮 Titan Forecast Console v10000.13-F")
 st.caption("🌙 Generates multi-region predictions with Titan Lock Analyzer$    
+
 # ================================================================
 # 🎯 Game Dictionaries — Full Multi-Region
 # ================================================================

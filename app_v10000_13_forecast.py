@@ -60,10 +60,9 @@ daily_games = {
     "VA Pick 5": ["Midday", "Evening"],
     "NY Pick 3": ["Midday", "Evening"],
     "NY Pick 4": ["Midday", "Evening"],
-    "TX Pick 3": [“Morning”, ”Day”, “Evening”, "Night"],
-    "TX Pick 4": [“”Morning”, “Day”,”Evening”,  "Night"],
+"TX Pick 3": ["Morning", "Day", "Evening", "Night"],
+"TX Pick 4": ["Morning", "Day", "Evening", "Night"],
 }
-
 major_games = {
     "Mega Millions": ["Main Draw"],
     "Powerball": ["Main Draw"],

@@ -207,7 +207,7 @@ with st.expander("🌠 Titan Cosmic Status Console"):
 # 🕓 AUTO REFRESH BUTTON
 # ================================================================
 if st.button("🔁 Refresh Titan Pulse", key="refresh_pulse"):
-    st.experimental_rerun()
+    st.rerun()
 
 # ================================================================
 # 🧠 TITAN AI CORE SUMMARY PANEL — Accuracy & Learning Trend
